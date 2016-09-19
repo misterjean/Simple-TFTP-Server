@@ -5,4 +5,5 @@ package core;
  * Core part of Proxy
  */
 public class Proxy {
+
 }

@@ -17,7 +17,6 @@ public class IO {
     /**
      * just System.out.print(), in a shorter form
      * in order to save time while typing
-     * @param string
      */
     private void print(String string){
         System.out.print(string);
@@ -47,6 +46,18 @@ public class IO {
         }
     }
 
-
-
+    /**
+     * same as isInteger(String), however this one will assign the integer to another variable
+     * @param string the target string
+     * @param output the integer that converted from the target string
+     * @return true if the string is an integer false otherwise
+     */
+    public boolean isInteger(String string, int output){
+        try{
+            output = Integer.parseInt(string);
+            return true;
+        } catch(NumberFormatException e){
+            return false;
+        }
+    }
 }
