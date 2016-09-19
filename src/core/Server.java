@@ -1,0 +1,8 @@
+package core;
+
+/**
+ * Created by Yue on 2016-09-19.
+ * Core part of Server
+ */
+public class Server {
+}
