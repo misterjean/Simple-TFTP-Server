@@ -1,6 +1,9 @@
 package utilities;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+
 import javax.xml.crypto.Data;
+import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.SocketException;
@@ -18,9 +21,19 @@ public class Proxy_PacketProcessor implements Runnable {
     private static final int DEFAULT_CLIENT_PORT = 23;
 
     /**
-     * the port that client socket
+     * the port that server used to receive request packets from proxy
+     */
+    private static final int DEFAULT_SERVER_PORT = 69;
+
+    /**
+     * the port that client socket uses to send and receive
      */
     private int port_client;
+
+    /**
+     * the port that server socket uses to send and receive
+     */
+    private int port_server;
 
     /**
      * the unique ID for each packet processor
@@ -51,6 +64,22 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private DatagramPacket requestPacket = PacketUtilities.createEmptyPacket();
 
+    /**
+     * to store received data packets
+     */
+    private DatagramPacket dataPacket = PacketUtilities.createEmptyPacket();
+
+    /**
+     * to store received ack packets
+     */
+    private DatagramPacket ackPacket = PacketUtilities.createEmptyPacket();
+
+    /**
+     * this variable is used to flag whether a data packet is the last one
+     * when last data packet has been received, it turns to true
+     */
+    private boolean isLast = false;
+
 
     @Override
     public void run() {
@@ -60,12 +89,113 @@ public class Proxy_PacketProcessor implements Runnable {
 
         IO.print("Packet Processor, ID: " + this.ID + " has started!");
 
-        //receive a request packet from client and store it in requestPacket
-        receiveRequestPacket();
+        String stage = "request";
 
-        //get client port from request packet
-        port_client = requestPacket.getPort();
+        boolean isRunning = true;
+        while( isRunning ){
+            switch( stage ){
+                case "request":
+                    //open socket_receive, and receive a request packet from client,
+                    //and store it in requestPacket, and close socket_receive after
+                    receiveRequestPacket();
 
+                    //get client port from request packet
+                    this.port_client = this.requestPacket.getPort();
+
+                    //set the destination port of request packet to 69
+                    this.requestPacket.setPort( DEFAULT_SERVER_PORT );
+
+                    //open a socket_receSend
+                    openSocketForReceiveAndSend();
+
+                    //forward the received request packet to server
+                    PacketUtilities.send(this.requestPacket, this.socket_receSend);
+
+                    //request stage end
+                    if( PacketUtilities.isRRQPacket(this.requestPacket) ) stage = "data";
+                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ) stage = "ack";
+                    else{
+                        //error
+                        IO.print("Error!");
+                        //more code for handling error
+                    }
+                    break;
+                case "data":
+                    //receive data packet
+                    if( PacketUtilities.isRRQPacket(this.requestPacket) ){
+                        //receive data packet from server
+                        receiveDataPacket();
+
+                        //get sever port
+                        this.port_server = this.dataPacket.getPort();
+
+                        //set the port to client port
+                        this.dataPacket.setPort( this.port_client );
+                    }
+                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ){
+                        //receive data packet from client
+                        receiveDataPacket();
+
+                        //set the port to server
+                        this.dataPacket.setPort( this.port_server );
+                    }
+                    else{
+                        //error packets
+                        IO.print("This should never happen");
+                        //more code
+                    }
+
+                    //forward data packet to client
+                    sendDataPacket();
+
+                    //check this data packet whether it's the last one
+                    if( PacketUtilities.isLastPacket(this.dataPacket) ) this.isLast = true;
+
+                    //data stage ends
+                    stage = "ack";
+
+                    break;
+                case "ack":
+                    if( PacketUtilities.isRRQPacket(this.requestPacket) ){
+                        //receive ack packet from client
+                        receiveDataPacket();;
+
+                        //set the port to server
+                        this.ackPacket.setPort( this.port_server );
+                    }
+                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ){
+                        //receive ack packet from server
+                        receiveAckPacket();
+
+                        //get server port
+                        this.port_server = ackPacket.getPort();
+
+                        //set port to client port
+                        this.ackPacket.setPort( this.port_client );
+                    }
+                    else{
+                        //error packet
+                        IO.print("This should never happen");
+                        //more code
+                    }
+                    //forward ack packet to client
+                    sendAckPacket();
+
+                    //when last data has been processed
+                    if( this.isLast ){
+                        IO.print("Last data packet has been processed, file transfer completed!");
+                        --ID_count;
+                        isRunning = false;
+                        break;
+                    }
+
+                    //ack stage ends
+                    stage = "data";
+                    break;
+                default:
+                    break;
+            }
+        }
 
 
     }
@@ -82,7 +212,7 @@ public class Proxy_PacketProcessor implements Runnable {
 
             IO.print("Waiting for request packets from client...");
         } catch (SocketException e) {
-            System.out.print("Unable to make socket listen on port" + DEFAULT_CLIENT_PORT );
+            IO.print("Unable to make socket listen on port" + DEFAULT_CLIENT_PORT );
             e.printStackTrace();
         }
 
@@ -94,4 +224,65 @@ public class Proxy_PacketProcessor implements Runnable {
     }
 
 
+    /**
+     * this method opens a socket to receive and send packets
+     * the socket listens on a random port
+     * handles exception inside
+     */
+    private void openSocketForReceiveAndSend(){
+        try {
+            this.socket_receSend = new DatagramSocket();
+        } catch (SocketException e) {
+            IO.print("Unable to open a socket for receive and send. Exit...");
+            e.printStackTrace();
+            Thread.currentThread().interrupt();
+        }
+    }
+
+    /**
+     * this method sends data packet
+     * catches exceptions inside
+     */
+    private void receiveDataPacket(){
+        try {
+            this.socket_receSend.receive( this.dataPacket );
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * this method receives data packet
+     * catches exceptions inside
+     */
+    private void sendDataPacket(){
+        try {
+            this.socket_receSend.send( this.dataPacket);
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * this method receives ack packet
+     * catches exceptions inside
+     */
+    private void receiveAckPacket(){
+        try {
+            this.socket_receSend.receive( this.ackPacket );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+    /**
+     * this method sends ack packet
+     * catches exceptions inside
+     */
+    private void sendAckPacket(){
+        try {
+            this.socket_receSend.send( this.ackPacket );
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

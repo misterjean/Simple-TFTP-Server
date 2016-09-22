@@ -2,8 +2,10 @@
 <project version="4">
   <component name="ChangeListManager">
     <list default="true" id="44debd79-6068-4505-b7e0-a5044bba5918" name="Default" comment="">
-      <change type="NEW" beforePath="" afterPath="$PROJECT_DIR$/src/utilities/Proxy_PacketProcessor.java" />
       <change type="MODIFICATION" beforePath="$PROJECT_DIR$/.idea/workspace.xml" afterPath="$PROJECT_DIR$/.idea/workspace.xml" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Utilities/IO.java" afterPath="$PROJECT_DIR$/src/Utilities/IO.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/Utilities/PacketUtilities.java" afterPath="$PROJECT_DIR$/src/Utilities/PacketUtilities.java" />
+      <change type="MODIFICATION" beforePath="$PROJECT_DIR$/src/utilities/Proxy_PacketProcessor.java" afterPath="$PROJECT_DIR$/src/utilities/Proxy_PacketProcessor.java" />
     </list>
     <ignored path="Project.iws" />
     <ignored path=".idea/workspace.xml" />
@@ -61,20 +63,28 @@
       <file leaf-file-name="Proxy_PacketProcessor.java" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/utilities/Proxy_PacketProcessor.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="245">
-              <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+            <state relative-caret-position="-1720">
+              <caret line="78" column="64" selection-start-line="78" selection-start-column="64" selection-end-line="78" selection-end-column="64" />
               <folding>
                 <element signature="imports" expanded="true" />
                 <element signature="docComment;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#DEFAULT_CLIENT_PORT#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;field#DEFAULT_SERVER_PORT#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#port_client#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;field#port_server#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#ID#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#ID_count#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#socket_receive#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#socket_receSend#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;field#requestPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;field#dataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;field#ackPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
                 <element signature="docComment;method#receiveRequestPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
-                <element signature="method#receiveRequestPacket#0;class#Proxy_PacketProcessor#0" expanded="false" />
+                <element signature="docComment;method#openSocketForReceiveAndSend#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;method#receiveDataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;method#sendDataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;method#receiveAckPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+                <element signature="docComment;method#sendAckPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -101,7 +111,7 @@
       <file leaf-file-name="PacketUtilities.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/utilities/PacketUtilities.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1160">
+            <state relative-caret-position="260">
               <caret line="164" column="59" selection-start-line="164" selection-start-column="59" selection-end-line="164" selection-end-column="59" />
               <folding>
                 <element signature="imports" expanded="true" />
@@ -266,7 +276,7 @@
     </panes>
   </component>
   <component name="PropertiesComponent">
-    <property name="last_opened_file_path" value="$PROJECT_DIR$" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/../../TFTPProxy" />
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
@@ -721,7 +731,7 @@
       <updated>1474314899491</updated>
       <workItem from="1474314900847" duration="27000" />
       <workItem from="1474314978625" duration="12000" />
-      <workItem from="1474315001615" duration="8561000" />
+      <workItem from="1474315001615" duration="13954000" />
     </task>
     <task id="LOCAL-00001" summary="the framework, call me the architect">
       <created>1474316792471</created>
@@ -737,14 +747,21 @@
       <option name="project" value="LOCAL" />
       <updated>1474317424971</updated>
     </task>
-    <option name="localTasksCounter" value="3" />
+    <task id="LOCAL-00003" summary="day2, just a random push">
+      <created>1474394148034</created>
+      <option name="number" value="00003" />
+      <option name="presentableId" value="LOCAL-00003" />
+      <option name="project" value="LOCAL" />
+      <updated>1474394148034</updated>
+    </task>
+    <option name="localTasksCounter" value="4" />
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="8600000" />
+    <option name="totallyTimeSpent" value="13993000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="0" y="22" width="1366" height="680" extended-state="6" />
+    <frame x="0" y="22" width="1366" height="680" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
@@ -778,7 +795,8 @@
   </component>
   <component name="VcsManagerConfiguration">
     <MESSAGE value="the framework, call me the architect" />
-    <option name="LAST_COMMIT_MESSAGE" value="the framework, call me the architect" />
+    <MESSAGE value="day2, just a random push" />
+    <option name="LAST_COMMIT_MESSAGE" value="day2, just a random push" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager />
@@ -789,22 +807,6 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="60">
           <caret line="4" column="32" selection-start-line="4" selection-start-column="32" selection-end-line="4" selection-end-column="32" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Client.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Server.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="60">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
           <folding />
         </state>
       </provider>
@@ -833,9 +835,35 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Proxy.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="105">
+          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+          <folding>
+            <element signature="docComment;class#Proxy#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Server.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/core/Client.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="60">
+          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/utilities/PacketUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1160">
+        <state relative-caret-position="260">
           <caret line="164" column="59" selection-start-line="164" selection-start-column="59" selection-end-line="164" selection-end-column="59" />
           <folding>
             <element signature="imports" expanded="true" />
@@ -868,32 +896,30 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/core/Proxy.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="105">
-          <caret line="7" column="0" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-          <folding>
-            <element signature="docComment;class#Proxy#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/utilities/Proxy_PacketProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="245">
-          <caret line="64" column="0" selection-start-line="64" selection-start-column="0" selection-end-line="64" selection-end-column="0" />
+        <state relative-caret-position="-1720">
+          <caret line="78" column="64" selection-start-line="78" selection-start-column="64" selection-end-line="78" selection-end-column="64" />
           <folding>
             <element signature="imports" expanded="true" />
             <element signature="docComment;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#DEFAULT_CLIENT_PORT#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;field#DEFAULT_SERVER_PORT#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#port_client#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;field#port_server#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#ID#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#ID_count#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#socket_receive#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#socket_receSend#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;field#requestPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;field#dataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;field#ackPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
             <element signature="docComment;method#receiveRequestPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
-            <element signature="method#receiveRequestPacket#0;class#Proxy_PacketProcessor#0" expanded="false" />
+            <element signature="docComment;method#openSocketForReceiveAndSend#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;method#receiveDataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;method#sendDataPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;method#receiveAckPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
+            <element signature="docComment;method#sendAckPacket#0;class#Proxy_PacketProcessor#0" expanded="true" />
           </folding>
         </state>
       </provider>

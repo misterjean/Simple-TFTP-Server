@@ -18,8 +18,8 @@ public class IO {
      * just System.out.print(), in a shorter form
      * in order to save time while typing
      */
-    private void print(String string){
-        System.out.print(string);
+    public static void print(String string){
+        System.out.println(string);
     }
 
     /**
