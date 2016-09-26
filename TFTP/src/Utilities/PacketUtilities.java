@@ -15,12 +15,12 @@ public class PacketUtilities {
     /**
      * the default length of the buffer inside packets
      */
-    private static final int DEFAULT_DATA_LENGTH = 516;
+    public static final int DEFAULT_DATA_LENGTH = 516;
 
     /**
      * an empty buffer for packets
      */
-    private static byte[] rawData = new byte[DEFAULT_DATA_LENGTH];
+    public static byte[] rawData = new byte[DEFAULT_DATA_LENGTH];
 
     /**
      * to create an packet with empty buffer
