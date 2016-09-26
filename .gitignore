@@ -1,5 +1,5 @@
 # Eclipse
-.metadata
+.metadata/*
 bin/
 tmp/
 *.tmp
@@ -51,7 +51,7 @@ local.properties
 .recommenders/
  
 # Intellij
-.idea/
+.idea/*
 *.iml
 *.iws
  
