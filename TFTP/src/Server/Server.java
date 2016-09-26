@@ -54,23 +54,13 @@ public class Server {
         		IO.print("Exception encountered on accept.");
         		e.printStackTrace();
         	}
-        	
-        	//new socket created with random port for thread
-        	DatagramSocket threadSocket;
-			try {
-                // For each client, we will start a service thread to 
-                // service the client requests. This is to demonstrate a 
-                // Multi-Threaded server. Starting a thread also lets our 
-                // Connection accept multiple connections simultaneously. 
-				threadSocket = new DatagramSocket();
-	        	Connection clientConnection = new Connection(threadSocket, packet);
-	        	
-                // Start a Service thread 
-	        	clientConnection.start();
-			} catch (SocketException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
+        	// For each client, we will start a service thread to 
+        	// service the client requests. This is to demonstrate a 
+            // Multi-Threaded server. Starting a thread also lets our 
+            // Connection accept multiple connections simultaneously. 
+        	Connection clientConnection = new Connection(packet);
+	        // Start a Service thread 
+        	clientConnection.start();
         } //end while
         
         try { 
