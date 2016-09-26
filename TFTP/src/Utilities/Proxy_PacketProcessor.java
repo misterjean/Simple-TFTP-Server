@@ -15,12 +15,12 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port used to receive request packets from client
      */
-    private static final int DEFAULT_CLIENT_PORT = 23;
+    private static final int DEFAULT_CLIENT_PORT = 2300;
 
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = 69;
+    private static final int DEFAULT_SERVER_PORT = 6900;
 
     /**
      * the port that client socket uses to send and receive
@@ -77,10 +77,16 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private boolean isLast = false;
 
+    private static boolean isReceiving = false;
+
+    public static String getIsReceving(){
+        if( isReceiving ) return "true";
+        else return "false";
+    }
+
 
     @Override
     public void run() {
-
         //increase ID_count and set the ID for the new instance
         this.ID = ++ID_count;
 
@@ -155,7 +161,7 @@ public class Proxy_PacketProcessor implements Runnable {
                 case "ack":
                     if( PacketUtilities.isRRQPacket(this.requestPacket) ){
                         //receive ack packet from client
-                        receiveDataPacket();;
+                        receiveDataPacket();
 
                         //set the port to server
                         this.ackPacket.setPort( this.port_server );
@@ -193,8 +199,6 @@ public class Proxy_PacketProcessor implements Runnable {
                     break;
             }
         }
-
-
     }
 
     /**
@@ -202,14 +206,25 @@ public class Proxy_PacketProcessor implements Runnable {
      * this method is thread safe
      * after calling this method, a value should be assigned to requestPacket
      */
-    private synchronized void receiveRequestPacket(){
+    private synchronized void receiveRequestPacket() {
+
         //open socket_receive
         try {
+            if( isReceiving ) {
+                IO.print( "Other packet processor is receiving, waiting...");
+                wait();
+            }
+
+            isReceiving = true;
+
             socket_receive = new DatagramSocket( DEFAULT_CLIENT_PORT);
+
 
             IO.print("Waiting for request packets from client...");
         } catch (SocketException e) {
             IO.print("Unable to make socket listen on port" + DEFAULT_CLIENT_PORT );
+            e.printStackTrace();
+        } catch (InterruptedException e){
             e.printStackTrace();
         }
 
@@ -218,6 +233,8 @@ public class Proxy_PacketProcessor implements Runnable {
 
         //close socket_receive to finish receive
         socket_receive.close();
+        isReceiving = false;
+        notifyAll();
     }
 
 
