@@ -3,6 +3,7 @@ package Utilities;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketTimeoutException;
 import java.util.Arrays;
 
@@ -21,6 +22,19 @@ public class PacketUtilities {
      * an empty buffer for packets
      */
     public static byte[] rawData = new byte[DEFAULT_DATA_LENGTH];
+    
+    private DatagramSocket socket;
+	private InetAddress remoteAddress;
+	private int requestPort = 9000; //default request port over 9000!
+	private int remoteTid = -1;
+	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
+	private DatagramPacket sendDatagram;
+	
+	
+	
+	public PacketUtilities(DatagramSocket currentConnection){
+		this.socket = currentConnection;
+	}
 
     /**
      * to create an packet with empty buffer
@@ -114,12 +128,17 @@ public class PacketUtilities {
      * @param packet packet that is being sent
      */
     public static void send(DatagramPacket packet, DatagramSocket socket) {
+    	
+		IO.print("IN LastSEND: "+ packet +" socket: "+ socket);
+
 
         if( socket.isClosed() ){
             System.out.println("Socket is closed, unable to send packets");
         }
 
         try {
+    		IO.print("Last SEND: "+ packet + ": "+ packet);
+
             socket.send(packet);
 
             System.out.print(
@@ -138,6 +157,120 @@ public class PacketUtilities {
             e.printStackTrace();
         }
     }
+    
+    public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
+    	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
+		socket.send(packet.generateDatagram(remoteAddress, requestPort));
+	}
+
+    
+    private void send(TFTPPacket packet) throws IOException {
+		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
+		IO.print("IN SEND: "+ packet +" remoteTid: "+ remoteTid);
+
+		send(dp, socket);
+	}
+    
+    public void sendAck(int blockNumber) throws TFTPAbortException {
+		try {
+			send(TFTPPacket.createACKPAcket(blockNumber));
+		} catch (Exception e) {
+			throw new TFTPAbortException(e.getMessage());
+		}
+	}
+    
+    private TFTPPacket receive() throws IOException, TFTPAbortException {
+		while (true) {
+			socket.receive(rcvDatagram);
+
+			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
+				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
+				IO.print("Port does not match error");
+				//@TODO need to handle this case
+				continue;
+			}
+
+			try {
+				return TFTPPacket.createFromDatagram(rcvDatagram);
+			} catch (IllegalArgumentException e) {
+				e.printStackTrace();
+			}
+		}
+	}
+    
+    public TFTPDATAPacket receiveData(int blockNumber)
+			throws TFTPAbortException {
+    	TFTPDATAPacket pk = (TFTPDATAPacket) receiveExpected(
+				TFTPPacket.Type.DATA, blockNumber);
+
+		// Auto-set remoteTid, for convenience
+		if (remoteTid <= 0 && blockNumber == 1) {
+			setRemoteTid(rcvDatagram.getPort());
+		}
+		return pk;
+	}
+    
+    public TFTPACKPacket receiveAck(int blockNumber) throws TFTPAbortException {
+    	TFTPACKPacket pk = (TFTPACKPacket) receiveExpected(TFTPPacket.Type.ACK,
+				blockNumber);
+
+		// Auto-set remoteTid, for convenience
+		if (remoteTid <= 0 && blockNumber == 0) {
+			setRemoteTid(rcvDatagram.getPort());
+		}
+		
+		return pk;
+	}
+    
+    
+    private TFTPPacket receiveExpected(TFTPPacket.Type type, int blockNumber) throws TFTPAbortException {
+
+		try {
+			while (true) {
+				try {
+					TFTPPacket pk = receive();
+
+					if (pk.getTFTPacketType() == type) {
+						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
+							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
+							if (dataPk.getBlockNumber() == blockNumber) {
+					
+							} else {
+							//@TODO handle this case for Received future block
+							}
+						} else if (pk.getTFTPacketType() == TFTPPacket.Type.ACK) {
+							TFTPACKPacket ackPk = (TFTPACKPacket) pk;
+							if (ackPk.getBlockNumber() == blockNumber) {
+								return pk;
+							} else if (ackPk.getBlockNumber() > blockNumber) {
+								//@TODO handle this case for Received future ACK
+
+							}
+						}
+					}
+				}catch (SocketTimeoutException e) {
+					e.printStackTrace();
+				}
+			}
+		} catch (IOException e) {
+			throw new TFTPAbortException(e.getMessage());
+		}
+	}
+    
+    public void sendData(int blockNumber, byte[] fileData, int fileDataLength) throws TFTPAbortException {
+		try {
+			TFTPDATAPacket pk = TFTPPacket.createDataPacket(blockNumber,
+					fileData, fileDataLength);
+			IO.print("IN SENDDATA");
+			send(pk);
+		} catch (Exception e) {
+			IO.print(" ERROR IN SENDDATA");
+			throw new TFTPAbortException(e.getMessage());
+		}
+}
+
+
+
 
     /**
      * the function used to receive packets and print out the packets
@@ -176,4 +309,17 @@ public class PacketUtilities {
 
         return packet;
     }
+    
+    public void setRemoteAddress(InetAddress remoteAddress) {
+		this.remoteAddress = remoteAddress;
+	}
+
+	public void setRemoteTid(int remoteTid) {
+		this.remoteTid = remoteTid;
+	}
+	
+	public void setRequestPort(int requestPort) {
+		this.requestPort = requestPort;
+	}
+
 }
