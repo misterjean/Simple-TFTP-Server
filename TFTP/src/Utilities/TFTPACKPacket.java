@@ -32,7 +32,8 @@ public class TFTPACKPacket extends TFTPPacket {
 			throw new IllegalArgumentException("Incorrect opcode");
 
 		}
-		int blockLength = ((packetData[2] << 8) & 0xFF00) //shift packetData[2] to the left by 8 bits and let mask the variable so it leave only the value in the last 8 bits
+		 //shift packetData[2] to the left by 8 bits and let mask the variable so it leave only the value in the last 8 bits
+		int blockLength = ((packetData[2] << 8) & 0xFF00)
 				| (packetData[3] & 0xFF);
 		return new TFTPACKPacket(blockLength);
 	}
