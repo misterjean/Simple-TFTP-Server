@@ -106,12 +106,25 @@ public class TFTPDATAPacket extends TFTPPacket {
 	@Override
 	public byte[] generateData() {
 		// TODO Auto-generated method stub
-		ByteArrayOutputStream stream = new ByteArrayOutputStream();
+		ByteArrayOutputStream stream = new ByteArrayOutputStream(); //buffer of 32 byte.
 		stream.write(0);
 		stream.write(OPCODE);
 		stream.write(blockNumber >> 8);
 		stream.write(blockNumber);
 		stream.write(fileData, 0, fileData.length);
+		
+		/*
+		 *  Let check that we are sending the right file content for .txt file
+		 */
+		byte b [] = stream.toByteArray();
+	      System.out.println("Print the content");
+	      
+	      for(int x = 0; x < b.length; x++) {
+	         // printing the characters
+	         System.out.print((char)b[x]  + "   "); 
+	      }
+	      System.out.println("   ");// remove this later
+
 		return stream.toByteArray();
 	}
 	
