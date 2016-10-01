@@ -28,7 +28,7 @@ public class PacketUtilities {
     private DatagramSocket socket;
 	private InetAddress remoteAddress;
 
-	private int requestPort = 3007; //default request port over 9000!
+	private int requestPort = 9000; //default request port over 9000!
 	private int remoteTid = -1;
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
 	private DatagramPacket sendDatagram;
@@ -162,8 +162,10 @@ public class PacketUtilities {
     }
     
     public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
-		sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
-		socket.send(packet.generateDatagram(remoteAddress, requestPort));
+    	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
+    	
+		send(sendDatagram, socket);
+		
 	}
 
     
@@ -184,11 +186,15 @@ public class PacketUtilities {
     
     private TFTPPacket receive() throws IOException, TFTPAbortException {
 		while (true) {
+			IO.print("IN RECEIVE");
+			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
 			socket.receive(rcvDatagram);
+			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
+
 
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
-				IO.print("Port does not match error");
+				IO.print("Port does not match error : "+ "remoteTid: "+remoteTid + " port: "+rcvDatagram.getPort() + " remoteAddress: "+ remoteAddress + "rcvDatagram.getAddress(): "+rcvDatagram.getAddress());
 				//@TODO need to handle this case
 				continue;
 			}
@@ -203,13 +209,16 @@ public class PacketUtilities {
     
     public TFTPDATAPacket receiveData(int blockNumber)
 			throws TFTPAbortException {
+    	IO.print("IN RCVDATA");
     	TFTPDATAPacket pk = (TFTPDATAPacket) receiveExpected(
 				TFTPPacket.Type.DATA, blockNumber);
+    	IO.print("AFter pk");
 
 		// Auto-set remoteTid, for convenience
 		if (remoteTid <= 0 && blockNumber == 1) {
 			setRemoteTid(rcvDatagram.getPort());
 		}
+    	IO.print("Before return");
 		return pk;
 	}
     
@@ -227,17 +236,22 @@ public class PacketUtilities {
     
     
     private TFTPPacket receiveExpected(TFTPPacket.Type type, int blockNumber) throws TFTPAbortException {
-
+    	IO.print("receiveExpected");
 		try {
 			while (true) {
 				try {
+			    	IO.print("receiveExpected try");
+
 					TFTPPacket pk = receive();
+			    	IO.print("receiveExpected try receive");
+
 
 					if (pk.getTFTPacketType() == type) {
 						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
-					
+						    	IO.print("receiveExpected if");
+								return dataPk;
 							} else {
 							//@TODO handle this case for Received future block
 							}

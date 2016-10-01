@@ -26,7 +26,6 @@ public class Connection extends Thread {
 		private int threadInstaceID;
 		private PacketUtilities packetUtilities;
 		private DatagramSocket currentConnection;
-		private DatagramPacket sendData;
 		private int port;
 		private String fileName;
 		private String filePath;
@@ -43,6 +42,7 @@ public class Connection extends Thread {
 	     */
 	    public Connection(TFTPRRQWRQPacket packet, InetAddress address, int port, Server server) {
 	    	this.port = port;
+	    	IO.print("port"+ port);
 			this.address = address;
 			this.server = server;
 			this.fileName = packet.getFilename();
@@ -85,9 +85,11 @@ public class Connection extends Thread {
 			// while we receive data packets that are 516 in size (break inside while)
 	        
 	        if (isReadRequest) {
+	        	IO.print("It's a read request");
 	        	this.tftpTransferHandler.sendFileToClient();
 	        	
 	        }else { //it's a write request
+	        	IO.print("Its a write request");
 	        	this.tftpTransferHandler.receiveFileFromClient();
 	        }
 
