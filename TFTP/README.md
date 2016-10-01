@@ -43,8 +43,10 @@ Omar Al-dib				(100906705)
 ##### The current file, containing information about the entire project.
 ### /src
 ##### Contains the source code for the project. Source is broken into several packages. core contains the runnable source code, i.e, Client, Server, and Proxy. Utilities contains a number of classes to help with tasks that are used through out the entire program, numerous times as well as TFTP handler files. 
-### Diagrams
-##### Contains all Diagrams for the project.
-### /out
-##### This is the build directory for Java ByteCode.
+### /documentation
+##### Contains all diagrams for the project.
+### /storage
+##### This is the default folder for the Server
+### /clientStorage
+##### This is the default folder for the Client
 
