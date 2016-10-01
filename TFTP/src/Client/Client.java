@@ -68,7 +68,7 @@ public class Client {
     {
 
         String fn = IO.input("Please enter the file that you wish to send (full path if its not within the root folder) >");
-        File file = new File(fn);
+        /*File file = new File(fn);
 
         if (file.isDirectory()) {
             System.out.println("You cannot send a directory.");
@@ -96,7 +96,7 @@ public class Client {
         }
 
         //String dp = IO.input("Please enter the full path to copy >");
-
+*/
         long start = System.currentTimeMillis();
 
         this.transferHandler = new TFTPTransferHandler(fn, packetUtilities);
