@@ -18,6 +18,8 @@ public class PacketUtilities {
      */
     public static final int DEFAULT_DATA_LENGTH = 516;
 
+
+	public static final int DEFAULT_PORT = 6900;
     /**
      * an empty buffer for packets
      */
@@ -25,6 +27,7 @@ public class PacketUtilities {
     
     private DatagramSocket socket;
 	private InetAddress remoteAddress;
+
 	private int requestPort = 9000; //default request port over 9000!
 	private int remoteTid = -1;
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();

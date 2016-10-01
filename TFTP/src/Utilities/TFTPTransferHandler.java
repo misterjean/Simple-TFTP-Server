@@ -18,9 +18,13 @@ public class TFTPTransferHandler {
 		this.filePath = filePath;
 		this.packetUtilities = packetUtilities;
 	}
-	
-	
-	
+
+	public TFTPTransferHandler(String fn, PacketUtilities pu) {
+		this.filePath = fn;
+		this.packetUtilities = pu;
+	}
+
+
 	public void sendFileToClient() {
 
 		int blockNumber = 1;

@@ -12,7 +12,13 @@ public class IO {
     /**
      * the scanner used to gather user input
      */
-    private final Scanner scanner = new Scanner( System.in );
+    private static Scanner scanner = new Scanner( System.in );
+
+    /**
+     * Create max file size constant
+     */
+
+    public static final int MAX_FILE_SIZE = 33553920;
 
     /**
      * just System.out.print(), in a shorter form
@@ -27,8 +33,13 @@ public class IO {
      * @param prompt message that will be print out when it prompts user to input
      * @return the user input (String)
      */
-    public String input(String prompt){
+    public static String input(String prompt){
         print( prompt + "\n" );
+        return scanner.nextLine();
+    }
+
+    public static String input(){
+        print("\n");
         return scanner.nextLine();
     }
 

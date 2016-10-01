@@ -3,11 +3,8 @@ import Utilities.PacketUtilities;
 import Utilities.TFTPPacket;
 import Utilities.TFTPRRQWRQPacket;
 import Utilities.IO;
-import java.util.ArrayList;
-import java.util.Random;
-import java.io.*; 
+import java.io.*;
 import java.net.*;
-import java.util.*;
 
 
 public class Server {
