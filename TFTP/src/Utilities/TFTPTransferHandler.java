@@ -216,6 +216,12 @@ public class TFTPTransferHandler {
 
 			// Check write permissions
 			File file = new File(filePath);
+
+			if (!file.exists()) {
+				IO.print("File doesn't exist");
+				return;
+			}
+
 			if (file.exists() && !file.canWrite()) {
 				System.out.println("Cannot overwrite file: " + fileName);
 				return;

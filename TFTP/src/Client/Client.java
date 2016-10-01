@@ -68,11 +68,12 @@ public class Client {
     }
 
     public static void start() {
-        IO.print("<------->");
+        IO.print("<------------------------------->");
         IO.print("help: show the help menu");
         IO.print("kill: kill the client");
         IO.print("get: get the file from server");
         IO.print("send: send the file to the server");
+		IO.print("<------------------------------->");
     }
     
     public void kill () {
