@@ -250,7 +250,8 @@ public class PacketUtilities {
 						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
-					
+						    	IO.print("receiveExpected if");
+								return dataPk;
 							} else {
 							//@TODO handle this case for Received future block
 							}
