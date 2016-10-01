@@ -154,7 +154,7 @@ public class TFTPTransferHandler {
 			return;
 		}
 	}
-	
+
 	public void sendFileToServer() {
 		try {
 			System.out.println("IN SEND TO SERVER: " + fileName);

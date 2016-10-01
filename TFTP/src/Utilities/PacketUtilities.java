@@ -28,7 +28,7 @@ public class PacketUtilities {
     private DatagramSocket socket;
 	private InetAddress remoteAddress;
 
-	private int requestPort = 9000; //default request port over 9000!
+	private int requestPort = 3007; //default request port over 9000!
 	private int remoteTid = -1;
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
 	private DatagramPacket sendDatagram;
@@ -162,7 +162,7 @@ public class PacketUtilities {
     }
     
     public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
-    	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
+		sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
 		socket.send(packet.generateDatagram(remoteAddress, requestPort));
 	}
 

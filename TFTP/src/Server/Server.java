@@ -55,7 +55,7 @@ public class Server {
                 // socket has been accepted.
 
             	IO.print("SERVER: Accepted connection...");
-            	IO.print("SERVER: received.."+new String(datagrampacket.getData(), 0, datagrampacket.getLength()));
+            	IO.print("SERVER: received "+new String(datagrampacket.getData(), 0, datagrampacket.getLength()));
             	
         	}catch(IOException e) {
         		IO.print("Exception encountered on accept.");
@@ -76,6 +76,7 @@ public class Server {
         														  datagrampacket.getPort(), this);
             		// Start a Service thread 
             		clientConnection.start();
+					//clientConnection.run();
         		}
         		
         	}catch(IllegalArgumentException e) {
