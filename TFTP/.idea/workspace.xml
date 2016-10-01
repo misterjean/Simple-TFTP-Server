@@ -22,12 +22,139 @@
   </component>
   <component name="FileEditorManager">
     <leaf>
-      <file leaf-file-name="PacketUtilities.java" pinned="false" current-in-tab="true">
+      <file leaf-file-name="PacketUtilities.java" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/Utilities/PacketUtilities.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="435">
-              <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
+            <state relative-caret-position="210">
+              <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
               <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/Utilities" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/Utilities">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>Utilities</OriginalElement>
+              <nodes>
+                <node x="933.0" y="1090.0">Utilities.IO</node>
+                <node x="418.0" y="904.0">Utilities.TFTPACKPacket</node>
+                <node x="560.0" y="1090.0">Utilities.Proxy_PacketProcessor</node>
+                <node x="676.0" y="882.0">Utilities.TFTPDATAPacket</node>
+                <node x="0.0" y="1090.0">Utilities.TFTPTransferHandler</node>
+                <node x="0.0" y="893.0">Utilities.TFTPRRQWRQPacket</node>
+                <node x="233.0" y="582.0">Utilities.TFTPPacket</node>
+                <node x="-490.0772727272727" y="294.2727272727273">Utilities.PacketUtilities</node>
+                <node x="-253.52727272727276" y="1031.881818181818">Utilities.TFTPAbortException</node>
+                <node x="1216.0" y="1090.0">Utilities.Commands</node>
+              </nodes>
+              <notes />
+              <edges>
+                <edge source="Utilities.TFTPACKPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-59.5" />
+                  <point x="0.0" y="125.0" />
+                </edge>
+                <edge source="Utilities.TFTPDATAPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-81.5" />
+                  <point x="854.0" y="857.0" />
+                  <point x="739.6666666666666" y="857.0" />
+                  <point x="202.66666666666663" y="125.0" />
+                </edge>
+                <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-70.5" />
+                  <point x="199.0" y="857.0" />
+                  <point x="334.33333333333337" y="857.0" />
+                  <point x="-202.66666666666666" y="125.0" />
+                </edge>
+              </edges>
+              <settings layout="Hierarchic Group" zoom="0.8835341365461847" x="-221.36363636363637" y="741.6363636363636" />
+              <SelectedNodes />
+              <Categories>
+                <Category>Constructors</Category>
+                <Category>Methods</Category>
+                <Category>Properties</Category>
+              </Categories>
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/Server" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/Server">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>Server</OriginalElement>
+              <nodes>
+                <node x="-205.0" y="144.0">Server.Server</node>
+                <node x="0.0" y="164.0">Server.Connection</node>
+              </nodes>
+              <notes />
+              <edges />
+              <settings layout="Hierarchic Group" zoom="1.0" x="-353.0" y="169.0" />
+              <SelectedNodes />
+              <Categories>
+                <Category>Properties</Category>
+                <Category>Methods</Category>
+                <Category>Constructors</Category>
+              </Categories>
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/Proxy" pinned="false" current-in-tab="false">
+        <entry file="uml://JAVA/Proxy">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>Proxy</OriginalElement>
+              <nodes>
+                <node x="0.0" y="0.0">Proxy.Proxy</node>
+              </nodes>
+              <notes />
+              <edges />
+              <settings layout="Hierarchic Group" zoom="1.0" x="-371.5" y="34.5" />
+              <SelectedNodes>
+                <node>Proxy.Proxy</node>
+              </SelectedNodes>
+              <Categories>
+                <Category>Properties</Category>
+                <Category>Methods</Category>
+                <Category>Constructors</Category>
+              </Categories>
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="JAVA/Client" pinned="false" current-in-tab="true">
+        <entry file="uml://JAVA/Client">
+          <provider selected="true" editor-type-id="UmlEditorProvider">
+            <state>
+              <ID>JAVA</ID>
+              <OriginalElement>Client</OriginalElement>
+              <nodes>
+                <node x="-145.0" y="-2.0">Client.Client</node>
+              </nodes>
+              <notes />
+              <edges />
+              <settings layout="Hierarchic Group" zoom="1.0" x="35.0" y="135.0" />
+              <SelectedNodes>
+                <node>Client.Client</node>
+              </SelectedNodes>
+              <Categories>
+                <Category>Properties</Category>
+                <Category>Methods</Category>
+                <Category>Constructors</Category>
+              </Categories>
+              <SCOPE>All</SCOPE>
+              <VISIBILITY>private</VISIBILITY>
             </state>
           </provider>
         </entry>
@@ -93,48 +220,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="File.java" pinned="false" current-in-tab="false">
-        <entry file="jar:///Library/Java/JavaVirtualMachines/jdk1.8.0_101.jdk/Contents/Home/src.zip!/java/io/File.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3585">
-              <caret line="274" column="11" selection-start-line="274" selection-start-column="11" selection-end-line="274" selection-end-column="11" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Connection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Server/Connection.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="600">
-              <caret line="55" column="63" selection-start-line="55" selection-start-column="63" selection-end-line="55" selection-end-column="63" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Server.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1170">
-              <caret line="78" column="22" selection-start-line="78" selection-start-column="22" selection-end-line="78" selection-end-column="22" />
-              <folding>
-                <element signature="imports" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="TFTPPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPPacket.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="30">
-              <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="GradleLocalSettings">
@@ -163,9 +248,9 @@
     <sorting>DEFINITION_ORDER</sorting>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="70" />
-    <option name="y" value="22" />
-    <option name="width" value="1351" />
+    <option name="x" value="8" />
+    <option name="y" value="36" />
+    <option name="width" value="1544" />
     <option name="height" value="833" />
   </component>
   <component name="ProjectLevelVcsManager" settingsEditedManually="false">
@@ -327,6 +412,7 @@
     <property name="aspect.path.notification.shown" value="true" />
     <property name="WebServerToolWindowFactoryState" value="false" />
     <property name="js-jscs-nodeInterpreter" value="/usr/local/bin/node" />
+    <property name="last_opened_file_path" value="$PROJECT_DIR$/Documentation" />
   </component>
   <component name="RecentsManager">
     <key name="MoveFile.RECENT_KEYS">
@@ -827,15 +913,15 @@
       <option name="number" value="Default" />
       <option name="presentableId" value="Default" />
       <updated>1475274680293</updated>
-      <workItem from="1475274686795" duration="21752000" />
+      <workItem from="1475274686795" duration="22893000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="21752000" />
+    <option name="totallyTimeSpent" value="22893000" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="70" y="22" width="1351" height="833" extended-state="0" />
+    <frame x="8" y="36" width="1544" height="833" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
@@ -850,7 +936,7 @@
       <window_info id="Terminal" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Capture Tool" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
-      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.18800889" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
+      <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.16450778" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="-1" side_tool="false" content_ui="tabs" />
       <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.3292683" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
@@ -891,10 +977,7 @@
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="656">
           <caret line="191" column="5" selection-start-line="8" selection-start-column="0" selection-end-line="191" selection-end-column="5" />
-          <folding>
-            <element signature="e#0#6622#0" expanded="true" />
-            <element signature="imports" expanded="false" />
-          </folding>
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1028,9 +1111,128 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Utilities/PacketUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="435">
-          <caret line="171" column="30" selection-start-line="171" selection-start-column="30" selection-end-line="171" selection-end-column="30" />
+        <state relative-caret-position="210">
+          <caret line="156" column="14" selection-start-line="156" selection-start-column="14" selection-end-line="156" selection-end-column="14" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/Utilities">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>Utilities</OriginalElement>
+          <nodes>
+            <node x="933.0" y="1090.0">Utilities.IO</node>
+            <node x="418.0" y="904.0">Utilities.TFTPACKPacket</node>
+            <node x="560.0" y="1090.0">Utilities.Proxy_PacketProcessor</node>
+            <node x="676.0" y="882.0">Utilities.TFTPDATAPacket</node>
+            <node x="0.0" y="1090.0">Utilities.TFTPTransferHandler</node>
+            <node x="0.0" y="893.0">Utilities.TFTPRRQWRQPacket</node>
+            <node x="233.0" y="582.0">Utilities.TFTPPacket</node>
+            <node x="-490.0772727272727" y="294.2727272727273">Utilities.PacketUtilities</node>
+            <node x="-253.52727272727276" y="1031.881818181818">Utilities.TFTPAbortException</node>
+            <node x="1216.0" y="1090.0">Utilities.Commands</node>
+          </nodes>
+          <notes />
+          <edges>
+            <edge source="Utilities.TFTPACKPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-59.5" />
+              <point x="0.0" y="125.0" />
+            </edge>
+            <edge source="Utilities.TFTPDATAPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-81.5" />
+              <point x="854.0" y="857.0" />
+              <point x="739.6666666666666" y="857.0" />
+              <point x="202.66666666666663" y="125.0" />
+            </edge>
+            <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-70.5" />
+              <point x="199.0" y="857.0" />
+              <point x="334.33333333333337" y="857.0" />
+              <point x="-202.66666666666666" y="125.0" />
+            </edge>
+          </edges>
+          <settings layout="Hierarchic Group" zoom="0.8835341365461847" x="-221.36363636363637" y="741.6363636363636" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Constructors</Category>
+            <Category>Methods</Category>
+            <Category>Properties</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/Server">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>Server</OriginalElement>
+          <nodes>
+            <node x="-205.0" y="144.0">Server.Server</node>
+            <node x="0.0" y="164.0">Server.Connection</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="-353.0" y="169.0" />
+          <SelectedNodes />
+          <Categories>
+            <Category>Properties</Category>
+            <Category>Methods</Category>
+            <Category>Constructors</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/Proxy">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>Proxy</OriginalElement>
+          <nodes>
+            <node x="0.0" y="0.0">Proxy.Proxy</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="-371.5" y="34.5" />
+          <SelectedNodes>
+            <node>Proxy.Proxy</node>
+          </SelectedNodes>
+          <Categories>
+            <Category>Properties</Category>
+            <Category>Methods</Category>
+            <Category>Constructors</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
+        </state>
+      </provider>
+    </entry>
+    <entry file="uml://JAVA/Client">
+      <provider selected="true" editor-type-id="UmlEditorProvider">
+        <state>
+          <ID>JAVA</ID>
+          <OriginalElement>Client</OriginalElement>
+          <nodes>
+            <node x="-145.0" y="-2.0">Client.Client</node>
+          </nodes>
+          <notes />
+          <edges />
+          <settings layout="Hierarchic Group" zoom="1.0" x="35.0" y="135.0" />
+          <SelectedNodes>
+            <node>Client.Client</node>
+          </SelectedNodes>
+          <Categories>
+            <Category>Properties</Category>
+            <Category>Methods</Category>
+            <Category>Constructors</Category>
+          </Categories>
+          <SCOPE>All</SCOPE>
+          <VISIBILITY>private</VISIBILITY>
         </state>
       </provider>
     </entry>
