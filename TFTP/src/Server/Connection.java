@@ -85,9 +85,11 @@ public class Connection extends Thread {
 			// while we receive data packets that are 516 in size (break inside while)
 	        
 	        if (isReadRequest) {
+	        	IO.print("It's a read request");
 	        	this.tftpTransferHandler.sendFileToClient();
 	        	
 	        }else { //it's a write request
+	        	IO.print("Its a write request");
 	        	this.tftpTransferHandler.receiveFileFromClient();
 	        }
 
