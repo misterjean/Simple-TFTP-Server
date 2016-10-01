@@ -19,7 +19,7 @@ public class PacketUtilities {
     public static final int DEFAULT_DATA_LENGTH = 516;
 
 
-	public static final int DEFAULT_PORT = 6900;
+	public static final int DEFAULT_PORT = 3007;
     /**
      * an empty buffer for packets
      */

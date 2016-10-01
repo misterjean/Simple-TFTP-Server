@@ -15,6 +15,7 @@ public class TFTPTransferHandler {
 
 	
 	public TFTPTransferHandler(String fileName, String filePath, PacketUtilities packetUtilities) {
+		this.fileName = fileName;
 		this.filePath = filePath;
 		this.packetUtilities = packetUtilities;
 	}
@@ -23,7 +24,13 @@ public class TFTPTransferHandler {
 		this.filePath = fn;
 		this.packetUtilities = pu;
 	}
-
+	
+	public void setFilePath(String filePath) {
+		this.filePath = filePath;
+	}
+	public void setFileName(String fileName) {
+		this.fileName = fileName;
+	}
 
 	public void sendFileToClient() {
 
@@ -143,10 +150,110 @@ public class TFTPTransferHandler {
 		} catch (IOException e) {
 			new File(filePath).delete();
 			IO.print("DISK full");
-			System.out.println("IOException with file: " + fileName);
+			IO.print("IOException with file: " + fileName);
 			return;
 		}
-}
+	}
+	
+	public void sendFileToServer() {
+		try {
+			System.out.println("IN SEND TO SERVER: " + fileName);
+
+			// Check that file exists
+			File file = new File(filePath);
+			if (!file.exists()) {
+				System.out.println("Cannot find file: " + fileName);
+				return;
+			}
+
+			// Check read permissions
+			if (!file.canRead()) {
+				System.out.println("Cannot read file: " + fileName);
+				return;
+			}
+
+			// Open input stream
+			FileInputStream fs = new FileInputStream(file);
+
+			// Send request
+			TFTPRRQWRQPacket reqPacket = TFTPPacket.createWriteRequestPacket(fileName,
+					TFTPRRQWRQPacket.Mode.OCTET);
+			this.packetUtilities.sendRequest(reqPacket);
+
+			int blockNumber = 0;
+			byte[] data = new byte[512];
+			int bytesRead = 0;
+
+			do {
+				this.packetUtilities.receiveAck(blockNumber);
+				blockNumber++;
+
+				bytesRead = fs.read(data);
+
+				// Special case when file size is multiple of 512 bytes
+				if (bytesRead == -1) {
+					bytesRead = 0;
+					data = new byte[0];
+				}
+
+				this.packetUtilities.sendData(blockNumber, data, bytesRead);
+			} while (bytesRead == TFTPDATAPacket.MAXFILEDATALENGTH);
+
+			// Wait for final ACK packet
+			this.packetUtilities.receiveAck(blockNumber);
+
+			fs.close();
+		} catch (TFTPAbortException e) {
+			IO.print("Failed to send " + fileName + ": " + "\""+ e.getMessage() + "\"");
+		} catch (IOException e) {
+			IO.print("IOException: failed to send " + fileName + ": "+ "\"" + e.getMessage() + "\"");
+		}
+	}
+	
+	public void receiveFileFromServer() {
+		try {
+			IO.print("IN RCV TO SERVER: " + fileName);
+
+			// Check write permissions
+			File file = new File(filePath);
+			if (file.exists() && !file.canWrite()) {
+				System.out.println("Cannot overwrite file: " + fileName);
+				return;
+			}
+
+			FileOutputStream fs = new FileOutputStream(filePath);
+
+			TFTPRRQWRQPacket reqPacket = TFTPPacket.createReadRequestPacket(fileName,
+					TFTPRRQWRQPacket.Mode.OCTET);
+			this.packetUtilities.sendRequest(reqPacket);
+
+			TFTPDATAPacket pk;
+
+			int blockNumber = 1;
+			do {
+				pk = this.packetUtilities.receiveData(blockNumber);
+				try {
+					fs.write(pk.getFileData());
+					fs.getFD().sync();
+				} catch (SyncFailedException e) {
+					file.delete();
+					fs.close();
+					IO.print("Failed to sync with disc, might be full");
+					return;
+				}
+				this.packetUtilities.sendAck(blockNumber);
+				blockNumber++;
+			} while (!pk.isLastDataPacket());
+			fs.close();
+		} catch (TFTPAbortException e) {
+			new File(filePath).delete();
+			IO.print("Failed to get " + fileName + ": " + "\""
+					+ e.getMessage() + "\"");
+		} catch (IOException e) {
+			new File(filePath).delete();
+			IO.print("IOException: failed to get " + fileName + ": " + "\"" + e.getMessage() + "\"");
+		}
+	}
 
 
 }

@@ -9,7 +9,7 @@ import java.net.*;
 
 public class Server {
 	//TODO:  Set port
-	public final static int DEFAULT_PORT = 3001; //69
+	public final static int DEFAULT_PORT = 3007; //69
     private static final int SERVERPORT = DEFAULT_PORT; //FOR NOW
     private static final String defaultDir = System.getProperty("user.dir")+ "/storage/";
     private String publicFolder = defaultDir; // where all the file are stored
@@ -54,8 +54,8 @@ public class Server {
                 // If execution reaches this point, then it means that a client 
                 // socket has been accepted.
 
-            	IO.print("SERVER: Accepted connection.");
-            	IO.print("SERVER: received"+new String(datagrampacket.getData(), 0, datagrampacket.getLength()));
+            	IO.print("SERVER: Accepted connection...");
+            	IO.print("SERVER: received.."+new String(datagrampacket.getData(), 0, datagrampacket.getLength()));
             	
         	}catch(IOException e) {
         		IO.print("Exception encountered on accept.");
@@ -65,6 +65,8 @@ public class Server {
         	// service the client requests. This is to demonstrate a 
             // Multi-Threaded server. Starting a thread also lets our 
             // Connection accept multiple connections simultaneously.
+			IO.print("Heres!");
+
         	
         	try {
         		TFTPPacket packet = TFTPPacket.createFromDatagram(datagrampacket);
