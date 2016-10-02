@@ -19,7 +19,10 @@ public class PacketUtilities {
     public static final int DEFAULT_DATA_LENGTH = 516;
 
 
-	public static final int DEFAULT_PORT = 3007;
+	public static final int DEFAULT_PORT = 6900; //Server PORT 69
+	public static final int PROXY_PORT = 2300; //Proxy port 23
+	
+
     /**
      * an empty buffer for packets
      */

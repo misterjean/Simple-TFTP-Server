@@ -8,6 +8,7 @@ import java.io.*;
 import java.net.*;
 
 import static Utilities.PacketUtilities.DEFAULT_PORT;
+import static Utilities.PacketUtilities.PROXY_PORT;
 
 public class Client {
     private static final String defaultDir = System.getProperty("user.dir") + "/clientStorage/";
@@ -18,6 +19,8 @@ public class Client {
     private DatagramSocket sendReceiveSocket;
     private PacketUtilities packetUtilities;
     private TFTPTransferHandler transferHandler;
+    public static enum Mode { NORMAL, TEST};
+    private Mode run;
 
     public Client() {
     	this.fileName = "";
@@ -31,13 +34,22 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
+		run = Mode.NORMAL; // change to NORMAL to send directly to server
+	      
     }
     
     public void setServerInfo(InetAddress serverAddress, int serverRequestPort) {
 		this.serverAddress = serverAddress;
 		this.serverRequestPort = serverRequestPort;
 	}
-    
+    public void setMode(String mode) {
+    	if ( mode.toLowerCase().equals("normal")) {
+    		run = Mode.NORMAL;
+    	}else if (mode.toLowerCase().equals("test")){
+    		run = Mode.TEST;
+    	}
+    }
 
 	public TFTPTransferHandler getTFTPTransferHandler() throws TFTPAbortException {
 		
@@ -98,6 +110,8 @@ public class Client {
         IO.print("kill: kill the client");
         IO.print("get: get the file from server");
         IO.print("send: send the file to the server");
+        IO.print("mode: specify the mode");
+
     }
     
     public void kill () {
@@ -109,6 +123,7 @@ public class Client {
     public static void main(String args[]) {
         Client c = new Client();
     	Scanner scanner = new Scanner(System.in);
+    	
     	
         try {
 			c.setServerInfo(InetAddress.getLocalHost(), DEFAULT_PORT );
@@ -142,7 +157,27 @@ public class Client {
 			} else if ((command[0].equals("send"))
 					&& command.length > 1 && command[1].length() > 0) {
 				c.sendFile(command[1]);
-			} else {
+			}else if ((command[0].equals("mode")) 
+					&& command.length > 1 && command[1].length() > 0) {
+
+			      if (!(c.run==Mode.NORMAL)) {
+			    	  c.setMode("normal");
+			    	  try {
+						c.setServerInfo(InetAddress.getLocalHost(), DEFAULT_PORT);
+					} catch (UnknownHostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			      }else if (!(c.run==Mode.TEST)) {
+			    	  c.setMode("test");
+			    	  try {
+						c.setServerInfo(InetAddress.getLocalHost(), PROXY_PORT);
+					} catch (UnknownHostException e) {
+						// TODO Auto-generated catch block
+						e.printStackTrace();
+					}
+			      }
+			}else {
 				IO.print("Invalid command. These are the available commands:");
 				start();
 			}
