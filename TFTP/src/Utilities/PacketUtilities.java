@@ -1,5 +1,6 @@
 package Utilities;
 
+import Client.Client;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -132,7 +133,7 @@ public class PacketUtilities {
      */
     public static void send(DatagramPacket packet, DatagramSocket socket) {
     	
-		IO.print("IN LastSEND: "+ packet +" socket: "+ socket);
+
 
 
         if( socket.isClosed() ){
@@ -140,22 +141,22 @@ public class PacketUtilities {
         }
 
         try {
-    		IO.print("Last SEND: "+ packet + ": "+ packet);
 
             socket.send(packet);
 
-            System.out.print(
-                    "\n----------------------------Sent Packet Information------------------------" +
-                            "\nPacket Type: " + getPacketType(packet) +
-                            "\nPacket Destination: " + packet.getAddress() +
-                            "\nDestination Port: " + packet.getPort() +
-                            "\nPacket Data(String): "+ Arrays.toString( packet.getData() ) +
-                            "\nPacket Data(Byte): " + packet.getData() +
-                            "\nPacket Offset: " + packet.getOffset() +
-                            "\nSocket Address: " + packet.getSocketAddress() +
-                            "\n---------------------------------------------------------------------------\n"
-            );
-
+			if (Client.getVerbose()) {
+				System.out.print(
+						"\n----------------------------Sent Packet Information------------------------" +
+								"\nPacket Type: " + getPacketType(packet) +
+								"\nPacket Destination: " + packet.getAddress() +
+								"\nDestination Port: " + packet.getPort() +
+								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
+								"\nPacket Data(Byte): " + packet.getData() +
+								"\nPacket Offset: " + packet.getOffset() +
+								"\nSocket Address: " + packet.getSocketAddress() +
+								"\n---------------------------------------------------------------------------\n"
+				);
+			}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,8 +172,9 @@ public class PacketUtilities {
     
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-		IO.print("IN SEND: "+ packet +" remoteTid: "+ remoteTid);
-
+		if (Client.getVerbose() == true) {
+			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
+		}
 		send(dp, socket);
 	}
     
@@ -186,11 +188,16 @@ public class PacketUtilities {
     
     private TFTPPacket receive() throws IOException, TFTPAbortException {
 		while (true) {
-			IO.print("IN RECEIVE");
-			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
-			socket.receive(rcvDatagram);
-			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
 
+			if (Client.getVerbose() == true) {
+				IO.print("IN RECEIVE");
+				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
+			}
+			socket.receive(rcvDatagram);
+
+			if (Client.getVerbose() == true) {
+				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
+			}
 
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
@@ -209,16 +216,15 @@ public class PacketUtilities {
     
     public TFTPDATAPacket receiveData(int blockNumber)
 			throws TFTPAbortException {
-    	IO.print("IN RCVDATA");
+
     	TFTPDATAPacket pk = (TFTPDATAPacket) receiveExpected(
 				TFTPPacket.Type.DATA, blockNumber);
-    	IO.print("AFter pk");
 
 		// Auto-set remoteTid, for convenience
 		if (remoteTid <= 0 && blockNumber == 1) {
 			setRemoteTid(rcvDatagram.getPort());
 		}
-    	IO.print("Before return");
+
 		return pk;
 	}
     
@@ -236,21 +242,18 @@ public class PacketUtilities {
     
     
     private TFTPPacket receiveExpected(TFTPPacket.Type type, int blockNumber) throws TFTPAbortException {
-    	IO.print("receiveExpected");
+
 		try {
 			while (true) {
 				try {
-			    	IO.print("receiveExpected try");
 
 					TFTPPacket pk = receive();
-			    	IO.print("receiveExpected try receive");
-
 
 					if (pk.getTFTPacketType() == type) {
 						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
-						    	IO.print("receiveExpected if");
+
 								return dataPk;
 							} else {
 							//@TODO handle this case for Received future block
@@ -278,10 +281,10 @@ public class PacketUtilities {
 		try {
 			TFTPDATAPacket pk = TFTPPacket.createDataPacket(blockNumber,
 					fileData, fileDataLength);
-			IO.print("IN SENDDATA");
+
 			send(pk);
 		} catch (Exception e) {
-			IO.print(" ERROR IN SENDDATA");
+
 			throw new TFTPAbortException(e.getMessage());
 		}
 }
@@ -303,18 +306,18 @@ public class PacketUtilities {
 
         try {
             socket.receive(packet);
-
-            System.out.print(
-                    "\n**************************Received Packet Information**************************" +
-                            "\nPacket Type: " + getPacketType(packet) +
-                            "\nPacket Source: " + packet.getAddress() +
-                            "\nSource Port: " + packet.getPort() +
-                            "\nPacket Data(String): "+ Arrays.toString( packet.getData() ) +
-                            "\nPacket Data(Byte): " + packet.getData() +
-                            "\nPacket Offset: " + packet.getOffset() +
-                            "\n******************************************************************************\n" )
-            ;
-
+			if (Client.getVerbose()) {
+				System.out.print(
+						"\n**************************Received Packet Information**************************" +
+								"\nPacket Type: " + getPacketType(packet) +
+								"\nPacket Source: " + packet.getAddress() +
+								"\nSource Port: " + packet.getPort() +
+								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
+								"\nPacket Data(Byte): " + packet.getData() +
+								"\nPacket Offset: " + packet.getOffset() +
+								"\n******************************************************************************\n")
+				;
+			}
         } catch ( SocketTimeoutException e){
             System.out.println("\nMax timeout reached, no packet received, closing socket...");
             socket.close();

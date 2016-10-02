@@ -20,7 +20,7 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = 6900;
+    private static final int DEFAULT_SERVER_PORT = 3007;
 
     /**
      * the port that client socket uses to send and receive

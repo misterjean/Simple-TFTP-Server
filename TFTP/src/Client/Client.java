@@ -15,6 +15,8 @@ public class Client {
 	int serverRequestPort;
 	private String fileName;
 	private String filePath;
+    private boolean mode = false;
+    private static boolean verbose = true;
     private DatagramSocket sendReceiveSocket;
     private PacketUtilities packetUtilities;
     private TFTPTransferHandler transferHandler;
@@ -69,8 +71,6 @@ public class Client {
 		}
     	transferHandler.setFilePath(filePath);
     	transferHandler.setFileName(fileName);
-		IO.print("I Am about to get: " + fileName);
-		IO.print("RCV Current Port: "+sendReceiveSocket);
     	this.transferHandler.receiveFileFromServer();
     }
     public void sendFile(String fileName) {
@@ -92,16 +92,35 @@ public class Client {
     	
     }
 
+    public void printState(){
+        if (mode == false) {
+            IO.print("Mode is set to PRODUCTION");
+        } else {
+            IO.print("Mode is set to TESTING");
+        }
+
+        if (verbose == false){
+            IO.print("Verbose is set to OFF");
+        } else {
+            IO.print("Verbose is set to ON");
+        }
+    }
+
+    public static boolean getVerbose(){return verbose;}
+
     public static void start() {
-        IO.print("<------->");
+        IO.print("<------------------------------------>");
         IO.print("help: show the help menu");
         IO.print("kill: kill the client");
+        IO.print("mode: toggle between prod and testing");
+        IO.print("verbose: toggle verbose mode off or on");
         IO.print("get: get the file from server");
         IO.print("send: send the file to the server");
+        IO.print("<------------------------------------>");
     }
     
     public void kill () {
-    	IO.print("Nooo! I am dying...");
+    	IO.print("SERVER SHUTTING DOWN...");
     	sendReceiveSocket.close();
     }
 
@@ -118,7 +137,7 @@ public class Client {
 		}
         
         for(;;) {
-        	
+        	c.printState();
         	IO.print("Client: ");
 			String cmdLine = scanner.nextLine().toLowerCase();
 			String[] command = cmdLine.split("\\s+"); //This groups all white spaces as a delimiter.
@@ -141,8 +160,22 @@ public class Client {
 				c.getFile(command[1]);
 			} else if ((command[0].equals("send"))
 					&& command.length > 1 && command[1].length() > 0) {
-				c.sendFile(command[1]);
-			} else {
+                c.sendFile(command[1]);
+            } else if (command[0].equals("mode")) {
+                if (c.mode == true) {
+                    c.mode = false;
+                    c.serverRequestPort = DEFAULT_PORT;
+                } else if (c.mode == false){
+                    c.mode = true;
+                    c.serverRequestPort = 2300;
+                }
+            } else if (command[0].equals("verbose")) {
+                if (c.verbose == true) {
+                    c.verbose = false;
+                } else if (c.verbose == false){
+                    c.verbose = true;
+                }
+            } else {
 				IO.print("Invalid command. These are the available commands:");
 				start();
 			}
