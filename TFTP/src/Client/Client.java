@@ -21,14 +21,12 @@ public class Client {
 
     public Client() {
     	this.fileName = "";
-		this.filePath = defaultDir+ fileName;
+		this.filePath = defaultDir+ fileName;  
+		this.serverRequestPort = DEFAULT_PORT;
 		
 		try {
 			this.sendReceiveSocket = new DatagramSocket();
-	    	packetUtilities = new PacketUtilities(sendReceiveSocket);
-	    	packetUtilities.setRemoteAddress(this.serverAddress);
-	    	packetUtilities.setRemoteTid(this.serverRequestPort);
-	    	this.transferHandler = new TFTPTransferHandler(this.fileName, this.filePath, this.packetUtilities);
+			
 		} catch (SocketException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -38,8 +36,21 @@ public class Client {
     public void setServerInfo(InetAddress serverAddress, int serverRequestPort) {
 		this.serverAddress = serverAddress;
 		this.serverRequestPort = serverRequestPort;
+	}
+    
+
+	public TFTPTransferHandler getTFTPTransferHandler() throws TFTPAbortException {
+		
+		packetUtilities = new PacketUtilities(sendReceiveSocket);
+		
+		if (packetUtilities == null) {
+				throw new TFTPAbortException("Server address not specified");
+		}
 		packetUtilities.setRemoteAddress(this.serverAddress);
-    	packetUtilities.setRemoteTid(this.serverRequestPort);
+	    packetUtilities.setRequestPort(this.serverRequestPort);
+    	this.transferHandler = new TFTPTransferHandler(this.fileName, this.filePath, this.packetUtilities);
+		return transferHandler;
+		
 	}
     
     public void setFilePath(TFTPRRQWRQPacket packet) {
@@ -50,19 +61,33 @@ public class Client {
     public void getFile(String fileName) {
     	this.filePath = defaultDir + fileName;
     	this.fileName = fileName;
+    	try {
+			transferHandler = getTFTPTransferHandler();
+		} catch (TFTPAbortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     	transferHandler.setFilePath(filePath);
     	transferHandler.setFileName(fileName);
 		IO.print("I Am about to get: " + fileName);
-
+		IO.print("RCV Current Port: "+sendReceiveSocket);
     	this.transferHandler.receiveFileFromServer();
     }
     public void sendFile(String fileName) {
     	this.fileName = fileName;
     	this.filePath = defaultDir + fileName;
+		try {
+			transferHandler = getTFTPTransferHandler();
+		} catch (TFTPAbortException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+
     	transferHandler.setFilePath(filePath);
     	transferHandler.setFileName(fileName);
 		IO.print("I Am about to send: " + fileName);
-
+		
+		IO.print("SEND: Current Port: "+sendReceiveSocket);
     	this.transferHandler.sendFileToServer();
     	
     }

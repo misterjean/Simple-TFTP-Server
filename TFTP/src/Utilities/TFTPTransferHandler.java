@@ -231,14 +231,20 @@ public class TFTPTransferHandler {
 
 			TFTPRRQWRQPacket reqPacket = TFTPPacket.createReadRequestPacket(fileName,
 					TFTPRRQWRQPacket.Mode.OCTET);
+			IO.print("I AM ABOUT TO SEND reqPacket");
 			this.packetUtilities.sendRequest(reqPacket);
 
 			TFTPDATAPacket pk;
 
 			int blockNumber = 1;
+			IO.print("I AM HERE BEFORE DO");
+
 			do {
+				IO.print("IN DO");
 				pk = this.packetUtilities.receiveData(blockNumber);
+				IO.print("IN DO BEOFRE TRY");
 				try {
+					IO.print("I AM about to write the dat");
 					fs.write(pk.getFileData());
 					fs.getFD().sync();
 				} catch (SyncFailedException e) {
