@@ -1,5 +1,7 @@
 package Utilities;
 
+import Client.Client;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -157,8 +159,9 @@ public class TFTPTransferHandler {
 	
 	public void sendFileToServer() {
 		try {
-			System.out.println("IN SEND TO SERVER: " + fileName);
-
+            if (Client.getVerbose() == true) {
+                System.out.println("IN SEND TO SERVER: " + fileName);
+            }
 			// Check that file exists
 			File file = new File(filePath);
 			if (!file.exists()) {
@@ -202,6 +205,7 @@ public class TFTPTransferHandler {
 			// Wait for final ACK packet
 			this.packetUtilities.receiveAck(blockNumber);
 
+            IO.print("Successfully sent" + fileName + " to server.");
 			fs.close();
 		} catch (TFTPAbortException e) {
 			IO.print("Failed to send " + fileName + ": " + "\""+ e.getMessage() + "\"");
@@ -212,8 +216,9 @@ public class TFTPTransferHandler {
 	
 	public void receiveFileFromServer() {
 		try {
-			IO.print("IN RCV TO SERVER: " + fileName);
-
+            if (Client.getVerbose() == true) {
+                IO.print("IN RCV TO SERVER: " + fileName);
+            }
 			// Check write permissions
 			File file = new File(filePath);
 			if (file.exists() && !file.canWrite()) {
@@ -225,20 +230,19 @@ public class TFTPTransferHandler {
 
 			TFTPRRQWRQPacket reqPacket = TFTPPacket.createReadRequestPacket(fileName,
 					TFTPRRQWRQPacket.Mode.OCTET);
-			IO.print("I AM ABOUT TO SEND reqPacket");
+
 			this.packetUtilities.sendRequest(reqPacket);
 
 			TFTPDATAPacket pk;
 
 			int blockNumber = 1;
-			IO.print("I AM HERE BEFORE DO");
 
 			do {
-				IO.print("IN DO");
+
 				pk = this.packetUtilities.receiveData(blockNumber);
-				IO.print("IN DO BEOFRE TRY");
+
 				try {
-					IO.print("I AM about to write the dat");
+
 					fs.write(pk.getFileData());
 					fs.getFD().sync();
 				} catch (SyncFailedException e) {
@@ -250,7 +254,9 @@ public class TFTPTransferHandler {
 				this.packetUtilities.sendAck(blockNumber);
 				blockNumber++;
 			} while (!pk.isLastDataPacket());
+            IO.print("Successfully received" + fileName + " from server.");
 			fs.close();
+
 		} catch (TFTPAbortException e) {
 			new File(filePath).delete();
 			IO.print("Failed to get " + fileName + ": " + "\""
