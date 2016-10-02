@@ -102,6 +102,7 @@ public class Client {
     
     public void kill () {
     	IO.print("Nooo! I am dying...");
+    	sendReceiveSocket.close();
     }
 
 
