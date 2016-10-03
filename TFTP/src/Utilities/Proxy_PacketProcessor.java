@@ -1,5 +1,7 @@
 package Utilities;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -20,7 +22,7 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = 6900;
+    private static final int DEFAULT_SERVER_PORT = 69;
 
     /**
      * the port that client socket uses to send and receive
@@ -77,7 +79,17 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private boolean isLast = false;
 
+    /**
+     * used to determine whether if any thread is receiving request packets
+     * other threads should wait if the value of this variable is true
+     */
     private static boolean isReceiving = false;
+
+    /**
+     * used to mark which type of request packet a thread received
+     */
+    private String requestPacketType = "";
+
 
     public static String getIsReceving(){
         if( isReceiving ) return "true";
@@ -115,8 +127,14 @@ public class Proxy_PacketProcessor implements Runnable {
                     PacketUtilities.send(this.requestPacket, this.socket_receSend);
 
                     //request stage end
-                    if( PacketUtilities.isRRQPacket(this.requestPacket) ) stage = "data";
-                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ) stage = "ack";
+                    if( PacketUtilities.isRRQPacket(this.requestPacket) ) {
+                        this.requestPacketType = "RRQ";
+                        stage = "data";
+                    }
+                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ) {
+                        this.requestPacketType = "WRQ";
+                        stage = "ack";
+                    }
                     else{
                         //error
                         IO.print("Error!");
@@ -125,7 +143,7 @@ public class Proxy_PacketProcessor implements Runnable {
                     break;
                 case "data":
                     //receive data packet
-                    if( PacketUtilities.isRRQPacket(this.requestPacket) ){
+                    if( this.requestPacketType.equals("RRQ") ){
                         //receive data packet from server
                         receiveDataPacket();
 
@@ -135,7 +153,7 @@ public class Proxy_PacketProcessor implements Runnable {
                         //set the port to client port
                         this.dataPacket.setPort( this.port_client );
                     }
-                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ){
+                    else if( this.requestPacketType.equals("WRQ") ){
                         //receive data packet from client
                         receiveDataPacket();
 
@@ -159,14 +177,14 @@ public class Proxy_PacketProcessor implements Runnable {
 
                     break;
                 case "ack":
-                    if( PacketUtilities.isRRQPacket(this.requestPacket) ){
+                    if( this.requestPacketType.equals("RRQ") ){
                         //receive ack packet from client
                         receiveDataPacket();
 
                         //set the port to server
                         this.ackPacket.setPort( this.port_server );
                     }
-                    else if( PacketUtilities.isWRQPacket(this.requestPacket) ){
+                    else if( this.requestPacketType.equals("WRQ") ){
                         //receive ack packet from server
                         receiveAckPacket();
 
@@ -258,12 +276,9 @@ public class Proxy_PacketProcessor implements Runnable {
      * catches exceptions inside
      */
     private void receiveDataPacket(){
-        try {
-            this.socket_receSend.receive( this.dataPacket );
+            //this.socket_receSend.receive( this.dataPacket );
+            PacketUtilities.receive(this.dataPacket, this.socket_receSend);
 
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
     }
 
     /**
@@ -271,32 +286,23 @@ public class Proxy_PacketProcessor implements Runnable {
      * catches exceptions inside
      */
     private void sendDataPacket(){
-        try {
-            this.socket_receSend.send( this.dataPacket);
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //this.socket_receSend.send( this.dataPacket );
+            PacketUtilities.send(this.dataPacket, this.socket_receSend);
     }
     /**
      * this method receives ack packet
      * catches exceptions inside
      */
     private void receiveAckPacket(){
-        try {
-            this.socket_receSend.receive( this.ackPacket );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //this.socket_receSend.receive( this.ackPacket );
+            PacketUtilities.receive(this.ackPacket, this.socket_receSend);
     }
     /**
      * this method sends ack packet
      * catches exceptions inside
      */
     private void sendAckPacket(){
-        try {
-            this.socket_receSend.send( this.ackPacket );
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
+            //this.socket_receSend.send( this.ackPacket );
+            PacketUtilities.send(this.ackPacket, this.socket_receSend);
     }
 }
