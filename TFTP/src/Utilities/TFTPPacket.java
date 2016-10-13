@@ -56,7 +56,12 @@ public abstract class TFTPPacket {
 			throws IllegalArgumentException {
 		return TFTPPacket.createFromBytes(datagram.getData(),
 				datagram.getLength());
-		}
+	}
+	
+	public static TFTPErrorPacket createErrorPacket(
+			TFTPErrorPacket.ErrorType errorType, String errorMessage) {
+		return new TFTPErrorPacket(errorType, errorMessage);
+	}
 	
 	/*
 	 * 
@@ -80,11 +85,11 @@ public abstract class TFTPPacket {
 		case 2:
 			return TFTPRRQWRQPacket.createFromBytes(packetData, packetLength); //WRQ
 		case 3:
-			return TFTPDATAPacket.createFromBytes(packetData, packetLength);  //DATA
+			return TFTPDATAPacket.createFromBytes(packetData, packetLength); //DATA
 		case 4:
-			return TFTPACKPacket.createFromBytes(packetData, packetLength);
+			return TFTPACKPacket.createFromBytes(packetData, packetLength);  // ACK
 		case 5:
-			//@TODO Need to handle this later
+			return TFTPErrorPacket.createFromBytes(packetData, packetLength);  // Error
 		default:
 			throw new IllegalArgumentException("Invalid opcode");
 		}

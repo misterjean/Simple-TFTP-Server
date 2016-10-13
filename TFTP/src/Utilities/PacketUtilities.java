@@ -1,5 +1,6 @@
 package Utilities;
 
+import Client.Client;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -19,7 +20,10 @@ public class PacketUtilities {
     public static final int DEFAULT_DATA_LENGTH = 516;
 
 
-	public static final int DEFAULT_PORT = 3007;
+	public static final int DEFAULT_PORT = 6900; //Server PORT 69
+	public static final int PROXY_PORT = 2300; //Proxy port 23
+	
+
     /**
      * an empty buffer for packets
      */
@@ -28,8 +32,8 @@ public class PacketUtilities {
     private DatagramSocket socket;
 	private InetAddress remoteAddress;
 
-	private int requestPort = 9000; //default request port over 9000!
-	private int remoteTid = -1;
+	private int requestPort = 9000; //default request port over 9000, this is being set before being used by the setMethod!
+	private int remoteTid = -1;   // default TID being set by the setmethod!
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
 	private DatagramPacket sendDatagram;
 	
@@ -132,7 +136,7 @@ public class PacketUtilities {
      */
     public static void send(DatagramPacket packet, DatagramSocket socket) {
     	
-		IO.print("IN LastSEND: "+ packet +" socket: "+ socket);
+
 
 
         if( socket.isClosed() ){
@@ -140,22 +144,22 @@ public class PacketUtilities {
         }
 
         try {
-    		IO.print("Last SEND: "+ packet + ": "+ packet);
 
             socket.send(packet);
 
-            System.out.print(
-                    "\n----------------------------Sent Packet Information------------------------" +
-                            "\nPacket Type: " + getPacketType(packet) +
-                            "\nPacket Destination: " + packet.getAddress() +
-                            "\nDestination Port: " + packet.getPort() +
-                            "\nPacket Data(String): "+ Arrays.toString( packet.getData() ) +
-                            "\nPacket Data(Byte): " + packet.getData() +
-                            "\nPacket Offset: " + packet.getOffset() +
-                            "\nSocket Address: " + packet.getSocketAddress() +
-                            "\n---------------------------------------------------------------------------\n"
-            );
-
+			if (Client.getVerbose()) {
+				System.out.print(
+						"\n----------------------------Sent Packet Information------------------------" +
+								"\nPacket Type: " + getPacketType(packet) +
+								"\nPacket Destination: " + packet.getAddress() +
+								"\nDestination Port: " + packet.getPort() +
+								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
+								"\nPacket Data(Byte): " + packet.getData() +
+								"\nPacket Offset: " + packet.getOffset() +
+								"\nSocket Address: " + packet.getSocketAddress() +
+								"\n---------------------------------------------------------------------------\n"
+				);
+			}
         } catch (IOException e) {
             e.printStackTrace();
         }
@@ -171,8 +175,9 @@ public class PacketUtilities {
     
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-		IO.print("IN SEND: "+ packet +" remoteTid: "+ remoteTid);
-
+		if (Client.getVerbose() == true) {
+			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
+		}
 		send(dp, socket);
 	}
     
@@ -186,11 +191,16 @@ public class PacketUtilities {
     
     private TFTPPacket receive() throws IOException, TFTPAbortException {
 		while (true) {
-			IO.print("IN RECEIVE");
-			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
-			socket.receive(rcvDatagram);
-			IO.print(" After IN RECEIVE "+ "local: " +socket.getLocalPort()+ "destPort: " +socket.getPort());
 
+			if (Client.getVerbose() == true) {
+				IO.print("IN RECEIVE");
+				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
+			}
+			socket.receive(rcvDatagram);
+
+			if (Client.getVerbose() == true) {
+				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
+			}
 
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
@@ -198,27 +208,30 @@ public class PacketUtilities {
 				//@TODO need to handle this case
 				continue;
 			}
+			IO.print("BEFORE TRY");
 
 			try {
+				IO.print("IN TRY");
+
 				return TFTPPacket.createFromDatagram(rcvDatagram);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				IO.print("IN ERROR");
+				sendIllegalOperationError(e.getMessage());
 			}
 		}
 	}
     
     public TFTPDATAPacket receiveData(int blockNumber)
 			throws TFTPAbortException {
-    	IO.print("IN RCVDATA");
+
     	TFTPDATAPacket pk = (TFTPDATAPacket) receiveExpected(
 				TFTPPacket.Type.DATA, blockNumber);
-    	IO.print("AFter pk");
 
 		// Auto-set remoteTid, for convenience
 		if (remoteTid <= 0 && blockNumber == 1) {
 			setRemoteTid(rcvDatagram.getPort());
 		}
-    	IO.print("Before return");
+
 		return pk;
 	}
     
@@ -236,21 +249,17 @@ public class PacketUtilities {
     
     
     private TFTPPacket receiveExpected(TFTPPacket.Type type, int blockNumber) throws TFTPAbortException {
-    	IO.print("receiveExpected");
+
 		try {
 			while (true) {
 				try {
-			    	IO.print("receiveExpected try");
 
 					TFTPPacket pk = receive();
-			    	IO.print("receiveExpected try receive");
-
 
 					if (pk.getTFTPacketType() == type) {
 						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
-						    	IO.print("receiveExpected if");
 								return dataPk;
 							} else {
 							//@TODO handle this case for Received future block
@@ -264,7 +273,25 @@ public class PacketUtilities {
 
 							}
 						}
-					}
+					}else if (pk instanceof TFTPErrorPacket) {
+						TFTPErrorPacket errorPk = (TFTPErrorPacket) pk;
+						IO.print("Received error packet. Code: "
+								+ errorPk.getCode() + ", Type: "
+								+ errorPk.getErrorType().toString()
+								+ ", Message: \"" + errorPk.getErrorMessage()
+								+ "\"");
+
+						if (errorPk.shouldAbortTransfer()) {
+							IO.print("Aborting transfer");
+							throw new TFTPAbortException(
+									errorPk.getErrorMessage());
+						} else {
+							IO.print("Continuing with transfer");
+						}
+					} else if (pk instanceof TFTPRRQWRQPacket) {
+						throw new TFTPAbortException(
+								"Received request packet within data transfer connection");
+						}
 				}catch (SocketTimeoutException e) {
 					e.printStackTrace();
 				}
@@ -278,13 +305,13 @@ public class PacketUtilities {
 		try {
 			TFTPDATAPacket pk = TFTPPacket.createDataPacket(blockNumber,
 					fileData, fileDataLength);
-			IO.print("IN SENDDATA");
+
 			send(pk);
 		} catch (Exception e) {
-			IO.print(" ERROR IN SENDDATA");
+
 			throw new TFTPAbortException(e.getMessage());
 		}
-}
+	}
 
 
 
@@ -303,18 +330,18 @@ public class PacketUtilities {
 
         try {
             socket.receive(packet);
-
-            System.out.print(
-                    "\n**************************Received Packet Information**************************" +
-                            "\nPacket Type: " + getPacketType(packet) +
-                            "\nPacket Source: " + packet.getAddress() +
-                            "\nSource Port: " + packet.getPort() +
-                            "\nPacket Data(String): "+ Arrays.toString( packet.getData() ) +
-                            "\nPacket Data(Byte): " + packet.getData() +
-                            "\nPacket Offset: " + packet.getOffset() +
-                            "\n******************************************************************************\n" )
-            ;
-
+			if (Client.getVerbose()) {
+				System.out.print(
+						"\n**************************Received Packet Information**************************" +
+								"\nPacket Type: " + getPacketType(packet) +
+								"\nPacket Source: " + packet.getAddress() +
+								"\nSource Port: " + packet.getPort() +
+								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
+								"\nPacket Data(Byte): " + packet.getData() +
+								"\nPacket Offset: " + packet.getOffset() +
+								"\n******************************************************************************\n")
+				;
+			}
         } catch ( SocketTimeoutException e){
             System.out.println("\nMax timeout reached, no packet received, closing socket...");
             socket.close();
@@ -326,6 +353,87 @@ public class PacketUtilities {
 
         return packet;
     }
+    
+    
+    private void sendIllegalOperationError(String message)
+			throws TFTPAbortException {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.ILLEGAL_OPERATION, message);
+			send(pk);
+			System.out.println("Sending error packet (Illegal Operation) with message: "
+					+ message);
+			throw new TFTPAbortException(message);
+		} catch (IOException e) {
+			throw new TFTPAbortException(message);
+		}
+	}
+
+	private void sendUnkownTidError(InetAddress address, int port) {
+		try {
+			String errMsg = "Stop hacking foo!";
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.UNKOWN_TID, errMsg);
+			socket.send(pk.generateDatagram(address, port));
+			System.out.println("*******  Sending error packet (Unknown TID) to "
+					+ addressToString(address, port) + " with message: "
+					+ errMsg);
+		} catch (Exception e) {
+			// Ignore
+		}
+	}
+
+	public void sendFileNotFound(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.FILE_NOT_FOUND, message);
+			send(pk);
+			System.out.println("Sending error packet (File not Found) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendDiscFull(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.DISC_FULL_OR_ALLOCATION_EXCEEDED,
+					message);
+			send(pk);
+			System.out.println("Sending error packet (Disc Full) with message: " + message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendAccessViolation(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.ACCESS_VIOLATION, message);
+			send(pk);
+			System.out.println("Sending error packet (Access Violation) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendFileAlreadyExists(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.FILE_ALREADY_EXISTS, message);
+			send(pk);
+			System.out.println("Sending error packet (File Already Exists) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+	
+	private String addressToString(InetAddress addr, int port) {
+		return addr.toString() + ":" + port;
+	}
     
     public void setRemoteAddress(InetAddress remoteAddress) {
 		this.remoteAddress = remoteAddress;

@@ -1,7 +1,5 @@
 package Utilities;
 
-import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
-
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -22,7 +20,7 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = 69;
+    private static final int DEFAULT_SERVER_PORT = 6900;
 
     /**
      * the port that client socket uses to send and receive
@@ -304,5 +302,5 @@ public class Proxy_PacketProcessor implements Runnable {
     private void sendAckPacket(){
             //this.socket_receSend.send( this.ackPacket );
             PacketUtilities.send(this.ackPacket, this.socket_receSend);
-    }
+}
 }
