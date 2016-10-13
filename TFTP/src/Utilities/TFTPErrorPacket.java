@@ -34,7 +34,7 @@ public class TFTPErrorPacket extends TFTPPacket {
 		}
 	}
 
-	/**
+	/*
 	 * Constructor
 	 * 
 	 * @param blockNumber
@@ -67,11 +67,10 @@ public class TFTPErrorPacket extends TFTPPacket {
 		return (this.errorType != ErrorType.UNKOWN_TID);
 	}
 
-	/**
+	/*
 	 * Generate the packet data
 	 * 
 	 * @return the byte array of the packet
-	 * @see sysc3303.project.common.TftpPacket#generatePacketData()
 	 */
 	@Override
 	public byte[] generateData() {
