@@ -27,13 +27,23 @@ public class TFTPTransferHandler {
 		this.packetUtilities = pu;
 	}
 	
+	/*
+	 * Set method for filePath
+	 */
 	public void setFilePath(String filePath) {
 		this.filePath = filePath;
 	}
+	
+	/*
+	 * Set method for fileName
+	 */
 	public void setFileName(String fileName) {
 		this.fileName = fileName;
 	}
-
+	
+	/*
+	 * Method for sending file to Client
+	 */
 	public void sendFileToClient() {
 
 		int blockNumber = 1;
@@ -91,7 +101,10 @@ public class TFTPTransferHandler {
 			return;
 		}
 	}
-
+	
+	/*
+	 * Method for receiving from Client
+	 */
 	public void receiveFileFromClient() {
 		try {
 			// Check that file does not exist already
@@ -170,6 +183,9 @@ public class TFTPTransferHandler {
 		}
 	}
 	
+	/*
+	 * Method for sending file to Server
+	 */
 	public void sendFileToServer() {
 		try {
             if (Client.getVerbose() == true) {
@@ -227,6 +243,9 @@ public class TFTPTransferHandler {
 		}
 	}
 	
+	/*
+	 * Receive file from Server method
+	 */
 	public void receiveFileFromServer() {
 		try {
             if (Client.getVerbose() == true) {

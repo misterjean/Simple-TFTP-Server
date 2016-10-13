@@ -19,7 +19,7 @@ public class TFTPACKPacket extends TFTPPacket {
 	}
 	
 	/*
-	 * cretae the packet Data
+	 * create the packet Data
 	 */
 	
 	public static TFTPACKPacket createFromBytes(byte[] packetData, int packetLength) throws IllegalArgumentException {
