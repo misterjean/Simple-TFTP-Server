@@ -32,8 +32,8 @@ public class PacketUtilities {
     private DatagramSocket socket;
 	private InetAddress remoteAddress;
 
-	private int requestPort = 9000; //default request port over 9000!
-	private int remoteTid = -1;
+	private int requestPort = 9000; //default request port over 9000, this is being set before being used by the setMethod!
+	private int remoteTid = -1;   // default TID being set by the setmethod!
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
 	private DatagramPacket sendDatagram;
 	
@@ -208,11 +208,15 @@ public class PacketUtilities {
 				//@TODO need to handle this case
 				continue;
 			}
+			IO.print("BEFORE TRY");
 
 			try {
+				IO.print("IN TRY");
+
 				return TFTPPacket.createFromDatagram(rcvDatagram);
 			} catch (IllegalArgumentException e) {
-				e.printStackTrace();
+				IO.print("IN ERROR");
+				sendIllegalOperationError(e.getMessage());
 			}
 		}
 	}
@@ -256,7 +260,6 @@ public class PacketUtilities {
 						if (pk.getTFTPacketType() == TFTPPacket.Type.DATA) {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
-
 								return dataPk;
 							} else {
 							//@TODO handle this case for Received future block
@@ -270,7 +273,25 @@ public class PacketUtilities {
 
 							}
 						}
-					}
+					}else if (pk instanceof TFTPErrorPacket) {
+						TFTPErrorPacket errorPk = (TFTPErrorPacket) pk;
+						IO.print("Received error packet. Code: "
+								+ errorPk.getCode() + ", Type: "
+								+ errorPk.getErrorType().toString()
+								+ ", Message: \"" + errorPk.getErrorMessage()
+								+ "\"");
+
+						if (errorPk.shouldAbortTransfer()) {
+							IO.print("Aborting transfer");
+							throw new TFTPAbortException(
+									errorPk.getErrorMessage());
+						} else {
+							IO.print("Continuing with transfer");
+						}
+					} else if (pk instanceof TFTPRRQWRQPacket) {
+						throw new TFTPAbortException(
+								"Received request packet within data transfer connection");
+						}
 				}catch (SocketTimeoutException e) {
 					e.printStackTrace();
 				}
@@ -290,7 +311,7 @@ public class PacketUtilities {
 
 			throw new TFTPAbortException(e.getMessage());
 		}
-}
+	}
 
 
 
@@ -332,6 +353,87 @@ public class PacketUtilities {
 
         return packet;
     }
+    
+    
+    private void sendIllegalOperationError(String message)
+			throws TFTPAbortException {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.ILLEGAL_OPERATION, message);
+			send(pk);
+			System.out.println("Sending error packet (Illegal Operation) with message: "
+					+ message);
+			throw new TFTPAbortException(message);
+		} catch (IOException e) {
+			throw new TFTPAbortException(message);
+		}
+	}
+
+	private void sendUnkownTidError(InetAddress address, int port) {
+		try {
+			String errMsg = "Stop hacking foo!";
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.UNKOWN_TID, errMsg);
+			socket.send(pk.generateDatagram(address, port));
+			System.out.println("*******  Sending error packet (Unknown TID) to "
+					+ addressToString(address, port) + " with message: "
+					+ errMsg);
+		} catch (Exception e) {
+			// Ignore
+		}
+	}
+
+	public void sendFileNotFound(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.FILE_NOT_FOUND, message);
+			send(pk);
+			System.out.println("Sending error packet (File not Found) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendDiscFull(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.DISC_FULL_OR_ALLOCATION_EXCEEDED,
+					message);
+			send(pk);
+			System.out.println("Sending error packet (Disc Full) with message: " + message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendAccessViolation(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.ACCESS_VIOLATION, message);
+			send(pk);
+			System.out.println("Sending error packet (Access Violation) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+
+	public void sendFileAlreadyExists(String message) {
+		try {
+			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
+					TFTPErrorPacket.ErrorType.FILE_ALREADY_EXISTS, message);
+			send(pk);
+			System.out.println("Sending error packet (File Already Exists) with message: "
+					+ message);
+		} catch (IOException e) {
+			// Ignore
+		}
+	}
+	
+	private String addressToString(InetAddress addr, int port) {
+		return addr.toString() + ":" + port;
+	}
     
     public void setRemoteAddress(InetAddress remoteAddress) {
 		this.remoteAddress = remoteAddress;

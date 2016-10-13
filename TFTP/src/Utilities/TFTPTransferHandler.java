@@ -46,6 +46,11 @@ public class TFTPTransferHandler {
 			if (!file.exists()) {
 				throw new FileNotFoundException();
 			}
+			
+			if (!file.isAbsolute()) {
+				packetUtilities.sendAccessViolation("Trying to access file in private area");
+				return;
+			}
 
 			fs = new FileInputStream(file);
 			int bytesRead;
@@ -79,6 +84,7 @@ public class TFTPTransferHandler {
 			IO.print("Done sending file \'" + fileName + "\' to client");
 		} catch (FileNotFoundException e1) {
 			IO.print("File not found: " + fileName);
+			packetUtilities.sendFileNotFound("Could not find: " + fileName);
 			return;
 		} catch (IOException e) {
 			IO.print("IOException: " + e.getMessage());
@@ -93,16 +99,19 @@ public class TFTPTransferHandler {
 			if (file.exists()) {
 				//@TODO Handle
 				IO.print("File already exist");
+				packetUtilities.sendFileAlreadyExists(fileName + " already exists");
 				return;
 			}
 
 			if (!file.isAbsolute()) {
 				//@TODO cant access file due to permission
+				packetUtilities.sendAccessViolation("Trying to access file in private area");
 				return;
 			}
 
 			if (!file.getParentFile().canWrite()) {
 				//@TODO cant write file due to permission
+				packetUtilities.sendAccessViolation("Cannot write to a readonly folder");
 				return;
 			}
 			
@@ -120,6 +129,7 @@ public class TFTPTransferHandler {
 						fs.getFD().sync();
 					} else {
 						//@TODO cannot write to readonly file
+						packetUtilities.sendAccessViolation("Cannot write to a readonly file");
 						return;
 					}
 				} catch (TFTPAbortException e) {
@@ -132,6 +142,7 @@ public class TFTPTransferHandler {
 					fs.close();
 					file.delete();
 					//@TODO disk error
+					packetUtilities.sendDiscFull("Failed to sync with disc, likely is full");
 					return;
 				}
 			} while (!dataPk.isLastDataPacket());
@@ -148,11 +159,13 @@ public class TFTPTransferHandler {
 		} catch (FileNotFoundException e) {
 			new File(filePath).delete();
 			IO.print("Cannot write to a readonly file");
+			packetUtilities.sendAccessViolation("Cannot write to a readonly file");
 			return;
 		} catch (IOException e) {
 			new File(filePath).delete();
 			IO.print("DISK full");
 			IO.print("IOException with file: " + fileName);
+			packetUtilities.sendDiscFull(e.getMessage());
 			return;
 		}
 	}
@@ -249,6 +262,7 @@ public class TFTPTransferHandler {
 					file.delete();
 					fs.close();
 					IO.print("Failed to sync with disc, might be full");
+					packetUtilities.sendDiscFull("Failed to sync with disc, likely is full");
 					return;
 				}
 				this.packetUtilities.sendAck(blockNumber);
