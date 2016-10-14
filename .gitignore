@@ -54,7 +54,7 @@ local.properties
 .idea/*
 *.iml
 *.iws
- 
+TFTP/.idea/* 
 # Mac
 .DS_Store
  
