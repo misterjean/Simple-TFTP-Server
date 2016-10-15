@@ -191,17 +191,14 @@ public class PacketUtilities {
     
     private TFTPPacket receive() throws IOException, TFTPAbortException {
 		while (true) {
-
+			
+			socket.receive(rcvDatagram);
+			
 			if (Client.getVerbose() == true) {
 				IO.print("IN RECEIVE");
-				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
+				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + " destPort: " + rcvDatagram.getPort());
 			}
-			socket.receive(rcvDatagram);
-
-			if (Client.getVerbose() == true) {
-				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + "destPort: " + socket.getPort());
-			}
-
+			
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
 				IO.print("Port does not match error : "+ "remoteTid: "+remoteTid + " port: "+rcvDatagram.getPort() + " remoteAddress: "+ remoteAddress + "rcvDatagram.getAddress(): "+rcvDatagram.getAddress());

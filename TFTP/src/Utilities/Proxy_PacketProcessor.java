@@ -132,6 +132,7 @@ public class Proxy_PacketProcessor implements Runnable {
                     else if( PacketUtilities.isWRQPacket(this.requestPacket) ) {
                         this.requestPacketType = "WRQ";
                         stage = "ack";
+                        System.out.println("I am here");
                     }
                     else{
                         //error
@@ -301,6 +302,8 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private void sendAckPacket(){
             //this.socket_receSend.send( this.ackPacket );
+    	    System.out.println("About to send ACK From Proxy");
+    	    System.out.println("Proxy: "+ this.ackPacket.getData() +" port: " + this.ackPacket.getPort());
             PacketUtilities.send(this.ackPacket, this.socket_receSend);
 }
 }
