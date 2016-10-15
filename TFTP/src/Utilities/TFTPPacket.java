@@ -29,7 +29,7 @@ public abstract class TFTPPacket {
 	}
 	
 	
-	//@TOD we need a write request
+	//@TODO we need a write request
 	public static TFTPRRQWRQPacket createWriteRequestPacket(String fileName, Mode mode) {
 		
 		return new TFTPRRQWRQPacket(fileName, Action.WRITE, mode);
