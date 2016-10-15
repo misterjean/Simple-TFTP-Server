@@ -3,7 +3,9 @@ package Utilities;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
+import java.net.InetAddress;
 import java.net.SocketException;
+import java.net.UnknownHostException;
 
 /**
  * Created by Yue on 2016-09-19.
@@ -303,7 +305,17 @@ public class Proxy_PacketProcessor implements Runnable {
     private void sendAckPacket(){
             //this.socket_receSend.send( this.ackPacket );
     	    System.out.println("About to send ACK From Proxy");
-    	    System.out.println("Proxy: "+ this.ackPacket.getData() +" port: " + this.ackPacket.getPort());
+    	    System.out.println("Proxy: "+ this.ackPacket.getData() +" port: " + this.ackPacket.getPort()+"Address: "+ this.ackPacket.getAddress());
+    	    System.out.println("socket_receSend: "+ this.socket_receSend);
+    	    //Fucking read your code next time, and listen to others when they say your code is the one that causing the issue. we are all fucking 
+    	    //learn from our mistake, no one is perfect, humble yourself.
+    	    try {
+				this.ackPacket.setAddress(InetAddress.getLocalHost());
+			} catch (UnknownHostException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+    	    
             PacketUtilities.send(this.ackPacket, this.socket_receSend);
 }
 }

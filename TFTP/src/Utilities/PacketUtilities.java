@@ -175,7 +175,7 @@ public class PacketUtilities {
     
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-		if (Client.getVerbose() == true) {
+		if (Client.getVerbose()) {
 			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
 		}
 		send(dp, socket);
@@ -194,9 +194,8 @@ public class PacketUtilities {
 			
 			socket.receive(rcvDatagram);
 			
-			if (Client.getVerbose() == true) {
-				IO.print("IN RECEIVE");
-				IO.print(" After IN RECEIVE " + "local: " + socket.getLocalPort() + " destPort: " + rcvDatagram.getPort());
+			if (Client.getVerbose()) {
+				IO.print("IN RECEIVE " + "local: " + socket.getLocalPort() + " destPort: " + rcvDatagram.getPort());
 			}
 			
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
@@ -205,14 +204,9 @@ public class PacketUtilities {
 				//@TODO need to handle this case
 				continue;
 			}
-			IO.print("BEFORE TRY");
-
 			try {
-				IO.print("IN TRY");
-
 				return TFTPPacket.createFromDatagram(rcvDatagram);
 			} catch (IllegalArgumentException e) {
-				IO.print("IN ERROR");
 				sendIllegalOperationError(e.getMessage());
 			}
 		}

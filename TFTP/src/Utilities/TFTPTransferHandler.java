@@ -60,7 +60,7 @@ public class TFTPTransferHandler {
 
 			do {
 				bytesRead = fs.read(data);
-
+				System.out.println("Block number: "+ blockNumber);
 				// Special case when file size is multiple of 512 bytes
 				if (bytesRead == -1) {
 					bytesRead = 0;
@@ -121,6 +121,7 @@ public class TFTPTransferHandler {
 
 			do {
 				try {
+					System.out.println("Block number: "+ blockNumber);
 					packetUtilities.sendAck(blockNumber);
 					dataPk = packetUtilities.receiveData(++blockNumber);
 
@@ -201,6 +202,7 @@ public class TFTPTransferHandler {
 			int bytesRead = 0;
 
 			do {
+				System.out.println("Block number: "+ blockNumber);
 				this.packetUtilities.receiveAck(blockNumber);
 				blockNumber++;
 
@@ -229,7 +231,7 @@ public class TFTPTransferHandler {
 	
 	public void receiveFileFromServer() {
 		try {
-            if (Client.getVerbose() == true) {
+            if (Client.getVerbose()) {
                 IO.print("IN RCV TO SERVER: " + fileName);
             }
 			// Check write permissions
@@ -251,6 +253,8 @@ public class TFTPTransferHandler {
 			int blockNumber = 1;
 
 			do {
+				System.out.println("Block number: "+ blockNumber);
+
 
 				pk = this.packetUtilities.receiveData(blockNumber);
 
