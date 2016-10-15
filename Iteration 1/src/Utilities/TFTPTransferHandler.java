@@ -1,5 +1,7 @@
 package Utilities;
 
+import Client.Client;
+
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;
@@ -44,6 +46,11 @@ public class TFTPTransferHandler {
 			if (!file.exists()) {
 				throw new FileNotFoundException();
 			}
+			
+			if (!file.isAbsolute()) {
+				packetUtilities.sendAccessViolation("Trying to access file in private area");
+				return;
+			}
 
 			fs = new FileInputStream(file);
 			int bytesRead;
@@ -53,7 +60,7 @@ public class TFTPTransferHandler {
 
 			do {
 				bytesRead = fs.read(data);
-
+				System.out.println("Block number: "+ blockNumber);
 				// Special case when file size is multiple of 512 bytes
 				if (bytesRead == -1) {
 					bytesRead = 0;
@@ -77,6 +84,7 @@ public class TFTPTransferHandler {
 			IO.print("Done sending file \'" + fileName + "\' to client");
 		} catch (FileNotFoundException e1) {
 			IO.print("File not found: " + fileName);
+			packetUtilities.sendFileNotFound("Could not find: " + fileName);
 			return;
 		} catch (IOException e) {
 			IO.print("IOException: " + e.getMessage());
@@ -91,16 +99,19 @@ public class TFTPTransferHandler {
 			if (file.exists()) {
 				//@TODO Handle
 				IO.print("File already exist");
+				packetUtilities.sendFileAlreadyExists(fileName + " already exists");
 				return;
 			}
 
 			if (!file.isAbsolute()) {
 				//@TODO cant access file due to permission
+				packetUtilities.sendAccessViolation("Trying to access file in private area");
 				return;
 			}
 
 			if (!file.getParentFile().canWrite()) {
 				//@TODO cant write file due to permission
+				packetUtilities.sendAccessViolation("Cannot write to a readonly folder");
 				return;
 			}
 			
@@ -110,6 +121,7 @@ public class TFTPTransferHandler {
 
 			do {
 				try {
+					System.out.println("Block number: "+ blockNumber);
 					packetUtilities.sendAck(blockNumber);
 					dataPk = packetUtilities.receiveData(++blockNumber);
 
@@ -118,6 +130,7 @@ public class TFTPTransferHandler {
 						fs.getFD().sync();
 					} else {
 						//@TODO cannot write to readonly file
+						packetUtilities.sendAccessViolation("Cannot write to a readonly file");
 						return;
 					}
 				} catch (TFTPAbortException e) {
@@ -130,6 +143,7 @@ public class TFTPTransferHandler {
 					fs.close();
 					file.delete();
 					//@TODO disk error
+					packetUtilities.sendDiscFull("Failed to sync with disc, likely is full");
 					return;
 				}
 			} while (!dataPk.isLastDataPacket());
@@ -146,19 +160,22 @@ public class TFTPTransferHandler {
 		} catch (FileNotFoundException e) {
 			new File(filePath).delete();
 			IO.print("Cannot write to a readonly file");
+			packetUtilities.sendAccessViolation("Cannot write to a readonly file");
 			return;
 		} catch (IOException e) {
 			new File(filePath).delete();
 			IO.print("DISK full");
 			IO.print("IOException with file: " + fileName);
+			packetUtilities.sendDiscFull(e.getMessage());
 			return;
 		}
 	}
 
 	public void sendFileToServer() {
 		try {
-			System.out.println("IN SEND TO SERVER: " + fileName);
-
+            if (Client.getVerbose() == true) {
+                System.out.println("IN SEND TO SERVER: " + fileName);
+            }
 			// Check that file exists
 			File file = new File(filePath);
 			if (!file.exists()) {
@@ -185,6 +202,7 @@ public class TFTPTransferHandler {
 			int bytesRead = 0;
 
 			do {
+				System.out.println("Block number: "+ blockNumber);
 				this.packetUtilities.receiveAck(blockNumber);
 				blockNumber++;
 
@@ -202,6 +220,7 @@ public class TFTPTransferHandler {
 			// Wait for final ACK packet
 			this.packetUtilities.receiveAck(blockNumber);
 
+            IO.print("Successfully sent" + fileName + " to server.");
 			fs.close();
 		} catch (TFTPAbortException e) {
 			IO.print("Failed to send " + fileName + ": " + "\""+ e.getMessage() + "\"");
@@ -212,8 +231,9 @@ public class TFTPTransferHandler {
 	
 	public void receiveFileFromServer() {
 		try {
-			IO.print("IN RCV TO SERVER: " + fileName);
-
+            if (Client.getVerbose()) {
+                IO.print("IN RCV TO SERVER: " + fileName);
+            }
 			// Check write permissions
 			File file = new File(filePath);
 
@@ -231,32 +251,36 @@ public class TFTPTransferHandler {
 
 			TFTPRRQWRQPacket reqPacket = TFTPPacket.createReadRequestPacket(fileName,
 					TFTPRRQWRQPacket.Mode.OCTET);
-			IO.print("I AM ABOUT TO SEND reqPacket");
+
 			this.packetUtilities.sendRequest(reqPacket);
 
 			TFTPDATAPacket pk;
 
 			int blockNumber = 1;
-			IO.print("I AM HERE BEFORE DO");
 
 			do {
-				IO.print("IN DO");
+				System.out.println("Block number: "+ blockNumber);
+
+
 				pk = this.packetUtilities.receiveData(blockNumber);
-				IO.print("IN DO BEOFRE TRY");
+
 				try {
-					IO.print("I AM about to write the dat");
+
 					fs.write(pk.getFileData());
 					fs.getFD().sync();
 				} catch (SyncFailedException e) {
 					file.delete();
 					fs.close();
 					IO.print("Failed to sync with disc, might be full");
+					packetUtilities.sendDiscFull("Failed to sync with disc, likely is full");
 					return;
 				}
 				this.packetUtilities.sendAck(blockNumber);
 				blockNumber++;
 			} while (!pk.isLastDataPacket());
+            IO.print("Successfully received" + fileName + " from server.");
 			fs.close();
+
 		} catch (TFTPAbortException e) {
 			new File(filePath).delete();
 			IO.print("Failed to get " + fileName + ": " + "\""

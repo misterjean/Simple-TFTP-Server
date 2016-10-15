@@ -5,11 +5,12 @@ import Utilities.TFTPRRQWRQPacket;
 import Utilities.IO;
 import java.io.*;
 import java.net.*;
+import static Utilities.PacketUtilities.DEFAULT_PORT;
+
 
 
 public class Server {
 	//TODO:  Set port
-	public final static int DEFAULT_PORT = 3007; //69
     private static final int SERVERPORT = DEFAULT_PORT; //FOR NOW
     private static final String defaultDir = System.getProperty("user.dir")+ "/storage/";
     private String publicFolder = defaultDir; // where all the file are stored

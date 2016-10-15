@@ -10,6 +10,7 @@ import java.io.SyncFailedException;
 import java.net.*;
 import java.util.*;
 
+import Client.Client;
 import Utilities.IO;
 import Utilities.PacketUtilities;
 import Utilities.TFTPAbortException;
@@ -80,8 +81,9 @@ public class Connection extends Thread {
 	    public void run() {
 	        super.run();
 	        //this.threadInstaceID = threadInstaceID++; //@TODO need to fix this later
-	        IO.print("Packet Processor, ID: " + this.threadInstaceID + " has started!");
-	        
+			if (Client.getVerbose() == true) {
+				IO.print("Packet Processor, ID: " + this.threadInstaceID + " has started!");
+			}
 			// while we receive data packets that are 516 in size (break inside while)
 	        
 	        if (isReadRequest) {
