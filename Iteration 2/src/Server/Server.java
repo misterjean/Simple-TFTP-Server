@@ -13,7 +13,7 @@ import static Utilities.PacketUtilities.DEFAULT_PORT;
 public class Server {
 	//TODO:  Set port
     static Scanner scanner = new Scanner(System.in);
-    private static final int SERVERPORT = DEFAULT_PORT; //FOR NOW
+    private static final int SERVERPORT = DEFAULT_PORT;
     private static String defaultDir;
     private String publicFolder = defaultDir; // where all the file are stored
     byte[] buffer;
