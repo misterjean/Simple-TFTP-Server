@@ -38,7 +38,7 @@ public class Server {
     public static void printCommands() {
         IO.print("<------------------------------------>");
         IO.print("help: show the help menu");
-        IO.print("stop: stop the client");
+        IO.print("stop: stop the server");
         IO.print("ls: list all files in the working directory");
         IO.print("<------------------------------------>");
     }
@@ -59,7 +59,7 @@ public class Server {
                 IO.print("Available commands:");
                 printCommands();
             } else if (command[0].equals("stop")) {
-                IO.print("Stopping client");
+                IO.print("Stopping server");
                 serverSocket.close();
                 System.exit(0);
                 return;

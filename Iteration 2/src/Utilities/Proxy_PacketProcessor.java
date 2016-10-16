@@ -307,8 +307,6 @@ public class Proxy_PacketProcessor implements Runnable {
     	    System.out.println("About to send ACK From Proxy");
     	    System.out.println("Proxy: "+ this.ackPacket.getData() +" port: " + this.ackPacket.getPort()+"Address: "+ this.ackPacket.getAddress());
     	    System.out.println("socket_receSend: "+ this.socket_receSend);
-    	    //Fucking read your code next time, and listen to others when they say your code is the one that causing the issue. we are all fucking 
-    	    //learn from our mistake, no one is perfect, humble yourself.
     	    try {
 				this.ackPacket.setAddress(InetAddress.getLocalHost());
 			} catch (UnknownHostException e) {
