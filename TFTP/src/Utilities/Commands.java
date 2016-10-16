@@ -18,6 +18,7 @@ public class Commands {
         commandList.put("start", Commands::start );
         commandList.put("status", Commands::status );
         commandList.put("exit", ()->System.exit(0) );
+        commandList.put("help", Commands::help );
     }
 
     private static void start(){
@@ -29,5 +30,15 @@ public class Commands {
 
     private static void status(){
         IO.print( "isReceiving: " + Proxy_PacketProcessor.getIsReceving() );
+    }
+
+    private static void help(){
+        IO.print("<------------------------------------>");
+        IO.print("help: show the help menu");
+        IO.print("start: start the proxy service");
+        IO.print("status: display the proxy status");
+        IO.print("exit: exit the proxy");
+        IO.print("<------------------------------------>");
+
     }
 }

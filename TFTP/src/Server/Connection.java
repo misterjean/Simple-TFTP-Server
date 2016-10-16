@@ -47,7 +47,7 @@ public class Connection extends Thread {
 			this.address = address;
 			this.server = server;
 			this.fileName = packet.getFilename();
-			this.filePath = this.server.getPublicFolder() + fileName;
+			this.filePath = this.server.getDefaultDir() + fileName;
 			this.isReadRequest = packet.isReadRequest();
 
         	//new socket created with random port for thread

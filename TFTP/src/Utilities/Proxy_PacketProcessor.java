@@ -17,12 +17,12 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port used to receive request packets from client
      */
-    private static final int DEFAULT_CLIENT_PORT = 2300;
+    private static final int DEFAULT_CLIENT_PORT = PacketUtilities.PROXY_PORT;
 
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = 6900;
+    private static final int DEFAULT_SERVER_PORT = PacketUtilities.DEFAULT_PORT;
 
     /**
      * the port that client socket uses to send and receive

@@ -1,6 +1,6 @@
 # SYSC3303 - Fall 2016
-# Collaborative project
-#### October 1st 2016
+# Collaborative project - Iteration 2
+#### October 15th 2016
 
 ### Setup Instructions
 1. Import the project. File -> Import -> Existing Projects Into Workspace OR create a new JAVA project and copy the three folders in src (excluding .idea) into the src folder of your new project. 
@@ -8,9 +8,9 @@
 3. Run the Server Class. Right click the file in the navigation bar, then 'Run As' and then 'Java Application' 
 4. Run the Proxy Class. 
 5. Run the Client Class.
-6. On the client, type 'help' for a list of commands (including read, write and connect and more)
+6. On the client, server or proxy, type 'help' for a list of commands (including read, write and change directory and more)
 
-Files of varying sizes to test file transfers with have been provided in a directory named '\test\'
+Files of varying sizes to test file transfers with have been stored in both "/storage" and "/clientStorage" folders.
 	
 	Note: If the Server and Client are running in the same directory (Eclipse default), this will cause an obvious error. To prevent this,
 	you may optionally set the Server or Client's default directory to another location via editing the run configurations for the class,
@@ -26,14 +26,12 @@ Jean-Elie Jean-Gilles	(100856860)
 ###### Responsible for the Proxy and Utilities
 Yue Zhang 				(100980408)
 
-###### Responsible for the Server, Diagrams and some of the Client
+###### Responsible for the error handling
 Emmanuel Guelor 		(100884107)
 
-###### Responsible for the Diagrams 
+###### Responsible for the timing Diagrams 
 Zakaria Hassan			(100860461)
 
-###### Responsible for the Diagrams
-Omar Al-dib				(100906705)
 
 
 # File Hierarchy

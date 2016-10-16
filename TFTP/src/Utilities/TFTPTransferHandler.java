@@ -96,6 +96,7 @@ public class TFTPTransferHandler {
 		try {
 			// Check that file does not exist already
 			File file = new File(filePath);
+			IO.print(filePath);
 			if (file.exists()) {
 				//@TODO Handle
 				IO.print("File already exist");
@@ -272,7 +273,8 @@ public class TFTPTransferHandler {
 				this.packetUtilities.sendAck(blockNumber);
 				blockNumber++;
 			} while (!pk.isLastDataPacket());
-            IO.print("Successfully received" + fileName + " from server.");
+			IO.print("Wrote file to " +filePath);
+            IO.print("Successfully received " + fileName + " from server.");
 			fs.close();
 
 		} catch (TFTPAbortException e) {

@@ -146,8 +146,8 @@ public class PacketUtilities {
         try {
 
             socket.send(packet);
-
-			if (Client.getVerbose()) {
+            System.out.println("VERBOSE = " + Client.getVerbose() + "!!!!!!!!!!!!!!");
+			if (Client.getVerbose() == true) {
 				System.out.print(
 						"\n----------------------------Sent Packet Information------------------------" +
 								"\nPacket Type: " + getPacketType(packet) +

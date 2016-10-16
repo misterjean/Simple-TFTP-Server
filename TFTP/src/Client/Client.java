@@ -11,7 +11,7 @@ import static Utilities.PacketUtilities.DEFAULT_PORT;
 import static Utilities.PacketUtilities.PROXY_PORT;
 
 public class Client {
-	private static String defaultDir = System.getProperty("user.dir") + "/clientStorage/";
+	private static String defaultDir;
 	InetAddress serverAddress;
 	int serverRequestPort;
 	private String fileName;
@@ -23,6 +23,7 @@ public class Client {
 	private TFTPTransferHandler transferHandler;
 
 	public Client() {
+        this.defaultDir = System.getProperty("user.dir") + "/clientStorage/";
 		this.fileName = "";
 		this.filePath = defaultDir+ fileName;
 		this.serverRequestPort = DEFAULT_PORT;
@@ -104,11 +105,15 @@ public class Client {
 	}
 
 	private static void changeDir(String f) {
+        if (f.toCharArray()[f.length()-1] != '/')
+        {
+            f = f + '/';
+        }
 		File folder = new File (f);
 
 		if (folder.isDirectory())
 		{
-			defaultDir = f;
+			Client.defaultDir = f;
 		} else {
 			IO.print(f + " is not a directory.");
 		}
@@ -133,20 +138,20 @@ public class Client {
 	public static boolean getVerbose(){return verbose;}
 
 	public static void start() {
-		IO.print("<------------------------------------>");
+		IO.print("<---------------------------------------------->");
 		IO.print("help: show the help menu");
-		IO.print("mode: toggle between prod and testing");
+		IO.print("mode: toggle between normal and testing");
 		IO.print("verbose: toggle verbose mode off or on");
-		IO.print("read: get the file from server");
-		IO.print("write: send the file to the server");
+		IO.print("read <FILENAME>: get the file from server");
+		IO.print("write <FILENAME>: send the file to the server");
 		IO.print("stop: stop the client");
 		IO.print("ls: list all files in the working directory");
-		IO.print("cd: change the working directory");
-		IO.print("<------------------------------------>");
+		IO.print("cd <DIRECTORYNAME>: change the working directory");
+		IO.print("<---------------------------------------------->");
 	}
 
 	public void kill () {
-		IO.print("SERVER SHUTTING DOWN...");
+		IO.print("CLIENT SHUTTING DOWN...");
 		sendReceiveSocket.close();
 	}
 
@@ -154,7 +159,7 @@ public class Client {
 	public static void main(String args[]) {
 		Client c = new Client();
 		Scanner scanner = new Scanner(System.in);
-
+        start();
 
 		try {
 			c.setServerInfo(InetAddress.getLocalHost(), DEFAULT_PORT );
@@ -175,10 +180,10 @@ public class Client {
 			}
 
 			if (command[0].equals("help")) {
-				System.out.println("Available commands:");
+				IO.print("Available commands:");
 				start();
 			} else if (command[0].equals("stop")) {
-				System.out.println("Stopping client");
+				IO.print("Stopping client");
 				c.kill();
 				scanner.close();
 				return;
@@ -194,7 +199,7 @@ public class Client {
 					c.serverRequestPort = DEFAULT_PORT;
 				} else if (c.mode == false) {
 					c.mode = true;
-					c.serverRequestPort = 2300;
+					c.serverRequestPort = PROXY_PORT;
 				}
 			} else if (command[0].equals("verbose")) {
 				if (c.verbose == true) {
@@ -204,10 +209,10 @@ public class Client {
 				}
 			} else if (command[0].equals("ls")) {
 				listFiles();
-			} else if ((command[0].equals("cd"))
-					&& command.length > 1 && command[1].length() > 0) {
+            } else if ((command[0].equals("cd"))
+                    && command.length > 1 && command[1].length() > 0) {
 
-				changeDir(command[1]);
+                changeDir(command[1]);
 		}else{
 					IO.print("Invalid command. These are the available commands:");
 					start();
