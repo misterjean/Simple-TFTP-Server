@@ -54,6 +54,7 @@ local.properties
 .idea/*
 *.iml
 *.iws
+*.xml
  
 # Mac
 .DS_Store
