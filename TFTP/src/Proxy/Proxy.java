@@ -26,7 +26,7 @@ public class Proxy {
             try {
                 if( !inputtedCommand.isEmpty() ) Commands.commandList.get( inputtedCommand ).runCommand();
             } catch ( NullPointerException e) {
-                IO.print("The specified command was not recognized.\n");
+                System.out.print("The specified command was not recognized.\n");
             } catch (IOException e){
                 e.printStackTrace ();
             }

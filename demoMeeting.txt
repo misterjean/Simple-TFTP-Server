@@ -1,0 +1,9 @@
+- Client send ouput : Need to more information on the packet received:
+	- sized of the data or the size of the packet
+	- don't need to show the data address (it's up to you print the data in a string format)
+	-  same with server output*
+	-  the block number should be unsigned int only positive no negative number
+	-  clear the buffer before you add to it.
+	-  use fc command for file compare
+	-  server main thread should not terminate the new handler thread until its done its transfer
+	
