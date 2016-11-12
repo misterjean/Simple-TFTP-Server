@@ -3,10 +3,7 @@ package Utilities;
 import Client.Client;
 import Server.Server;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -46,7 +43,14 @@ public class PacketUtilities {
 
 
 	public PacketUtilities(DatagramSocket currentConnection){
+
 		this.socket = currentConnection;
+
+		try{
+			this.socket.setSoTimeout(timeoutTime);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 	}
 
     /**
