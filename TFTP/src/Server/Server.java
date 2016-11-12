@@ -17,10 +17,12 @@ public class Server {
     private String publicFolder = defaultDir; // where all the file are stored
     byte[] buffer;
     static DatagramSocket serverSocket;
+    private static boolean verbose;
 
     private boolean running;
     
     public Server() {
+        this.verbose = true;
         defaultDir = System.getProperty("user.dir")+ "/storage/";
     	running = false;
     	buffer = new byte[PacketUtilities.DEFAULT_DATA_LENGTH];
@@ -39,15 +41,24 @@ public class Server {
         IO.print("help: show the help menu");
         IO.print("stop: stop the server");
         IO.print("ls: list all files in the working directory");
+        IO.print("verbose: toggle verbose mode");
         IO.print("<------------------------------------>");
     }
 
+    public static boolean getVerbose(){return verbose;}
 
     static synchronized void getCommands() {
 
 
         for (;;) {
             IO.print("Current working directory " + defaultDir);
+
+            if (verbose == false){
+                IO.print("Verbose is set to OFF");
+            } else {
+                IO.print("Verbose is set to ON");
+            }
+
             String cmdLine = scanner.nextLine().toLowerCase();
             String[] command = cmdLine.split("\\s+"); //This groups all white spaces as a delimiter.
             if (command.length == 0 || command[0].length() == 0) {
@@ -67,7 +78,13 @@ public class Server {
             } else if ((command[0].equals("cd"))
                     && command.length > 1 && command[1].length() > 0) {
                 changeDir(command[1]);
-            }else{
+            } else if (command[0].equals("verbose")){
+                if (verbose == true) {
+                    verbose = false;
+                } else if (verbose == false) {
+                    verbose = true;
+                }
+            } else{
                 IO.print("Invalid command. These are the available commands:");
                 printCommands();
             }

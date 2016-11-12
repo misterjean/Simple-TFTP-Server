@@ -202,6 +202,7 @@ public class TFTPTransferHandler {
 			int bytesRead = 0;
 
 			do {
+                //this.packetUtilities.printPacketDetails(2);
 				System.out.println("Block number: "+ blockNumber);
 				this.packetUtilities.receiveAck(blockNumber);
 				blockNumber++;

@@ -1,6 +1,7 @@
 package Utilities;
 
 import Client.Client;
+import Server.Server;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
@@ -169,17 +170,7 @@ public class PacketUtilities {
 
             socket.send(packet);
 			if (Client.getVerbose() == true) {
-				System.out.print(
-						"\n----------------------------Sent Packet Information------------------------" +
-								"\nPacket Type: " + getPacketType(packet) +
-								"\nPacket Destination: " + packet.getAddress() +
-								"\nDestination Port: " + packet.getPort() +
-								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
-								"\nPacket Data(Byte): " + packet.getData() +
-								"\nPacket Offset: " + packet.getOffset() +
-								"\nSocket Address: " + packet.getSocketAddress() +
-								"\n---------------------------------------------------------------------------\n"
-				);
+				printPacketDetails(2, packet);
 			}
         } catch (IOException e) {
             e.printStackTrace();
@@ -196,8 +187,8 @@ public class PacketUtilities {
     
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-		if (Client.getVerbose()) {
-			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
+		if (Server.getVerbose()) {
+			printPacketDetails(1, dp);
 		}
 		send(packet, false);
 	}
@@ -205,6 +196,9 @@ public class PacketUtilities {
 	private void send(TFTPPacket packet, boolean cacheForResend)
 			throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
+
+		if (Server.getVerbose())
+			printPacketDetails(2, dp);
 
 		if (cacheForResend) {
 			resendDatagram = dp;
@@ -245,8 +239,8 @@ public class PacketUtilities {
 			
 			socket.receive(rcvDatagram);
 			
-			if (Client.getVerbose()) {
-				IO.print("IN RECEIVE " + "local: " + socket.getLocalPort() + " destPort: " + rcvDatagram.getPort());
+			if (Server.getVerbose()) {
+				printPacketDetails(2, rcvDatagram);
 			}
 			
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
@@ -392,17 +386,11 @@ public class PacketUtilities {
 
         try {
             socket.receive(packet);
+
+			//1     Read request (RRQ)
+			//2     Write request (WRQ)
 			if (Client.getVerbose()) {
-				System.out.print(
-						"\n**************************Received Packet Information**************************" +
-								"\nPacket Type: " + getPacketType(packet) +
-								"\nPacket Source: " + packet.getAddress() +
-								"\nSource Port: " + packet.getPort() +
-								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
-								"\nPacket Data(Byte): " + packet.getData() +
-								"\nPacket Offset: " + packet.getOffset() +
-								"\n******************************************************************************\n")
-				;
+				printPacketDetails(1, packet);
 			}
         } catch ( SocketTimeoutException e){
             System.out.println("\nMax timeout reached, no packet received, closing socket...");
@@ -416,7 +404,38 @@ public class PacketUtilities {
         return packet;
     }
     
-    
+    public static void printPacketDetails(int type, DatagramPacket pk)
+	{
+		if (type == 1)
+		{
+			System.out.print(
+					"\n**************************Received Packet Information**************************" +
+							"\nPacket Type: " + getPacketType(pk) +
+							"\nPacket Source: " + pk.getAddress() +
+							"\nSource Port: " + pk.getPort() +
+							"\nPacket Data(String): " + Arrays.toString(pk.getData()) +
+							"\nPacket Data(Byte): " + pk.getData() +
+							"\nPacket Offset: " + pk.getOffset() +
+							"\n******************************************************************************\n")
+			;
+		} else if (type == 2)
+		{
+			System.out.print(
+					"\n----------------------------Sent Packet Information------------------------" +
+							"\nPacket Type: " + getPacketType(pk) +
+							"\nPacket Destination: " + pk.getAddress() +
+							"\nDestination Port: " + pk.getPort() +
+							"\nPacket Data(String): " + Arrays.toString(pk.getData()) +
+							"\nPacket Data(Byte): " + pk.getData() +
+							"\nPacket Offset: " + pk.getOffset() +
+							"\nSocket Address: " + pk.getSocketAddress() +
+							"\n---------------------------------------------------------------------------\n"
+			);
+		}
+	}
+
+
+
     private void sendIllegalOperationError(String message)
 			throws TFTPAbortException {
 		try {
