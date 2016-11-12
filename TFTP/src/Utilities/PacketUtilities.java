@@ -6,6 +6,7 @@ import java.net.DatagramPacket;
 import java.net.DatagramSocket;
 import java.net.InetAddress;
 import java.net.SocketTimeoutException;
+import java.nio.ByteBuffer;
 import java.util.Arrays;
 
 /**
@@ -36,9 +37,13 @@ public class PacketUtilities {
 	private int remoteTid = -1;   // default TID being set by the setmethod!
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
 	private DatagramPacket sendDatagram;
-	
-	
-	
+	private DatagramPacket resendDatagram;
+	private int maxResendAttempts = 4;
+	private int timeoutTime = 2000;
+
+
+
+
 	public PacketUtilities(DatagramSocket currentConnection){
 		this.socket = currentConnection;
 	}
@@ -61,6 +66,13 @@ public class PacketUtilities {
         return packet.getData()[1];
     }
 
+	public static int getBlockNum(DatagramPacket packet) {
+		byte[] blockID = {packet.getData()[2], packet.getData()[3]};
+		ByteBuffer wrapped = ByteBuffer.wrap(blockID);
+		Short num = wrapped.getShort();
+		return ((int) num);
+	}
+
     public static String getPacketType(DatagramPacket packet){
         if( getPacketID(packet)==1 ) return "Read Request";
         else if ( getPacketID(packet)==2 ) return "Write Request";
@@ -81,6 +93,19 @@ public class PacketUtilities {
         else if( isACKPacket(p) ) return "ACK Packet";
         else return "ERROR Packet";
     }
+
+	/**
+	 * Another version of getPacketName()
+	 * @param opcode
+	 * @return packet name
+     */
+	public static String getPacketName(int opcode){
+		if( opcode == 1 ) return "RRQ Packet";
+		else if( opcode == 2 ) return "WRQ Packet";
+		else if( opcode == 3 ) return "DATA Packet";
+		else if( opcode == 4 ) return "ACK Packet";
+		else return "ERROR Packet";
+	}
 
     /**
      * This method checks if a packet is a RRQ packet
@@ -135,9 +160,6 @@ public class PacketUtilities {
      * @param packet packet that is being sent
      */
     public static void send(DatagramPacket packet, DatagramSocket socket) {
-    	
-
-
 
         if( socket.isClosed() ){
             System.out.println("Socket is closed, unable to send packets");
@@ -146,7 +168,6 @@ public class PacketUtilities {
         try {
 
             socket.send(packet);
-            System.out.println("VERBOSE = " + Client.getVerbose() + "!!!!!!!!!!!!!!");
 			if (Client.getVerbose() == true) {
 				System.out.print(
 						"\n----------------------------Sent Packet Information------------------------" +
@@ -167,7 +188,7 @@ public class PacketUtilities {
     
     public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
     	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
-    	
+    	resendDatagram =  packet.generateDatagram(remoteAddress, requestPort);
 		send(sendDatagram, socket);
 		
 	}
@@ -178,6 +199,18 @@ public class PacketUtilities {
 		if (Client.getVerbose()) {
 			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
 		}
+		send(packet, false);
+	}
+
+	private void send(TFTPPacket packet, boolean cacheForResend)
+			throws IOException {
+		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
+
+		if (cacheForResend) {
+			resendDatagram = dp;
+		} else {
+			resendDatagram = null;
+		}
 		send(dp, socket);
 	}
     
@@ -185,6 +218,24 @@ public class PacketUtilities {
 		try {
 			send(TFTPPacket.createACKPAcket(blockNumber));
 		} catch (Exception e) {
+			throw new TFTPAbortException(e.getMessage());
+		}
+	}
+	private void echoAck(int blockNumber) throws IOException {
+		send(TFTPPacket.createACKPAcket(blockNumber));
+		IO.print("sent: ack #" + blockNumber + " in response to duplicate data");
+	}
+
+	private void resendLastPacket() throws TFTPAbortException {
+		if (resendDatagram == null) {
+			return; // commented out to fix a limitation in error sim: throw new
+			// TftpAbortException("Cannot resend last packet");
+		}
+
+		try {
+			socket.send(resendDatagram);
+			IO.print("Resending last transfer packet.");
+		} catch (IOException e) {
 			throw new TFTPAbortException(e.getMessage());
 		}
 	}
@@ -202,6 +253,8 @@ public class PacketUtilities {
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
 				IO.print("Port does not match error : "+ "remoteTid: "+remoteTid + " port: "+rcvDatagram.getPort() + " remoteAddress: "+ remoteAddress + "rcvDatagram.getAddress(): "+rcvDatagram.getAddress());
 				//@TODO need to handle this case
+				sendUnknownTidError(rcvDatagram.getAddress(),
+						rcvDatagram.getPort());
 				continue;
 			}
 			try {
@@ -240,6 +293,7 @@ public class PacketUtilities {
     
     
     private TFTPPacket receiveExpected(TFTPPacket.Type type, int blockNumber) throws TFTPAbortException {
+		int timeouts = 0;
 
 		try {
 			while (true) {
@@ -252,16 +306,22 @@ public class PacketUtilities {
 							TFTPDATAPacket dataPk = (TFTPDATAPacket) pk;
 							if (dataPk.getBlockNumber() == blockNumber) {
 								return dataPk;
+							} else if(dataPk.getBlockNumber() < blockNumber) {
+								// We received an old data packet, so send
+								// corresponding ack
+								echoAck(dataPk.getBlockNumber());
 							} else {
-							//@TODO handle this case for Received future block
+								// Received future block, this is invalid
+								sendIllegalOperationError("Received future data block number: "
+										+ dataPk.getBlockNumber());
 							}
 						} else if (pk.getTFTPacketType() == TFTPPacket.Type.ACK) {
 							TFTPACKPacket ackPk = (TFTPACKPacket) pk;
 							if (ackPk.getBlockNumber() == blockNumber) {
 								return pk;
 							} else if (ackPk.getBlockNumber() > blockNumber) {
-								//@TODO handle this case for Received future ACK
-
+								sendIllegalOperationError("Received future ack block number: "
+										+ ackPk.getBlockNumber());
 							}
 						}
 					}else if (pk instanceof TFTPErrorPacket) {
@@ -284,7 +344,16 @@ public class PacketUtilities {
 								"Received request packet within data transfer connection");
 						}
 				}catch (SocketTimeoutException e) {
-					e.printStackTrace();
+					if (timeouts >= maxResendAttempts) {
+						throw new TFTPAbortException(
+								"Connection timed out. Giving up.");
+					}
+
+					IO.print("Waiting to receive " + type + " #" + blockNumber
+							+ " timed out, trying again.");
+
+					timeouts++;
+					resendLastPacket();
 				}
 			}
 		} catch (IOException e) {
@@ -297,7 +366,9 @@ public class PacketUtilities {
 			TFTPDATAPacket pk = TFTPPacket.createDataPacket(blockNumber,
 					fileData, fileDataLength);
 
-			send(pk);
+			send(pk, true);
+			IO.print("sent: data #" + blockNumber
+					+ ((pk.isLastDataPacket()) ? " (last)" : ""));
 		} catch (Exception e) {
 
 			throw new TFTPAbortException(e.getMessage());
@@ -360,7 +431,8 @@ public class PacketUtilities {
 		}
 	}
 
-	private void sendUnkownTidError(InetAddress address, int port) {
+
+	private void sendUnknownTidError(InetAddress address, int port) {
 		try {
 			String errMsg = "Stop hacking foo!";
 			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(

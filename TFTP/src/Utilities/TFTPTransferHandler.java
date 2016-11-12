@@ -96,7 +96,6 @@ public class TFTPTransferHandler {
 		try {
 			// Check that file does not exist already
 			File file = new File(filePath);
-			IO.print(filePath);
 			if (file.exists()) {
 				//@TODO Handle
 				IO.print("File already exist");
@@ -221,7 +220,7 @@ public class TFTPTransferHandler {
 			// Wait for final ACK packet
 			this.packetUtilities.receiveAck(blockNumber);
 
-            IO.print("Successfully sent" + fileName + " to server.");
+            IO.print("Successfully sent '" + fileName + "' to server.");
 			fs.close();
 		} catch (TFTPAbortException e) {
 			IO.print("Failed to send " + fileName + ": " + "\""+ e.getMessage() + "\"");

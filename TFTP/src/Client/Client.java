@@ -17,13 +17,14 @@ public class Client {
 	private String fileName;
 	private String filePath;
 	private boolean mode = false;
-	private static boolean verbose = true;
+	private static boolean verbose;
 	private DatagramSocket sendReceiveSocket;
 	private PacketUtilities packetUtilities;
 	private TFTPTransferHandler transferHandler;
 
 	public Client() {
         this.defaultDir = System.getProperty("user.dir") + "/clientStorage/";
+		this.verbose = true;
 		this.fileName = "";
 		this.filePath = defaultDir+ fileName;
 		this.serverRequestPort = DEFAULT_PORT;
@@ -159,7 +160,6 @@ public class Client {
 	public static void main(String args[]) {
 		Client c = new Client();
 		Scanner scanner = new Scanner(System.in);
-        start();
 
 		try {
 			c.setServerInfo(InetAddress.getLocalHost(), DEFAULT_PORT );

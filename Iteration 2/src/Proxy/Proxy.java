@@ -20,9 +20,10 @@ public class Proxy {
     }
 
     private void startInput(){
-        IO.print( "TFTP Proxy.Proxy started."+"\nType 'help' to get the list of commands." );
+        IO.print( "TFTP Proxy.Proxy started."+"\nType 'help' to get the list of commands.\n" );
         while (true) {
-            String inputtedCommand = IO.input().trim().toLowerCase();
+            IO.print("Enter a command.");
+            String inputtedCommand = IO.input(">").trim().toLowerCase();
             try {
                 if( !inputtedCommand.isEmpty() ) Commands.commandList.get( inputtedCommand ).runCommand();
             } catch ( NullPointerException e) {

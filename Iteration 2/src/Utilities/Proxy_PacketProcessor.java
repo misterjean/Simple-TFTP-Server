@@ -1,11 +1,12 @@
 package Utilities;
 
+import com.sun.xml.internal.bind.v2.runtime.reflect.Lister;
+import com.sun.xml.internal.ws.api.message.Packet;
+
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.DatagramSocket;
-import java.net.InetAddress;
 import java.net.SocketException;
-import java.net.UnknownHostException;
 
 /**
  * Created by Yue on 2016-09-19.
@@ -17,12 +18,12 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port used to receive request packets from client
      */
-    private static final int DEFAULT_CLIENT_PORT = PacketUtilities.PROXY_PORT;
+    private static final int DEFAULT_CLIENT_PORT = 2300;
 
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static final int DEFAULT_SERVER_PORT = PacketUtilities.DEFAULT_PORT;
+    private static final int DEFAULT_SERVER_PORT = 6900;
 
     /**
      * the port that client socket uses to send and receive
@@ -79,6 +80,36 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private boolean isLast = false;
 
+    private static boolean errMode = false;
+
+    private static int err_opcode = 0;
+
+    private static int err_blockNum = 0;
+
+    private static int errCode = 0;
+
+    private static int delayTime = 0;
+
+    public static void setErrMode(boolean bool){ errMode = bool; }
+
+    public static boolean getErrMode() { return errMode; }
+
+    public static void setErr_opcode( int i ){ err_opcode = i; }
+
+    public static int getErr_opcode() { return err_opcode; }
+
+    public static void setErr_blockNum( int i ){ err_blockNum = i; }
+
+    public static int getErr_blockNum() { return err_blockNum; }
+
+    public static int getErrCode() { return errCode; }
+
+    public static void setErrCode( int i ) { errCode = i; }
+
+    public static int getDelayTime() { return delayTime; }
+
+    public static void setDelayTime( int i ) { delayTime = i; }
+
     /**
      * used to determine whether if any thread is receiving request packets
      * other threads should wait if the value of this variable is true
@@ -102,7 +133,7 @@ public class Proxy_PacketProcessor implements Runnable {
         //increase ID_count and set the ID for the new instance
         this.ID = ++ID_count;
 
-        IO.print("Packet Processor, ID: " + this.ID + " has started!");
+        IO.print( "Packet Processor, ID: " + this.ID + " has started!" );
 
         String stage = "request";
 
@@ -117,11 +148,14 @@ public class Proxy_PacketProcessor implements Runnable {
                     //get client port from request packet
                     this.port_client = this.requestPacket.getPort();
 
+                    //open a socket_receSend
+                    openSocketForReceiveAndSend();
+
                     //set the destination port of request packet to 69
                     this.requestPacket.setPort( DEFAULT_SERVER_PORT );
 
-                    //open a socket_receSend
-                    openSocketForReceiveAndSend();
+                    //error sim
+                    if( errMode ) errorSim( this.requestPacket );
 
                     //forward the received request packet to server
                     PacketUtilities.send(this.requestPacket, this.socket_receSend);
@@ -134,7 +168,6 @@ public class Proxy_PacketProcessor implements Runnable {
                     else if( PacketUtilities.isWRQPacket(this.requestPacket) ) {
                         this.requestPacketType = "WRQ";
                         stage = "ack";
-                        System.out.println("I am here");
                     }
                     else{
                         //error
@@ -144,28 +177,10 @@ public class Proxy_PacketProcessor implements Runnable {
                     break;
                 case "data":
                     //receive data packet
-                    if( this.requestPacketType.equals("RRQ") ){
-                        //receive data packet from server
-                        receiveDataPacket();
+                    receiveDataPacket();
 
-                        //get sever port
-                        this.port_server = this.dataPacket.getPort();
-
-                        //set the port to client port
-                        this.dataPacket.setPort( this.port_client );
-                    }
-                    else if( this.requestPacketType.equals("WRQ") ){
-                        //receive data packet from client
-                        receiveDataPacket();
-
-                        //set the port to server
-                        this.dataPacket.setPort( this.port_server );
-                    }
-                    else{
-                        //error packets
-                        IO.print("This should never happen");
-                        //more code
-                    }
+                    //err sim
+                    if( errMode ) errorSim( this.dataPacket );
 
                     //forward data packet to client
                     sendDataPacket();
@@ -178,34 +193,19 @@ public class Proxy_PacketProcessor implements Runnable {
 
                     break;
                 case "ack":
-                    if( this.requestPacketType.equals("RRQ") ){
-                        //receive ack packet from client
-                        receiveDataPacket();
+                    //receive ack packet
+                    receiveAckPacket();
 
-                        //set the port to server
-                        this.ackPacket.setPort( this.port_server );
-                    }
-                    else if( this.requestPacketType.equals("WRQ") ){
-                        //receive ack packet from server
-                        receiveAckPacket();
+                    //err sim
+                    if( errMode ) errorSim( this.ackPacket );
 
-                        //get server port
-                        this.port_server = ackPacket.getPort();
-
-                        //set port to client port
-                        this.ackPacket.setPort( this.port_client );
-                    }
-                    else{
-                        //error packet
-                        IO.print("This should never happen");
-                        //more code
-                    }
                     //forward ack packet to client
                     sendAckPacket();
 
                     //when last data has been processed
                     if( this.isLast ){
                         IO.print("Last data packet has been processed, file transfer completed!");
+                        IO.print("Press 'enter' to continue");
                         --ID_count;
                         isRunning = false;
                         break;
@@ -230,7 +230,7 @@ public class Proxy_PacketProcessor implements Runnable {
         //open socket_receive
         try {
             if( isReceiving ) {
-                IO.print( "Other packet processor is receiving, waiting...");
+                IO.print( "Other packet processor is receiving, waiting... " + "\n  -Press 'enter' to enter more commands-");
                 wait();
             }
 
@@ -239,7 +239,7 @@ public class Proxy_PacketProcessor implements Runnable {
             socket_receive = new DatagramSocket( DEFAULT_CLIENT_PORT);
 
 
-            IO.print("Waiting for request packets from client...");
+            IO.print("Waiting for request packets from client..." + "\n  -Press 'enter' to enter more command-");
         } catch (SocketException e) {
             IO.print("Unable to make socket listen on port" + DEFAULT_CLIENT_PORT );
             e.printStackTrace();
@@ -277,9 +277,29 @@ public class Proxy_PacketProcessor implements Runnable {
      * catches exceptions inside
      */
     private void receiveDataPacket(){
-            //this.socket_receSend.receive( this.dataPacket );
+        if( this.requestPacketType.equals("RRQ") ){
+            //receive data packet from server
             PacketUtilities.receive(this.dataPacket, this.socket_receSend);
 
+            //get server port
+            this.port_server = this.dataPacket.getPort();
+
+            //set the port to client port
+            this.dataPacket.setPort( this.port_client );
+        }
+        else if( this.requestPacketType.equals("WRQ") ){
+            //receive data packet from client
+            PacketUtilities.receive(this.dataPacket, this.socket_receSend);
+
+
+            //set the port to server
+            this.dataPacket.setPort( this.port_server );
+        }
+        else{
+            //error packets
+            IO.print("This should never happen");
+            //more code
+        }
     }
 
     /**
@@ -295,8 +315,31 @@ public class Proxy_PacketProcessor implements Runnable {
      * catches exceptions inside
      */
     private void receiveAckPacket(){
-            //this.socket_receSend.receive( this.ackPacket );
+        if( this.requestPacketType.equals("RRQ") ){
+            //receive ack packet from client
             PacketUtilities.receive(this.ackPacket, this.socket_receSend);
+
+            //set the port to server
+            this.ackPacket.setPort( this.port_server );
+
+            //set the address
+            this.ackPacket.setAddress( this.requestPacket.getAddress() );
+        }
+        else if( this.requestPacketType.equals("WRQ") ){
+            //receive ack packet from server
+            PacketUtilities.receive(this.ackPacket, this.socket_receSend);
+
+            //get server port
+            this.port_server = this.ackPacket.getPort();
+
+            //set port to client port
+            this.ackPacket.setPort( this.port_client );
+        }
+        else{
+            //error packet
+            IO.print("This should never happen");
+            //more code
+        }
     }
     /**
      * this method sends ack packet
@@ -304,16 +347,95 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private void sendAckPacket(){
             //this.socket_receSend.send( this.ackPacket );
-    	    System.out.println("About to send ACK From Proxy");
-    	    System.out.println("Proxy: "+ this.ackPacket.getData() +" port: " + this.ackPacket.getPort()+"Address: "+ this.ackPacket.getAddress());
-    	    System.out.println("socket_receSend: "+ this.socket_receSend);
-    	    try {
-				this.ackPacket.setAddress(InetAddress.getLocalHost());
-			} catch (UnknownHostException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}
-    	    
             PacketUtilities.send(this.ackPacket, this.socket_receSend);
-}
+    }
+
+    private boolean compareOpcode( DatagramPacket packet ){
+        return packet.getData()[1] == err_opcode;
+    }
+
+    private static void delayPacket( DatagramSocket socket ){
+        try {
+            Thread.currentThread().sleep( delayTime );
+        } catch (InterruptedException e) {
+            IO.print("Cannot make current thread sleep!");
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * This method is used to compare the block number of the target packet and the
+     * @param packet
+     * @return
+     */
+    private boolean compareBlockNum( DatagramPacket packet ){
+        return err_blockNum == PacketUtilities.getBlockNum( packet );
+    }
+
+    /**
+     * This method is used to generate errors on the target packet
+     * @param packet the target packet
+     */
+    private void errorSim(DatagramPacket packet){
+        if( (err_opcode  == 1 || err_opcode == 2) && compareOpcode(packet) ){ //for RRQ and WRQ
+            switch( errCode ){
+                case 1: //lose a packet
+                    IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                            " will be lost. Proxy will re-try to receive another one." );
+                    receiveRequestPacket();
+
+                    //set the destination port of request packet to 69
+                    this.requestPacket.setPort( DEFAULT_SERVER_PORT );
+
+                    break;
+                case 2: //delay a packet
+                    IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                            " will be delayed for " + delayTime + " milliseconds(" + delayTime/1000 + " seconds).");
+                    delayPacket( this.socket_receSend );
+                    break;
+                case 3: //duplicate a packet
+                    IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                            " will be duplicated. ");
+                    PacketUtilities.send(packet, this.socket_receSend);
+                    break;
+                default:
+                    IO.print("This should never happen!!!!!");
+                    break;
+            }
+        }
+        else if( (err_opcode == 3 || err_opcode == 4) && compareOpcode(packet) ){ //for DATA and WRQ
+            if( compareBlockNum(packet) ){
+                switch( errCode ){
+                    case 1: //lose a packet
+                        IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                                " will be lost. Proxy will re-try to receive another one." );
+
+                        //repeat the receiving process
+                        if( PacketUtilities.getPacketID( packet ) == 3){ // DATA
+                            receiveDataPacket();
+                        }
+                        else{ //ACK
+                            receiveAckPacket();
+                        }
+                        break;
+                    case 2: //delay a packet
+                        IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                                " will be delayed. "  );
+                        delayPacket( this.socket_receSend );
+                        break;
+                    case 3: //duplicate a packet
+                        IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
+                                " will be duplicated. ");
+                        sendAckPacket();
+                        break;
+                    default:
+                        IO.print("This should never happen!!!!!");
+                        break;
+                }
+            }
+        }
+        else if( err_opcode <= 0 || err_opcode > 4) {
+            IO.print( " This should never happen!!!!! ");
+        }
+    }
 }

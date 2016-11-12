@@ -6,7 +6,7 @@
 1. Import the project. File -> Import -> Existing Projects Into Workspace OR create a new JAVA project and copy the three folders in src (excluding .idea) into the src folder of your new project. 
 2. Expand src\core\.
 3. Run the Server Class. Right click the file in the navigation bar, then 'Run As' and then 'Java Application' 
-4. Run the Proxy Class. 
+4. Run the TFTPSim Class. 
 5. Run the Client Class.
 6. On the client, server or proxy, type 'help' for a list of commands (including read, write and change directory and more)
 

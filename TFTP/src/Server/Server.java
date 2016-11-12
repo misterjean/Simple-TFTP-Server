@@ -1,19 +1,18 @@
 package Server;
-import Utilities.PacketUtilities;
-import Utilities.TFTPPacket;
-import Utilities.TFTPRRQWRQPacket;
-import Utilities.IO;
+import Utilities.*;
+
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
 import static Utilities.PacketUtilities.DEFAULT_PORT;
+import Utilities.TFTPErrorPacket.ErrorType;
 
 
 
 public class Server {
 	//TODO:  Set port
     static Scanner scanner = new Scanner(System.in);
-    private static final int SERVERPORT = DEFAULT_PORT; //FOR NOW
+    private static final int SERVERPORT = DEFAULT_PORT;
     private static String defaultDir;
     private String publicFolder = defaultDir; // where all the file are stored
     byte[] buffer;
@@ -38,7 +37,7 @@ public class Server {
     public static void printCommands() {
         IO.print("<------------------------------------>");
         IO.print("help: show the help menu");
-        IO.print("stop: stop the client");
+        IO.print("stop: stop the server");
         IO.print("ls: list all files in the working directory");
         IO.print("<------------------------------------>");
     }
@@ -59,7 +58,7 @@ public class Server {
                 IO.print("Available commands:");
                 printCommands();
             } else if (command[0].equals("stop")) {
-                IO.print("Stopping client");
+                IO.print("Stopping server");
                 serverSocket.close();
                 System.exit(0);
                 return;
@@ -140,10 +139,56 @@ public class Server {
         														  datagrampacket.getPort(), this);
             		// Start a Service thread 
             		clientConnection.start();
-        		}
+        		}else {
+                    // We received a valid packet but not a request
+                    // Ignore error packets, otherwise send error
+                    if (!(packet instanceof TFTPErrorPacket)) {
+                        // Protocol ambiguity: could send either
+                        // an illegal op or unknown TID
+                        // The following implementation opted for
+                        // sending an illegal op
+                        try {
+                            DatagramSocket errorSocket = new DatagramSocket();
+                            String errMsg = "Received the wrong kind of packet on request listener.";
+                            TFTPErrorPacket errorPacket = TFTPPacket
+                                    .createErrorPacket(
+                                            ErrorType.ILLEGAL_OPERATION, errMsg);
+                            datagrampacket = errorPacket.generateDatagram(datagrampacket.getAddress(),
+                                    datagrampacket.getPort());
+                            try {
+                                errorSocket.send(datagrampacket);
+                                errorSocket.close();
+                            }catch (IOException e) {
+                                e.printStackTrace();
+                            }
+
+                            IO.print("Sending illegal operation error packet with message: "
+                                    + errMsg);
+                        }catch(SocketException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
         		
         	}catch(IllegalArgumentException e) {
-        		e.printStackTrace(); // bad packet
+                // We got an invalid packet
+                // Open new socket and send error packet response
+                try {
+                    DatagramSocket errorSocket = new DatagramSocket();
+                    IO.print("Server received invalid request packet");
+                    TFTPErrorPacket errorPacket = TFTPPacket.createErrorPacket(
+                            ErrorType.ILLEGAL_OPERATION, e.getMessage());
+                    datagrampacket = errorPacket.generateDatagram(datagrampacket.getAddress(),
+                            datagrampacket.getPort());
+                    try {
+                        errorSocket.send(datagrampacket);
+                        errorSocket.close();
+                    }catch (IOException io){
+                        io.printStackTrace();
+                    }
+                }catch (SocketException se) {
+                    se.printStackTrace();
+                }
         	}
         } //end while
         

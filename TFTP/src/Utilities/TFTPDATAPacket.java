@@ -1,5 +1,7 @@
 package Utilities;
 
+import Client.Client;
+
 import java.io.ByteArrayOutputStream;
 
 public class TFTPDATAPacket extends TFTPPacket {
@@ -117,13 +119,14 @@ public class TFTPDATAPacket extends TFTPPacket {
 		 *  Let check that we are sending the right file content for .txt file
 		 */
 		byte b [] = stream.toByteArray();
-	      System.out.println("Print the content");
-	      
-	      for(int x = 0; x < b.length; x++) {
-	         // printing the characters
-	         System.out.print((char)b[x]  + "   "); 
-	      }
-	      System.out.println("   ");// remove this later
+		if (Client.getVerbose()) {
+			System.out.println("Print the content");
+
+			for (int x = 0; x < b.length; x++) {
+				// printing the characters
+				System.out.print((char) b[x] + "   ");
+			}
+		}
 
 		return stream.toByteArray();
 	}
