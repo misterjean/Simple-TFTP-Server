@@ -2,10 +2,7 @@ package Utilities;
 
 import Client.Client;
 import java.io.IOException;
-import java.net.DatagramPacket;
-import java.net.DatagramSocket;
-import java.net.InetAddress;
-import java.net.SocketTimeoutException;
+import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
 
@@ -36,7 +33,6 @@ public class PacketUtilities {
 	private int requestPort = 9000; //default request port over 9000, this is being set before being used by the setMethod!
 	private int remoteTid = -1;   // default TID being set by the setmethod!
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
-	private DatagramPacket sendDatagram;
 	private DatagramPacket resendDatagram;
 	private int maxResendAttempts = 4;
 	private int timeoutTime = 2000;
@@ -45,7 +41,13 @@ public class PacketUtilities {
 
 
 	public PacketUtilities(DatagramSocket currentConnection){
+
 		this.socket = currentConnection;
+		try {
+			this.socket.setSoTimeout(timeoutTime);
+		} catch (SocketException e) {
+			e.printStackTrace();
+		}
 	}
 
     /**
@@ -168,7 +170,7 @@ public class PacketUtilities {
         try {
 
             socket.send(packet);
-			if (Client.getVerbose() == true) {
+			//if (Client.getVerbose() == true) {
 				System.out.print(
 						"\n----------------------------Sent Packet Information------------------------" +
 								"\nPacket Type: " + getPacketType(packet) +
@@ -180,22 +182,20 @@ public class PacketUtilities {
 								"\nSocket Address: " + packet.getSocketAddress() +
 								"\n---------------------------------------------------------------------------\n"
 				);
-			}
+			//}
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
     public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
-    	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
     	resendDatagram =  packet.generateDatagram(remoteAddress, requestPort);
-		send(sendDatagram, socket);
+		send(packet.generateDatagram(remoteAddress, requestPort), socket);
 		
 	}
 
     
     private void send(TFTPPacket packet) throws IOException {
-		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
 		if (Client.getVerbose()) {
 			IO.print("IN SEND: " + packet + " remoteTid: " + remoteTid);
 		}
@@ -216,7 +216,8 @@ public class PacketUtilities {
     
     public void sendAck(int blockNumber) throws TFTPAbortException {
 		try {
-			send(TFTPPacket.createACKPAcket(blockNumber));
+			send(TFTPPacket.createACKPAcket(blockNumber), false);
+			IO.print("sent: ack #" + blockNumber);
 		} catch (Exception e) {
 			throw new TFTPAbortException(e.getMessage());
 		}
@@ -280,6 +281,7 @@ public class PacketUtilities {
 	}
     
     public TFTPACKPacket receiveAck(int blockNumber) throws TFTPAbortException {
+
     	TFTPACKPacket pk = (TFTPACKPacket) receiveExpected(TFTPPacket.Type.ACK,
 				blockNumber);
 
@@ -392,7 +394,7 @@ public class PacketUtilities {
 
         try {
             socket.receive(packet);
-			if (Client.getVerbose()) {
+			//if (Client.getVerbose()) {
 				System.out.print(
 						"\n**************************Received Packet Information**************************" +
 								"\nPacket Type: " + getPacketType(packet) +
@@ -401,9 +403,8 @@ public class PacketUtilities {
 								"\nPacket Data(String): " + Arrays.toString(packet.getData()) +
 								"\nPacket Data(Byte): " + packet.getData() +
 								"\nPacket Offset: " + packet.getOffset() +
-								"\n******************************************************************************\n")
-				;
-			}
+								"\n******************************************************************************\n");
+			//}
         } catch ( SocketTimeoutException e){
             System.out.println("\nMax timeout reached, no packet received, closing socket...");
             socket.close();

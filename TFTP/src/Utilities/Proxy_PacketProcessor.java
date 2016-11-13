@@ -396,7 +396,9 @@ public class Proxy_PacketProcessor implements Runnable {
                 case 3: //duplicate a packet
                     IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
                             " will be duplicated. ");
+                    IO.printSimErrMsg("This is the first duplicated " + PacketUtilities.getPacketName( packet ) );
                     PacketUtilities.send(packet, this.socket_receSend);
+                    IO.printSimErrMsg("This is the second duplicated " + PacketUtilities.getPacketName( packet ));
                     break;
                 default:
                     IO.print("This should never happen!!!!!");
@@ -426,7 +428,10 @@ public class Proxy_PacketProcessor implements Runnable {
                     case 3: //duplicate a packet
                         IO.printSimErrMsg(PacketUtilities.getPacketType( packet ) +
                                 " will be duplicated. ");
-                        sendAckPacket();
+                        IO.printSimErrMsg("This is the first duplicated " + PacketUtilities.getPacketName( packet ) );
+                        if( PacketUtilities.getPacketID( packet ) == 3) sendDataPacket();
+                        else sendAckPacket();
+                        IO.printSimErrMsg("This is the second duplicated " + PacketUtilities.getPacketName( packet ) );
                         break;
                     default:
                         IO.print("This should never happen!!!!!");
