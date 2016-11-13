@@ -19,6 +19,8 @@ public class Proxy {
 
     }
 
+    public static boolean getVerbose(){return true;}
+
     private void startInput(){
         IO.print( "TFTP Proxy.Proxy started."+"\nType 'help' to get the list of commands.\n" );
         while (true) {

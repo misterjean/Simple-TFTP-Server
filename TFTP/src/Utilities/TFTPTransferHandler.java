@@ -1,6 +1,7 @@
 package Utilities;
 
 import Client.Client;
+import Server.Server;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -232,9 +233,6 @@ public class TFTPTransferHandler {
 	
 	public void receiveFileFromServer() {
 		try {
-            if (Client.getVerbose()) {
-                IO.print("IN RCV TO SERVER: " + fileName);
-            }
 			// Check write permissions
 			File file = new File(filePath);
 			if (file.exists() && !file.canWrite()) {

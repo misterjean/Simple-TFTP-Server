@@ -248,7 +248,7 @@ public class Proxy_PacketProcessor implements Runnable {
         }
 
         //receive request packet
-        PacketUtilities.receive( this.requestPacket, socket_receive);
+        PacketUtilities.receive( this.requestPacket, socket_receive, true);
 
         //close socket_receive to finish receive
         socket_receive.close();
@@ -279,7 +279,7 @@ public class Proxy_PacketProcessor implements Runnable {
     private void receiveDataPacket(){
         if( this.requestPacketType.equals("RRQ") ){
             //receive data packet from server
-            PacketUtilities.receive(this.dataPacket, this.socket_receSend);
+            PacketUtilities.receive(this.dataPacket, this.socket_receSend, true);
 
             //get server port
             this.port_server = this.dataPacket.getPort();
@@ -289,7 +289,7 @@ public class Proxy_PacketProcessor implements Runnable {
         }
         else if( this.requestPacketType.equals("WRQ") ){
             //receive data packet from client
-            PacketUtilities.receive(this.dataPacket, this.socket_receSend);
+            PacketUtilities.receive(this.dataPacket, this.socket_receSend, true);
 
 
             //set the port to server
@@ -317,7 +317,7 @@ public class Proxy_PacketProcessor implements Runnable {
     private void receiveAckPacket(){
         if( this.requestPacketType.equals("RRQ") ){
             //receive ack packet from client
-            PacketUtilities.receive(this.ackPacket, this.socket_receSend);
+            PacketUtilities.receive(this.ackPacket, this.socket_receSend, true);
 
             //set the port to server
             this.ackPacket.setPort( this.port_server );
@@ -327,7 +327,7 @@ public class Proxy_PacketProcessor implements Runnable {
         }
         else if( this.requestPacketType.equals("WRQ") ){
             //receive ack packet from server
-            PacketUtilities.receive(this.ackPacket, this.socket_receSend);
+            PacketUtilities.receive(this.ackPacket, this.socket_receSend, true);
 
             //get server port
             this.port_server = this.ackPacket.getPort();

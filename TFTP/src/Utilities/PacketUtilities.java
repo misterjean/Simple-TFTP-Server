@@ -2,6 +2,7 @@ package Utilities;
 
 import Client.Client;
 import Server.Server;
+import Proxy.Proxy;
 import java.io.IOException;
 import java.net.*;
 import java.nio.ByteBuffer;
@@ -34,7 +35,6 @@ public class PacketUtilities {
 	private int requestPort = 9000; //default request port over 9000, this is being set before being used by the setMethod!
 	private int remoteTid = -1;   // default TID being set by the setmethod!
 	private DatagramPacket rcvDatagram = TFTPPacket.createDatagramForReceiving();
-	private DatagramPacket sendDatagram;
 	private DatagramPacket resendDatagram;
 	private int maxResendAttempts = 4;
 	private int timeoutTime = 2000;
@@ -173,27 +173,25 @@ public class PacketUtilities {
         try {
 
             socket.send(packet);
-			if (Client.getVerbose() == true) {
-				printPacketDetails(2, packet);
-			}
+			printPacketDetails(2, packet);
+
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
     
     public void sendRequest(TFTPRRQWRQPacket packet) throws IOException {
-    	sendDatagram = packet.generateDatagram(remoteAddress, requestPort);
     	resendDatagram =  packet.generateDatagram(remoteAddress, requestPort);
-		send(sendDatagram, socket);
+		send(packet.generateDatagram(remoteAddress, requestPort), socket);
 		
 	}
 
     
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-		if (Server.getVerbose()) {
-			printPacketDetails(1, dp);
-		}
+
+		printPacketDetails(2, dp);
+
 		send(packet, false);
 	}
 
@@ -201,8 +199,7 @@ public class PacketUtilities {
 			throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
 
-		if (Server.getVerbose())
-			printPacketDetails(2, dp);
+		printPacketDetails(2, dp);
 
 		if (cacheForResend) {
 			resendDatagram = dp;
@@ -382,7 +379,7 @@ public class PacketUtilities {
      * @param socket socket used to receive packets
      * @return received packets
      */
-    public static DatagramPacket receive(DatagramPacket packet, DatagramSocket socket) {
+    public static DatagramPacket receive(DatagramPacket packet, DatagramSocket socket, boolean verbose) {
 
         if( socket.isClosed() ) {
             System.out.print("Socket is closed, unable to receive packets");
@@ -408,35 +405,36 @@ public class PacketUtilities {
         return packet;
     }
     
-    public static void printPacketDetails(int type, DatagramPacket pk)
+    public static void printPacketDetails(int type, DatagramPacket pk)//, boolean verbose)
 	{
 		if (type == 1)
 		{
-			System.out.print(
-					"\n**************************Received Packet Information**************************" +
-							"\nPacket Type: " + getPacketType(pk) +
-							"\nPacket Source: " + pk.getAddress() +
-							"\nSource Port: " + pk.getPort() +
-							"\nPacket Data(String): " + Arrays.toString(pk.getData()) +
-							"\nPacket Data(Byte): " + pk.getData() +
-							"\nPacket Offset: " + pk.getOffset() +
-							"\n******************************************************************************\n")
-			;
+				System.out.print(
+						"\n**************************Received Packet Information**************************" +
+								"\nPacket Type: " + getPacketType(pk) +
+								"\nPacket Source: " + pk.getAddress() +
+								"\nSource Port: " + pk.getPort() +
+								"\nPacket Data(String): " + Arrays.toString(pk.getData()) +
+								"\nPacket Data(Byte): " + pk.getData() +
+								"\nPacket Offset: " + pk.getOffset() +
+								"\n******************************************************************************\n");
+
 		} else if (type == 2)
 		{
 			System.out.print(
-					"\n----------------------------Sent Packet Information------------------------" +
+					"\n**************************Sent Packet Information**************************" +
 							"\nPacket Type: " + getPacketType(pk) +
 							"\nPacket Destination: " + pk.getAddress() +
 							"\nDestination Port: " + pk.getPort() +
 							"\nPacket Data(String): " + Arrays.toString(pk.getData()) +
 							"\nPacket Data(Byte): " + pk.getData() +
-							"\nPacket Offset: " + pk.getOffset() +
-							"\nSocket Address: " + pk.getSocketAddress() +
-							"\n---------------------------------------------------------------------------\n"
-			);
+								"\nPacket Offset: " + pk.getOffset() +
+								"\nSocket Address: " + pk.getSocketAddress() +
+								"\n******************************************************************************\n");
+
+			}
 		}
-	}
+
 
 
 
