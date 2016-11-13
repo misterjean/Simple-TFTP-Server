@@ -2,9 +2,13 @@ package Utilities;
 
 /**
  * Created by Yue on 2016-11-04.
+ * This class provides a menu for simulating errors on proxy
  */
 public class Menu {
-
+    /**
+     * This method is used to print menu option
+     * @param i stage
+     */
     private static void printMenu(int i){
         switch( i ){
             case 0:
@@ -23,6 +27,9 @@ public class Menu {
         }
     }
 
+    /**
+     * This method provides the actual functionality of menu
+     */
     public static  void startMenu(){
         int stage = 0;
         int opcode = 0;
@@ -60,14 +67,9 @@ public class Menu {
                      */
                     if( opcode > 2 ){
                         IO.print( "Please enter the block number: " );
-                        while( blockNum <= 0 ) {
-                            rawInput = IO.input( ">" );
-                            if( rawInput.equals("exit") || rawInput.equals("quit") || rawInput.equals("q") ) {
-                                stage = -1;
-                                break;
-                            }
-                            blockNum = IO.string2int( rawInput );
-                        }
+                        int out1 = askForInt();
+                        if ( out1 == -1 ) stage = -1;
+                        else blockNum = out1;
                     }
 
                     break;
@@ -95,14 +97,9 @@ public class Menu {
                     }
                     if( errorCode == 2){ //delay a packet, prompt user for a time for delay
                         IO.print( "Please enter a time(millisecond) for delay: " );
-                        while( delayTime <= 0 ){
-                            rawInput = IO.input( ">" );
-                            if( rawInput.equals("exit") || rawInput.equals("quit") || rawInput.equals("q") ) {
-                                stage = -1;
-                                break;
-                            }
-                            delayTime = IO.string2int( rawInput );
-                        }
+                        int out2 = askForInt();
+                        if( out2 == -1 ) stage = -1;
+                        else delayTime = out2;
                     }
                     break;
                 case 1000:
@@ -123,7 +120,7 @@ public class Menu {
                             Proxy_PacketProcessor.setDelayTime( delayTime );
                             bool = false;
                         }
-                        else if ( str.equals("no") || str.equals("n") ) {
+                        else if ( str.equals("no") || str.equals("n") || quitOrNah( str ) ) {
                             IO.print( "Setting has been aborted." );
                             bool = false;
                         }
@@ -138,6 +135,11 @@ public class Menu {
         //end of while loop
     }
 
+    /**
+     * This method is used to convert an error code(int), into error name(string)
+     * @param errorCode error code that needs to be converted
+     * @return the corresponding error name
+     */
     private static String getErrorName( int errorCode ){
         switch( errorCode ){
             case 1:
@@ -151,4 +153,27 @@ public class Menu {
         }
     }
 
+    /**
+     * This method is used to detected whether user wants to quit input or not
+     * @param string user input
+     * @return true if key word, such as 'exit', 'quit', or 'q' is detected, false otherwise
+     */
+    private static boolean quitOrNah( String string ){
+        return string.equals("exit") || string.equals("quit") || string.equals("q");
+    }
+
+    /**
+     * This method is used to prompt user to input a int value,
+     * @return -1 if the user decided to quit, 0 if normal
+     */
+    private static int askForInt() {
+        String rawInput = "-2";
+        while( IO.string2int( rawInput ) <= 0 ){
+            rawInput = IO.input( ">" );
+            if( quitOrNah( rawInput ) ) {
+                return -1;
+            }
+        }
+        return IO.string2int( rawInput );
+    }
 }

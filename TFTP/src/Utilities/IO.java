@@ -1,7 +1,5 @@
 package Utilities;
 
-import org.omg.PortableInterceptor.SYSTEM_EXCEPTION;
-
 import java.util.Scanner;
 
 /**
@@ -10,17 +8,10 @@ import java.util.Scanner;
  * and several useful functions related to I/O
  */
 public class IO {
-
     /**
      * the scanner used to gather user input
      */
     private static Scanner scanner = new Scanner(System.in);
-
-    /**
-     * Create max file size constant
-     */
-
-    public static final int MAX_FILE_SIZE = 33553920;
 
     /**
      * just System.out.print(), in a shorter form
@@ -32,7 +23,6 @@ public class IO {
 
     /**
      * it prompts user to input something
-     *
      * @param prompt message that will be print out when it prompts user to input
      * @return the user input (String)
      */
@@ -41,14 +31,8 @@ public class IO {
         return scanner.nextLine();
     }
 
-    public static String input() {
-        print("\n");
-        return scanner.nextLine();
-    }
-
     /**
      * to determine whether a string, especially from user input, is an integer or not
-     *
      * @param string the target string
      * @return true if the string is an integer, false otherwise
      */
@@ -62,26 +46,19 @@ public class IO {
     }
 
     /**
-     * same as isInteger(String), however this one will assign the integer to another variable
-     *
-     * @param string the target string
-     * @param output the integer that converted from the target string
-     * @return true if the string is an integer false otherwise
+     * This method is used to convert a string to integer
+     * @param string the string needs to be convert
+     * @return the int value
      */
-    public static boolean isInteger(String string, int output) {
-        try {
-            output = Integer.parseInt(string);
-            return true;
-        } catch (NumberFormatException e) {
-            return false;
-        }
-    }
-
     public static int string2int( String string ){
         if( isInteger( string ) ) return Integer.parseInt( string );
         else return -1;
     }
 
+    /**
+     * This method is used to inform user the messages related to proxy-simulate-error
+     * @param string error message
+     */
     public static void printSimErrMsg( String string ){
         print( "\nSIMULATED ERROR MESSAGE: " + string );
     }

@@ -2,8 +2,6 @@ package Proxy;
 
 import Utilities.Commands;
 import Utilities.IO;
-import Utilities.Proxy_PacketProcessor;
-
 import java.io.IOException;
 
 /**
@@ -12,21 +10,24 @@ import java.io.IOException;
  */
 public class Proxy {
 
+    /**
+     * Constructor for Proxy()
+     */
     private Proxy(){
-        Commands.generateCommands();
-
+        Commands.initCommands();
         startInput();
-
     }
 
-    public static boolean getVerbose(){return true;}
-
+    /**
+     * This method starts the UI for Proxy()
+     */
     private void startInput(){
         IO.print( "TFTP Proxy.Proxy started."+"\nType 'help' to get the list of commands.\n" );
         while (true) {
             IO.print("Enter a command.");
             String inputtedCommand = IO.input(">").trim().toLowerCase();
             try {
+                if( Commands.isSpecialCommand( inputtedCommand) ) Commands.parseSpecialCommand( inputtedCommand );
                 if( !inputtedCommand.isEmpty() ) Commands.commandList.get( inputtedCommand ).runCommand();
             } catch ( NullPointerException e) {
                 IO.print("The specified command was not recognized.\n");
@@ -35,6 +36,7 @@ public class Proxy {
             }
         }
     }
+
 
     public static void main(String[] args) {
         new Proxy();

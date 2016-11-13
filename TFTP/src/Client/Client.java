@@ -156,6 +156,11 @@ public class Client {
 		sendReceiveSocket.close();
 	}
 
+	public PacketUtilities getPacketUtilities() {
+		return this.packetUtilities;
+	}
+
+
 
 	public static void main(String args[]) {
 		Client c = new Client();
@@ -202,11 +207,7 @@ public class Client {
 					c.serverRequestPort = PROXY_PORT;
 				}
 			} else if (command[0].equals("verbose")) {
-				if (c.verbose == true) {
-					c.verbose = false;
-				} else if (c.verbose == false) {
-					c.verbose = true;
-				}
+				c.getPacketUtilities().toggleVerbose();
 			} else if (command[0].equals("ls")) {
 				listFiles();
             } else if ((command[0].equals("cd"))
