@@ -90,8 +90,8 @@ public class TFTPSim {
 
 
 	protected InetAddress serverAddress;
-	protected int serverRequestPort = 6900;
-	protected int clientRequestPort = 2300;
+	protected int serverRequestPort = 69;
+	protected int clientRequestPort = 23;
 	protected int threadCount = 0;
 	protected boolean stopping = false;
 	protected RequestReceiveThread requestReceive;

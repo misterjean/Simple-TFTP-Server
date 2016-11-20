@@ -4,6 +4,7 @@ package Utilities;
 import Server.Server;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.util.Arrays;
@@ -409,9 +410,12 @@ public class PacketUtilities {
         return packet;
     }
     
-    public void printPacketDetails(int type, DatagramPacket pk, boolean verbose)
-	{
+    public void printPacketDetails(int type, DatagramPacket pk, boolean verbose) throws UnsupportedEncodingException {
 		if (verbose) {
+
+			String data = new String(pk.getData(), "UTF-8");
+
+
 			if (type == 1) {
 
 				System.out.print(
@@ -420,7 +424,7 @@ public class PacketUtilities {
 								"\nPacket Source: " + pk.getAddress() +
 								"\nSource Port: " + pk.getPort() +
 								"\nPacket Data(Byte): " + Arrays.toString(pk.getData()) +
-								"\nPacket Data(String): " + pk.getData() +
+								"\nPacket Data(String): " + data +
 								"\nPacket Offset: " + pk.getOffset() +
 								"\n******************************************************************************\n");
 
@@ -431,7 +435,7 @@ public class PacketUtilities {
 								"\nPacket Destination: " + pk.getAddress() +
 								"\nDestination Port: " + pk.getPort() +
 								"\nPacket Data(Byte): " + Arrays.toString(pk.getData()) +
-								"\nPacket Data(String): " + pk.getData() +
+								"\nPacket Data(String): " + data +
 								"\nPacket Offset: " + pk.getOffset() +
 								"\nSocket Address: " + pk.getSocketAddress() +
 								"\n******************************************************************************\n");
