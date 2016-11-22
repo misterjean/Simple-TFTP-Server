@@ -17,14 +17,12 @@ public class Client {
 	private String fileName;
 	private String filePath;
 	private boolean mode = false;
-	private static boolean verbose;
 	private DatagramSocket sendReceiveSocket;
 	private PacketUtilities packetUtilities;
 	private TFTPTransferHandler transferHandler;
 
 	public Client() {
         this.defaultDir = System.getProperty("user.dir") + "/clientStorage/";
-		this.verbose = true;
 		this.fileName = "";
 		this.filePath = defaultDir+ fileName;
 		this.serverRequestPort = DEFAULT_PORT;
@@ -36,6 +34,7 @@ public class Client {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		packetUtilities = new PacketUtilities(sendReceiveSocket);
 
 
 	}
@@ -47,8 +46,6 @@ public class Client {
 
 
 	public TFTPTransferHandler getTFTPTransferHandler() throws TFTPAbortException {
-
-		packetUtilities = new PacketUtilities(sendReceiveSocket);
 
 		if (packetUtilities == null) {
 			throw new TFTPAbortException("Server address not specified");
@@ -97,6 +94,8 @@ public class Client {
 
 	}
 
+	public boolean getVerbose() {return this.packetUtilities.getVerbose();}
+
 	public static void listFiles() {
 		java.io.File[] files = new java.io.File(defaultDir).listFiles();
 		if (files != null) {
@@ -121,13 +120,13 @@ public class Client {
 	}
 
 	public void printState(){
-		if (mode == false) {
+		if (!mode) {
 			IO.print("Mode is set to NORMAL");
 		} else {
 			IO.print("Mode is set to TESTING");
 		}
 
-		if (verbose == false){
+		if (!this.packetUtilities.getVerbose()){
 			IO.print("Verbose is set to OFF");
 		} else {
 			IO.print("Verbose is set to ON");
@@ -135,8 +134,6 @@ public class Client {
 
 		IO.print("Current working directory " + defaultDir);
 	}
-
-	public static boolean getVerbose(){return verbose;}
 
 	public static void start() {
 		IO.print("<---------------------------------------------->");
@@ -207,7 +204,7 @@ public class Client {
 					c.serverRequestPort = PROXY_PORT;
 				}
 			} else if (command[0].equals("verbose")) {
-				c.getPacketUtilities().toggleVerbose();
+				 c.getPacketUtilities().toggleVerbose();
 			} else if (command[0].equals("ls")) {
 				listFiles();
             } else if ((command[0].equals("cd"))

@@ -77,6 +77,8 @@ public class PacketUtilities {
 		this.verbose = !this.verbose;
 	}
 
+	public boolean getVerbose() { return this.verbose;}
+
 	public static int getBlockNum(DatagramPacket packet) {
 		byte[] blockID = {packet.getData()[2], packet.getData()[3]};
 		ByteBuffer wrapped = ByteBuffer.wrap(blockID);

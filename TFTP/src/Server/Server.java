@@ -6,7 +6,7 @@ import java.net.*;
 import java.util.Scanner;
 import static Utilities.PacketUtilities.DEFAULT_PORT;
 import Utilities.TFTPErrorPacket.ErrorType;
-
+import Utilities.PacketUtilities;
 
 
 public class Server {
@@ -46,8 +46,10 @@ public class Server {
     }
 
     public static boolean getVerbose(){return verbose;}
+    public void toggleVerbose() {t}
 
-    static synchronized void getCommands() {
+
+     static synchronized void getCommands() {
 
 
         for (;;) {
@@ -79,9 +81,9 @@ public class Server {
                     && command.length > 1 && command[1].length() > 0) {
                 changeDir(command[1]);
             } else if (command[0].equals("verbose")){
-                if (verbose == true) {
-                    verbose = false;
-                } else if (verbose == false) {
+                if (verbose) {
+                    PacketUtilities.toggleVerbose();
+                } else {
                     verbose = true;
                 }
             } else{

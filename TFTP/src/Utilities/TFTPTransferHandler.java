@@ -174,9 +174,6 @@ public class TFTPTransferHandler {
 	
 	public void sendFileToServer() {
 		try {
-            if (Client.getVerbose() == true) {
-                System.out.println("IN SEND TO SERVER: " + fileName);
-            }
 			// Check that file exists
 			File file = new File(filePath);
 			if (!file.exists()) {

@@ -118,15 +118,15 @@ public class TFTPDATAPacket extends TFTPPacket {
 		/*
 		 *  Let check that we are sending the right file content for .txt file
 		 */
-		byte b [] = stream.toByteArray();
-		if (Client.getVerbose()) {
+		/*byte b [] = stream.toByteArray();
+		if (Client.getPacketUtilities().getVerbose()) {
 			System.out.println("Print the content");
 
 			for (int x = 0; x < b.length; x++) {
 				// printing the characters
 				System.out.print((char) b[x] + "   ");
 			}
-		}
+		} //We'll deal with this later... */
 
 		return stream.toByteArray();
 	}
