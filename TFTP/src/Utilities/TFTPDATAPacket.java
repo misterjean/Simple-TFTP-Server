@@ -114,19 +114,6 @@ public class TFTPDATAPacket extends TFTPPacket {
 		stream.write(blockNumber >> 8);
 		stream.write(blockNumber);
 		stream.write(fileData, 0, fileData.length);
-		
-		/*
-		 *  Let check that we are sending the right file content for .txt file
-		 */
-		byte b [] = stream.toByteArray();
-		if (Client.getVerbose()) {
-			System.out.println("Print the content");
-
-			for (int x = 0; x < b.length; x++) {
-				// printing the characters
-				System.out.print((char) b[x] + "   ");
-			}
-		}
 
 		return stream.toByteArray();
 	}

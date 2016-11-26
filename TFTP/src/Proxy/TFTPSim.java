@@ -18,6 +18,7 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
+import Utilities.Config;
 import Utilities.TFTPACKPacket;
 import Utilities.TFTPDATAPacket;
 import Utilities.TFTPPacket;
@@ -90,8 +91,8 @@ public class TFTPSim {
 
 
 	protected InetAddress serverAddress;
-	protected int serverRequestPort = 69;
-	protected int clientRequestPort = 23;
+	protected int serverRequestPort = Config.SERVER_LISTENING_PORT;
+	protected int clientRequestPort = Config.PROXY_LISTENING_PORT;
 	protected int threadCount = 0;
 	protected boolean stopping = false;
 	protected RequestReceiveThread requestReceive;
@@ -528,7 +529,7 @@ public class TFTPSim {
 							// Lose the packet, i.e wait for server to send the
 							// data again
 							System.out
-									.println("***Lost the data Packet received from Server***");
+									.println("[[[[[Lost the data Packet received from Server]]]]]");
 							System.out
 									.println("Receiving data packet from server");
 							dp = TFTPPacket.createDatagramForReceiving();
@@ -543,7 +544,7 @@ public class TFTPSim {
 							// Lose the packet, i.e wait for client to send the
 							// data again
 							System.out
-									.println("***Lost the ack Packet from the server***");
+									.println("[[[[[Lost the ack Packet from the server]]]]]");
 							System.out
 									.println("Receiving the same data packet from client");
 
@@ -572,7 +573,7 @@ public class TFTPSim {
 							DatagramPacket dp1 = new DatagramPacket(
 									dp.getData(), dp.getLength());
 							System.out
-									.println("***Delay the data Packet from the server***");
+									.println("[[[[[Delay the data Packet from the server]]]]]");
 							System.out
 									.println("Waiting to get  Data packet from server");
 							dp = TFTPPacket.createDatagramForReceiving();
@@ -615,7 +616,7 @@ public class TFTPSim {
 									dp.getData(), dp.getLength());
 
 							System.out
-									.println("***Delay the ACK Packet from server***");
+									.println("[[[[[Delay the ACK Packet from server]]]]]");
 							System.out
 									.println("Receiving the same data packet from client");
 							dp = TFTPPacket.createDatagramForReceiving();
@@ -648,7 +649,7 @@ public class TFTPSim {
 								&& ((TFTPDATAPacket) TFTPPacket
 								.createFromDatagram(dp))
 								.getBlockNumber() == blockNumber) {
-							System.out.println("***Duplicate the Packet***");
+							System.out.println("[[[[[Duplicate the Packet]]]]]");
 							DatagramPacket dp1 = new DatagramPacket(
 									dp.getData(), dp.getLength());
 
@@ -682,7 +683,7 @@ public class TFTPSim {
 								&& ((TFTPACKPacket) TFTPPacket
 								.createFromDatagram(dp))
 								.getBlockNumber() == blockNumber) {
-							System.out.println("***Duplicate the Packet***");
+							System.out.println("[[[[[Duplicate the Packet]]]]]");
 							DatagramPacket dp1 = new DatagramPacket(
 									dp.getData(), dp.getLength());
 
@@ -810,7 +811,7 @@ public class TFTPSim {
 								&& ((TFTPDATAPacket) TFTPPacket
 								.createFromDatagram(dp))
 								.getBlockNumber() == blockNumber) {
-							System.out.println("***Lose the Packet***");
+							System.out.println("[[[[[Lose the Packet]]]]]");
 							// Lose the packet, i.e wait for server to send the
 							// data back
 							System.out.println("Lost the Packet");
@@ -824,7 +825,7 @@ public class TFTPSim {
 								&& ((TFTPACKPacket) TFTPPacket
 								.createFromDatagram(dp))
 								.getBlockNumber() == blockNumber) {
-							System.out.println("***Lose the Packet***");
+							System.out.println("[[[[[Lose the Packet]]]]]");
 							// Lose the packet, i.e wait for client to send the
 							// data again
 							System.out
