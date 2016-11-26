@@ -18,7 +18,6 @@ import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
 
-import Utilities.Config;
 import Utilities.TFTPACKPacket;
 import Utilities.TFTPDATAPacket;
 import Utilities.TFTPPacket;
@@ -91,8 +90,8 @@ public class TFTPSim {
 
 
 	protected InetAddress serverAddress;
-	protected int serverRequestPort = Config.SERVER_LISTENING_PORT;
-	protected int clientRequestPort = Config.PROXY_LISTENING_PORT;
+	protected int serverRequestPort = 69;
+	protected int clientRequestPort = 23;
 	protected int threadCount = 0;
 	protected boolean stopping = false;
 	protected RequestReceiveThread requestReceive;

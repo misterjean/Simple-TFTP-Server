@@ -74,16 +74,19 @@ public class Connection extends Thread {
 	    	 
 	    
 	    }
-	    
+
+	    public void toggleVerbose()
+		{
+			this.packetUtilities.toggleVerbose();
+		}
 	  
 
 	    @Override
 	    public void run() {
 	        super.run();
 	        //this.threadInstaceID = threadInstaceID++; //@TODO need to fix this later
-			if (this.packetUtilities.getVerbose()) {
+
 				IO.print("Packet Processor, ID: " + this.threadInstaceID + " has started!");
-			}
 			// while we receive data packets that are 516 in size (break inside while)
 	        
 	        if (isReadRequest) {

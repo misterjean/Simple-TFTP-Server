@@ -70,8 +70,11 @@ public class TFTPRRQWRQPacket extends TFTPPacket {
 			throw new IllegalArgumentException("Invalid OP code");
 		} else if (packetData[1] == 1) {
 			action = Action.READ;
+			IO.print("read "+ action);
 		} else if (packetData[1] == 2) {
 			action = Action.WRITE;
+			IO.print("write "+ action);
+
 		} else {
 			int opcode = ((packetData[0] << 8) & 0xFF00) | (packetData[1] & 0xFF);
 			throw new IllegalArgumentException("Invalid OP code: " + opcode);
@@ -130,6 +133,7 @@ public class TFTPRRQWRQPacket extends TFTPPacket {
 		stream.write(0); // Always start with 0
 		
 		// Set the request action type byte
+		IO.print("Action "+ action);
 		if (action == Action.WRITE) {
 			stream.write(2); // write request flag byte
 		} else {

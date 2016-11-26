@@ -1,8 +1,5 @@
 package Utilities;
 
-
-import Server.Server;
-
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.*;
@@ -198,16 +195,12 @@ public class PacketUtilities {
     private void send(TFTPPacket packet) throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
 
-		printPacketDetails(2, dp, verbose);
-
 		send(packet, false);
 	}
 
 	private void send(TFTPPacket packet, boolean cacheForResend)
 			throws IOException {
 		DatagramPacket dp = packet.generateDatagram(remoteAddress, remoteTid);
-
-		printPacketDetails(2, dp, verbose);
 
 		if (cacheForResend) {
 			resendDatagram = dp;
@@ -245,12 +238,9 @@ public class PacketUtilities {
     
     private TFTPPacket receive() throws IOException, TFTPAbortException {
 		while (true) {
-			
+			setRemoteTid(rcvDatagram.getPort());
 			socket.receive(rcvDatagram);
-			
-			if (Server.getVerbose()) {
-				printPacketDetails(2, rcvDatagram, verbose);
-			}
+
 			
 			if (remoteTid > 0 && (rcvDatagram.getPort() != remoteTid 
 				|| !(rcvDatagram.getAddress()).equals(remoteAddress))) {
@@ -394,11 +384,12 @@ public class PacketUtilities {
         }
 
         try {
-            socket.receive(packet);
+			printPacketDetails(1, packet, verbose);
+			socket.receive(packet);
 
 			//1     Read request (RRQ)
 			//2     Write request (WRQ)
-			printPacketDetails(1, packet, verbose);
+
 
         } catch ( SocketTimeoutException e){
             System.out.println("\nMax timeout reached, no packet received, closing socket...");
@@ -412,7 +403,7 @@ public class PacketUtilities {
         return packet;
     }
     
-    public void printPacketDetails(int type, DatagramPacket pk, boolean verbose) throws UnsupportedEncodingException {
+   public void printPacketDetails(int type, DatagramPacket pk, boolean verbose) throws UnsupportedEncodingException {
 		if (verbose) {
 
 			String data = new String(pk.getData(), "UTF-8");
@@ -468,7 +459,7 @@ public class PacketUtilities {
 		try {
 			String errMsg = "Stop hacking foo!";
 			TFTPErrorPacket pk = TFTPPacket.createErrorPacket(
-					TFTPErrorPacket.ErrorType.UNKOWN_TID, errMsg);
+					TFTPErrorPacket.ErrorType.UNKNOWN_TID, errMsg);
 			socket.send(pk.generateDatagram(address, port));
 			System.out.println("*******  Sending error packet (Unknown TID) to "
 					+ addressToString(address, port) + " with message: "

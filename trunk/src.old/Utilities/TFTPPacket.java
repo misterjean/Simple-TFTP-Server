@@ -6,7 +6,7 @@ import Utilities.TFTPRRQWRQPacket.Action;
 import Utilities.TFTPRRQWRQPacket.Mode;
 
 public abstract class TFTPPacket {
-	static final int MAXLENGTH = 516;
+	static final int MAXLENGTH = PacketUtilities.DEFAULT_DATA_LENGTH;
 	private static final int MINLENGTH = 4;
 	
 	public enum Type {

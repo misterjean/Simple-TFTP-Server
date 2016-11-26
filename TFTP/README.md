@@ -1,6 +1,6 @@
 # SYSC3303 - Fall 2016
-# Collaborative project - Iteration 3
-#### November 12th 2016
+# Collaborative project - Iteration 4
+#### November 26th 2016
 
 ### Setup Instructions
 1. Import the project. File -> Import -> Existing Projects Into Workspace OR create a new JAVA project and copy the three folders in src (excluding .idea) into the src folder of your new project. 
@@ -16,7 +16,7 @@
 - File Not Found: Simply request to read or write a file that does not exist.
 - File Already Exists: Simply try to write a file that already exists in the working directory in either the client or server.
 
-####**NEW!** Testing the Error Simulator (TFTPSim)
+####Testing the Error Simulator (TFTPSim)
 	The Proxy can now simulate multiple different types of packet errors such as packet loss, packet delay and packet duplication 
 	on read request packets, write request packets, data packets and acknowledgement packets. To do so, simply type "localhost" in the 
 	command line after launching the proxy to connect on device, then type help to see a list of commands and choose which type of error to generate.
@@ -66,7 +66,7 @@ Jean-Elie Jean-Gilles	(100856860)
 Yue Zhang 				(100980408)
 
 ###### Responsible for the Server/Client error packet handling
-Emmanuel Guelor 		(100884107)
+Guelor Emmanuel  		(100884107)
 
 ###### Responsible for the timing Diagrams 
 Zakaria Hassan			(100860461)
