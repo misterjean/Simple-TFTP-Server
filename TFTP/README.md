@@ -10,11 +10,13 @@
 5. Run the Client Class.
 6. On the client, server or proxy, type 'help' for a list of commands (including read, write and change directory and more)
 
-####Testing file I/O errors
-- Access Violation: By simply calling chmod 555 on your working directory, you should be able to test access violations.
-- Disk Full: Could be tested by changing working directory to a USB stick that has reached its capacity.
-- File Not Found: Simply request to read or write a file that does not exist.
-- File Already Exists: Simply try to write a file that already exists in the working directory in either the client or server.
+####Testing TFTP errors
+- 1 - File Not Found: Simply request to read or write a file that does not exist.
+- 2 - Access Violation: By simply calling chmod 555 on your working directory, you should be able to test access violations.
+- 3 - Disk Full: Could be tested by changing working directory to a USB stick that has reached its capacity.
+- 4 - Illegal TFTP Operation: Can be tested by using modes 0 to 6 on the TFTP Error Simulator.
+- 5 - Unknown Transfer ID: Can be tested using mode 7 on the TFTP Error Simulator.
+- 6 - File Already Exists: Simply try to write a file that already exists in the working directory in either the client or server.
 
 ####Testing the Error Simulator (TFTPSim)
 	The Proxy can now simulate multiple different types of packet errors such as packet loss, packet delay and packet duplication 
