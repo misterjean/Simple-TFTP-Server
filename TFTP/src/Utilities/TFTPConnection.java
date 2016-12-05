@@ -120,12 +120,11 @@ public class TFTPConnection {
                 continue;
             }
 
-            TFTPPacket packet = TFTPPacket.createFromDatagram(inDatagram);
-
-            if (verbose)
-            Log.printReceivePacketDetails(packet.getTFTPacketType(), inDatagram);
-
             try {
+               TFTPPacket packet = TFTPPacket.createFromDatagram(inDatagram);
+                if (verbose)
+                    Log.printReceivePacketDetails(packet.type, inDatagram);
+
                 return packet;
             } catch (IllegalArgumentException e) {
                 sendIllegalOperationError(e.getMessage());

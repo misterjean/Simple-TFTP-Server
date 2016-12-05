@@ -46,13 +46,14 @@ public class Server {
                 continue;
             }
             if (command[0].equals("help")) {
-                System.out.println("Available commands:");
+                IO.print("\nAvailable commands:");
                 IO.print("verbose: toggle verbose mode off or on");
                 IO.print("stop: stop the server (when current transfers finish");
                 IO.print("ls: List out the the public directory for file transfer");
                 IO.print("rm <FILENAME>: delete the specified file from the folder");
                 IO.print("cd <DIRECTORY>: Change the directory for file transfer. Specify path ");
                 IO.print("defaultdir : Change the directory for file transfer to default public directory. (project folder)");
+                IO.print("-------------------------------------------------------------------------------------------------\n");
 
             } else if (command[0].equals("stop")) {
                 System.out.println("Stopping server when the current transfer finish");

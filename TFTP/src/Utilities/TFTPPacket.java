@@ -54,6 +54,8 @@ public abstract class TFTPPacket {
 	 */
 	public static TFTPPacket createFromDatagram(DatagramPacket datagram)
 			throws IllegalArgumentException {
+
+
 		return TFTPPacket.createFromBytes(datagram.getData(),
 				datagram.getLength());
 	}
