@@ -1,4 +1,4 @@
-package Utilities;
+package Client;
 
 public class TFTPACKPacket extends TFTPPacket {
 	private static final int OPCODE = 4; // The TFTP opcode

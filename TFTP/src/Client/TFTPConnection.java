@@ -1,10 +1,7 @@
-package Utilities;
-
-import Client.Client;
+package Client;
 
 import java.io.IOException;
 import java.net.*;
-import java.util.Arrays;
 
 /**
  * Created by Guelor on 2016-11-26.

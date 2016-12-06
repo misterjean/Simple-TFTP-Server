@@ -1,4 +1,4 @@
-package Utilities;
+package Client;
 
 import java.io.ByteArrayOutputStream;
 

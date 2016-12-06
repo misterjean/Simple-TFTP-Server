@@ -1,4 +1,4 @@
-package Utilities;
+package Client;
 
 /**
  * Created by Guelor on 2016-11-26.

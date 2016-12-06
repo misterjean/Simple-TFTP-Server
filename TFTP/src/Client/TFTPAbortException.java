@@ -1,4 +1,4 @@
-package Utilities;
+package Client;
 
 public class TFTPAbortException extends Exception {
 

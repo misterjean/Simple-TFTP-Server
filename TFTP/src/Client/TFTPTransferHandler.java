@@ -1,7 +1,4 @@
-package Utilities;
-
-import Client.Client;
-import Server.Server;
+package Client;
 
 import java.io.File;
 import java.io.FileInputStream;
@@ -34,7 +31,7 @@ public class TFTPTransferHandler extends Thread{
 			this.filePath = server.getPublicFolder() + fileName;
 			this.isReadRequest = packet.isReadRequest();
 		} catch (SocketException se) {
-			IO.print("Failed to open socket for transfer for" + fileName);
+			Utilities.IO.print("Failed to open socket for transfer for" + fileName);
 		}
 	}
 
@@ -100,7 +97,7 @@ public class TFTPTransferHandler extends Thread{
 			} while (bytesRead == TFTPDATAPacket.MAXFILEDATALENGTH);
 			fs.close();
 
-			IO.print("Done sending file \'" + fileName + "\' to client");
+			Utilities.IO.print("Done sending file \'" + fileName + "\' to client");
 		} catch (FileNotFoundException e1) {
 			Log.d("File not found: " + fileName, verbose);
 			conn.sendFileNotFound("Could not find: " + fileName);
@@ -174,7 +171,7 @@ public class TFTPTransferHandler extends Thread{
 				// no worries, this ACK was just a courtesy
 			}
 
-			IO.print("Done receiving file \'" + fileName + "\' from client");
+			Utilities.IO.print("Done receiving file \'" + fileName + "\' from client");
 			fs.close();
 		} catch (FileNotFoundException e) {
 			new File(filePath).delete();
@@ -184,7 +181,7 @@ public class TFTPTransferHandler extends Thread{
 		} catch (IOException e) {
 			new File(filePath).delete();
 			//IO.print("DISK full");
-			IO.print("IOException with file: " + fileName);
+			Utilities.IO.print("IOException with file: " + fileName);
 			conn.sendDiscFull(e.getMessage());
 			return;
 		}

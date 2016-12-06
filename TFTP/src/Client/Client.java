@@ -1,8 +1,5 @@
 package Client;
 
-import Utilities.*;
-
-import java.nio.file.Paths;
 import java.util.*;
 import java.io.*;
 import java.net.*;
