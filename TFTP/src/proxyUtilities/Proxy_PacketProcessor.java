@@ -30,7 +30,7 @@ public class Proxy_PacketProcessor implements Runnable {
     /**
      * the port that server used to receive request packets from proxy
      */
-    private static int DEFAULT_SERVER_PORT = 6900;
+    private static int DEFAULT_SERVER_PORT = 69;
 
     /**
      * getter for DEFAULT_SERVER_PORT
@@ -137,22 +137,46 @@ public class Proxy_PacketProcessor implements Runnable {
      */
     private static int delayTime = 0;
 
+    /**
+     * This variable is used to hold client address, which will be collected from request packets
+     * and will be passed to any further packet that are going to be forwarded to client
+     */
     private InetAddress clientAddress;
 
+    /**
+     * This variable is used to hold the destination server address
+     * It can be changed by user
+     */
     private static InetAddress serverAddress;
 
+    /**
+     * getter for server address
+     * @return serverAddress
+     */
     public static InetAddress getServerAddress() { return serverAddress; }
 
+    /**
+     * setter for server address
+     * @param newServerAddress user-chosen server address
+     */
     public static void setServerAddress( InetAddress newServerAddress ){ serverAddress = newServerAddress; }
 
+    /**
+     * This variable is used to determine which illegal TFTP operation will be simulated on the target packets
+     */
     private static int illoperation = 0;
 
+    /**
+     * getter for illoperation
+     * @return
+     */
     public static int getIlloperation() { return illoperation; }
 
+    /**
+     * setter for illoperation
+     * @param i value will be passed to illoperation
+     */
     public static void setIlloperation(int i) { illoperation = i; }
-
-
-
 
     /**
      * setter for errMode
@@ -234,15 +258,63 @@ public class Proxy_PacketProcessor implements Runnable {
         else return "false";
     }
 
+    /**
+     * error sim option
+     * extra data that will be added to the end of a packet
+     */
     private static String EXTRA_DATA = "\n\tThis is just some extra byte that will be appended at the end of a packet. Nothing really special to look at";
 
+    /**
+     * setter for EXTRA_DATA
+     * @param msg user-chosen message
+     */
     public static void setExtraData(String msg){ EXTRA_DATA = msg; }
 
-    private static int DEVIDED_BY = 30;
+    /**
+     * getter for EXTRA_DATA
+     * @return EXTRA_DATA
+     */
+    public static String getExtraData() { return EXTRA_DATA; }
 
+    /**
+     * error sim option
+     * used to shrink the size of a packet
+     * this number will be divided by the original data length, which is 516
+     */
+    private static int DIVIDED_BY = 30;
+
+    public static int getDividedBy(){ return DIVIDED_BY; }
+
+    /**
+     * sette for DEVIDED_BY
+     * @param i user-chosen number
+     */
+    public static void setDividedBy(int i){ DIVIDED_BY = i; }
+
+    /**
+     * error sim option
+     * used to substitute the mode inside request packets
+     */
     private static String modifiedMode = "modified_mode";
 
+    /**
+     * setter for modifiedMode
+     * @param newMode user-chosen mode
+     */
     public static void setModifiedMode(String newMode){ modifiedMode = newMode; }
+
+    /**
+     * getter for modifiedMode
+     * @return modifiedMode
+     */
+    public static String getModifiedMode() { return modifiedMode; }
+
+    /**
+     * this variable is used to determine whether the error has been simulated or not
+     * since proxy re-tries to receive the exactly same packet after it simulates an error on a packet and forward it,
+     * so the same error should not be simulated twice
+     */
+    private boolean is_error_there = false;
 
 
     @Override
@@ -292,7 +364,7 @@ public class Proxy_PacketProcessor implements Runnable {
                     /*
                     error sim
                      */
-                    if( errMode ) errorSim( this.requestPacket );
+                    if( errMode && !this.is_error_there ) errorSim( this.requestPacket );
 
                     /*
                     forward the received request packet to server
@@ -331,7 +403,7 @@ public class Proxy_PacketProcessor implements Runnable {
                         /*
                         err sim
                          */
-                        if( errMode ) errorSim( this.dataPacket );
+                        if( errMode && !this.is_error_there ) errorSim( this.dataPacket );
                         /*
                          forward data packet to client
                          */
@@ -358,7 +430,7 @@ public class Proxy_PacketProcessor implements Runnable {
                         /*
                         error sim
                          */
-                        if( errMode ) errorSim( this.ackPacket );
+                        if( errMode && !this.is_error_there ) errorSim( this.ackPacket );
                         /*
                          forward ack packet to client
                          */
@@ -609,6 +681,8 @@ public class Proxy_PacketProcessor implements Runnable {
                     IO.error("Invalid error code!");
                     break;
             }
+            //flip the value of is_error_there to make sure same error wont be simulated twice
+            this.is_error_there = true;
         }
         else if( (err_opcode == 3 || err_opcode == 4) && compareOpcode(packet) ){ //for DATA and WRQ
             if( compareBlockNum(packet) ){
@@ -649,9 +723,11 @@ public class Proxy_PacketProcessor implements Runnable {
                         break;
                 }
             }
+            //flip the value of is_error_there to make sure same error wont be simulated twice
+            this.is_error_there = true;
         }
         else if( err_opcode <= 0 || err_opcode > 4) {
-            IO.print( "Invalid opcode to generate error on!");
+            IO.error( "Invalid opcode to generate error on!");
         }
     }
     /**
@@ -692,6 +768,10 @@ public class Proxy_PacketProcessor implements Runnable {
         IO.printSimErrMsg( "This is the second time " + PacketUtilities.getPacketName( packet ) + " being sent.");
     }
 
+    /**
+     * This method is used to simulate illegal TFTP operations
+     * @param packet target packet
+     */
     private void illTFTPOp(DatagramPacket packet){
         byte data[], temp[];
         int count;
@@ -736,7 +816,7 @@ public class Proxy_PacketProcessor implements Runnable {
                 /*
                 get a new length of data
                  */
-                int newLength = 516/DEVIDED_BY;
+                int newLength = 516/DIVIDED_BY;
                 /*
                 generate a new data array
                  */
@@ -848,6 +928,11 @@ public class Proxy_PacketProcessor implements Runnable {
         }
     }
 
+    /**
+     * This method is used to change the TID, port number, on the target packet
+     * used in illTFTPOp() and errSim()
+     * @param packet target packet
+     */
     private void changePort(DatagramPacket packet){
         int oldPort = packet.getPort();
         int newPort = oldPort;

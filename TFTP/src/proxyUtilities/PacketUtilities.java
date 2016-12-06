@@ -219,6 +219,26 @@ public class PacketUtilities {
         return packet;
     }
 
+    /**
+     * This method is used to print info of a packet
+     * for developer only, debugging purpose
+     * this should not be used anywhere for a fully done project
+     * @param packet
+     */
+	public static void printPacket( DatagramPacket packet ){
+		IO.print(
+				"\n----------------------------Packet Information------------------------" +
+						"\nPacket Type: " + getPacketType(packet) +
+						"\nPacket Destination: " + packet.getAddress() +
+						"\nDestination Port: " + packet.getPort() +
+						"\nPacket Data(String): "+ Arrays.toString( packet.getData() ) +
+						"\nPacket Data(Byte): " + packet.getData() +
+						"\nPacket Offset: " + packet.getOffset() +
+						"\nSocket Address: " + packet.getSocketAddress() +
+						"\n---------------------------------------------------------------------------\n"
+		);
+	}
+
     public static boolean isErrorPacket(DatagramPacket packet){
         if( getPacketID(packet) == 6) IO.error("File already exist! However proxy will NOT interrupt this transfer.\n");
         return getPacketID(packet) == 5 || getPacketID(packet) == 7;

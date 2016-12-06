@@ -1,5 +1,7 @@
 package proxyUtilities;
 
+import Proxy.Proxy;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.util.ArrayList;
@@ -36,6 +38,7 @@ public class Commands {
     public static void initCommands(){
         commandList.put("status", Commands::status );
         commandList.put("exit", ()->System.exit(0) );
+        commandList.put("quit", commandList.get("exit"));
         commandList.put("menu", Commands::startMenu );
         commandList.put("clear", Commands::whip );
         commandList.put("help", Commands::helpingCentre );
@@ -44,6 +47,7 @@ public class Commands {
         commandList.put("address", Commands::promptServerAddress);
         commandList.put("message", Commands::promptExtraMessage);
         commandList.put("mode", Commands::promptModifiedMode);
+        commandList.put("shrink", Commands::promptDividedNum);
     }
 
     /**
@@ -88,6 +92,12 @@ public class Commands {
                     "\n• Error Code: " + Proxy_PacketProcessor.getErrCode() );
         }
         if( Proxy_PacketProcessor.getErrCode() == 2 ) IO.print( "• Delay time: " + Proxy_PacketProcessor.getDelayTime() );
+        if( Proxy_PacketProcessor.getErrCode() == 4 ) {
+            IO.print( "• Illgal TFTP operation: " + Menu.getIllOpName( Proxy_PacketProcessor.getIlloperation() ) );
+            if( Proxy_PacketProcessor.getIlloperation() == 2 ) IO.print( "• Message will be added: " + Proxy_PacketProcessor.getExtraData());
+            if( Proxy_PacketProcessor.getIlloperation() == 3 ) IO.print( "• Packet will be shrieked by: " + Proxy_PacketProcessor.getDividedBy() + " times" );
+            if( Proxy_PacketProcessor.getIlloperation() == 7 ) IO.print( "• Mode will be substitute to: " + Proxy_PacketProcessor.getModifiedMode() );
+        }
         if( Proxy_PacketProcessor.getErr_opcode() > 2) IO.print("• Block number: " + Proxy_PacketProcessor.getErr_blockNum() );
         IO.print("• Number of threads currently running: " + Thread.activeCount() );
         IO.print("************************************************************");
@@ -108,6 +118,11 @@ public class Commands {
         Proxy_PacketProcessor.setErr_blockNum( 0 );
         Proxy_PacketProcessor.setDelayTime( 0 );
         Proxy_PacketProcessor.setErrCode( 0 );
+        Proxy_PacketProcessor.setIlloperation( 0 );
+        Proxy_PacketProcessor.setDividedBy(30);
+        Proxy_PacketProcessor.setExtraData("\n\tThis is just some extra byte that will be appended at the end of a packet. Nothing really special to look at");
+        Proxy_PacketProcessor.setModifiedMode("modified_mode");
+
     }
 
     /**
@@ -156,30 +171,6 @@ public class Commands {
             if(command.matches(string) ) return true;
         }
         return false;
-    }
-
-    public static void promptServerAddress(){
-        String address;
-        IO.print( "Please enter a server address." );
-        while( true ){
-            try {
-                address = IO.input(">");
-                if( address.equals("") ) continue;
-                if ( InetAddress.getByName( address ).isReachable(3000) ) {
-                    Proxy_PacketProcessor.setServerAddress( InetAddress.getByName( address ) );
-                    IO.print("Now server address is: " + Proxy_PacketProcessor.getServerAddress() );
-                    break;
-                }
-                else {
-                    IO.error( "Unable to the address. " );
-                    IO.print( "Please enter a server address." );
-                }
-            } catch (IOException e) {
-                IO.error( "Unable to set the address." );
-            }
-        }
-
-
     }
 
     /**
@@ -291,6 +282,9 @@ public class Commands {
         }
     }
 
+    /**
+     * This method is used to test if destination address is valid or not
+     */
     private static void testServerAddress(){
         try {
             if( Proxy_PacketProcessor.getServerAddress().isReachable( 3000 ) ) {
@@ -305,9 +299,38 @@ public class Commands {
         }
     }
 
+    /**
+     * This method is sued to prompt user for a server address
+     */
+    private static void promptServerAddress(){
+        String address;
+        IO.print( "Please enter a server address."  + "\nEnter 'quit' or 'exit' to abort operation.");
+        while( true ){
+            try {
+                address = IO.input(">");
+                if( address.equals("quit") || address.equals("exit") ) break;
+                else if( address.equals("") ) continue;
+                if ( InetAddress.getByName( address ).isReachable(3000) ) {
+                    Proxy_PacketProcessor.setServerAddress( InetAddress.getByName( address ) );
+                    IO.print("Now server address is: " + Proxy_PacketProcessor.getServerAddress() );
+                    break;
+                }
+                else {
+                    IO.error( "Unable to the address. " );
+                    IO.print( "Please enter a server address." + "\nEnter 'quit' or 'exit' to abort operation." );
+                }
+            } catch (IOException e) {
+                IO.error( "Unable to set the address." );
+            }
+        }
+    }
+
+    /**
+     * This method is sued to prompt user for a message that will be appended at the end of a packet
+     */
     private static void promptExtraMessage(){
         String message;
-        IO.print("Enter a message that will be appended at the end of a packet: ");
+        IO.print("Enter a message that will be appended at the end of a packet: " + "\nEnter 'quit' or 'exit' to abort operation.");
         while( true ){
             message = IO.input( ">" );
             if( message.equals("quit") || message.equals("exit") ) break;
@@ -320,9 +343,12 @@ public class Commands {
         }
     }
 
+    /**
+     * This method is sued to prompt user for a mode that will substitute the mode in request packets
+     */
     private static void promptModifiedMode(){
         String message;
-        IO.print("Enter a new mode that will be substitute the mode inside request packets: ");
+        IO.print("Enter a new mode that will be substitute the mode inside request packets: " + "\nEnter 'quit' or 'exit' to abort operation.");
         while( true ){
             message = IO.input( ">" );
             if( message.equals("quit") || message.equals("exit") ) break;
@@ -333,5 +359,28 @@ public class Commands {
                 break;
             }
         }
+    }
+
+    /**
+     * This method is sued to prompt user for a number that will be divided by DEFAULT_DATA_LENGTH
+     */
+    private static void promptDividedNum(){
+        String input;
+        IO.print("Enter a number that will be divided by default data length, which is 516, to shrink the packet" + "\nEnter 'quit' or 'exit' to abort operation.");
+        IO.print("Current value is: " + Proxy_PacketProcessor.getDividedBy() + ". Packet length after shrink will be " + (516/Proxy_PacketProcessor.getDividedBy()) + " bytes." );
+        while( true ){
+            input = IO.input( ">" );
+            if( input.equals("quit") || input.equals("exit") ) break;
+            else if( IO.isInteger(input) ){
+                if( IO.string2int(input) == 1 ) IO.print("This does not make sense.");
+                else if( IO.string2int(input) == 0 ) IO.print("Imagine that you have zero cookies and you split them evenly among zero friends. " +
+                        "\nHow many cookies does each person get? See? It doesn’t make sense. " +
+                        "\nAnd Cookie Monster is sad that there are no cookies, and you are sad that you have no friends." +
+                        "\nNow please enter a non-zero integer.");
+                else if( IO.string2int(input) < 10 ) IO.print("TIP: the number might be too small. However the number will still be used");
+                if( IO.string2int(input) > 1 ) break;
+            }
+        }
+        Proxy_PacketProcessor.setDividedBy( IO.string2int(input) );
     }
 }
