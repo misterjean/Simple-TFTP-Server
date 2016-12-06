@@ -1,4 +1,4 @@
-package Client;
+package proxyUtilities;
 
 /**
  * Created by Yue on 2016-11-04.

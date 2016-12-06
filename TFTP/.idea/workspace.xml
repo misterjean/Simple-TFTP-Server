@@ -28,17 +28,17 @@
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="TFTPTransferHandler.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPTransferHandler.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPTransferHandler.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
-              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
+              <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="Config.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/Config.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/Config.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="75">
               <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
@@ -54,137 +54,137 @@
               <ID>JAVA</ID>
               <OriginalElement>Client</OriginalElement>
               <nodes>
-                <node x="658.0" y="2169.0">Client.PacketUtilities</node>
-                <node x="1984.0" y="1506.0">Client.TFTPSim.ErrorCommands</node>
-                <node x="0.0" y="2958.0">Client.TFTPAbortException</node>
-                <node x="0.0" y="1873.0">Client.TFTPDATAPacket</node>
-                <node x="2296.0" y="2685.0">Client.Proxy</node>
-                <node x="639.0" y="1906.0">Client.TFTPACKPacket</node>
+                <node x="1935.0" y="2169.0">Server.Server</node>
+                <node x="2651.0" y="2685.0">Utilities.TFTPRRQWRQPacket.Mode</node>
+                <node x="1547.0" y="0.0">Utilities.TFTPConnection</node>
+                <node x="2000.0" y="2685.0">Utilities.Config</node>
                 <node x="0.0" y="2169.0">Client.Client</node>
-                <node x="1294.0" y="2169.0">Client.Commands</node>
-                <node x="905.0" y="1906.0">Client.TFTPRRQWRQPacket</node>
-                <node x="1568.0" y="2685.0">Client.TFTPPacket.Type</node>
-                <node x="1249.0" y="2685.0">Client.Log</node>
-                <node x="2351.0" y="2169.0">Client.TFTPErrorPacket.ErrorType</node>
-                <node x="1757.0" y="2685.0">Client.TFTPRequestListener</node>
-                <node x="0.0" y="0.0">Client.Proxy_PacketProcessor</node>
-                <node x="2514.0" y="2685.0">Client.TFTPRRQWRQPacket.Action</node>
-                <node x="1050.0" y="2685.0">Client.TFTPSim.PacketType</node>
-                <node x="733.0" y="2685.0">Client.Menu</node>
-                <node x="1219.0" y="1506.0">Client.TFTPSim</node>
-                <node x="2000.0" y="2685.0">Client.Config</node>
-                <node x="2651.0" y="2685.0">Client.TFTPRRQWRQPacket.Mode</node>
-                <node x="421.25" y="1506.0">Client.TFTPPacket</node>
-                <node x="326.0" y="1884.0">Client.TFTPErrorPacket</node>
-                <node x="233.0" y="2958.0">Client.Commands.Command</node>
-                <node x="0.0" y="2685.0">Client.TFTPTransferHandler</node>
-                <node x="394.0" y="2685.0">Client.IO</node>
-                <node x="1547.0" y="0.0">Client.TFTPConnection</node>
-                <node x="1935.0" y="2169.0">Client.Server</node>
+                <node x="1757.0" y="2685.0">Server.TFTPRequestListener</node>
+                <node x="394.0" y="2685.0">proxyUtilities.IO</node>
+                <node x="658.0" y="2169.0">proxyUtilities.PacketUtilities</node>
+                <node x="602.0" y="1906.0">Utilities.TFTPACKPacket</node>
+                <node x="313.0" y="1906.0">Utilities.TFTPRRQWRQPacket</node>
+                <node x="1219.0" y="1506.0">Proxy.TFTPSim</node>
+                <node x="733.0" y="2685.0">proxyUtilities.Menu</node>
+                <node x="868.0" y="1873.0">Utilities.TFTPDATAPacket</node>
+                <node x="1568.0" y="2685.0">Utilities.TFTPPacket.Type</node>
+                <node x="233.0" y="2958.0">proxyUtilities.Commands.Command</node>
+                <node x="1984.0" y="1506.0">Proxy.TFTPSim.ErrorCommands</node>
+                <node x="0.0" y="1884.0">Utilities.TFTPErrorPacket</node>
+                <node x="2514.0" y="2685.0">Utilities.TFTPRRQWRQPacket.Action</node>
+                <node x="1050.0" y="2685.0">Proxy.TFTPSim.PacketType</node>
+                <node x="1249.0" y="2685.0">Utilities.Log</node>
+                <node x="0.0" y="2685.0">Utilities.TFTPTransferHandler</node>
+                <node x="1294.0" y="2169.0">proxyUtilities.Commands</node>
+                <node x="390.25" y="1506.0">Utilities.TFTPPacket</node>
+                <node x="0.0" y="2958.0">Utilities.TFTPAbortException</node>
+                <node x="2351.0" y="2169.0">Utilities.TFTPErrorPacket.ErrorType</node>
+                <node x="2296.0" y="2685.0">Proxy.Proxy</node>
+                <node x="0.0" y="0.0">proxyUtilities.Proxy_PacketProcessor</node>
               </nodes>
               <notes />
               <edges>
-                <edge source="Client.Commands" target="Client.Commands.Command">
+                <edge source="proxyUtilities.Commands" target="proxyUtilities.Proxy_PacketProcessor">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.Client" target="Client.TFTPAbortException">
+                <edge source="Proxy.TFTPSim" target="Proxy.TFTPSim.ErrorCommands">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.TFTPErrorPacket" target="Client.TFTPPacket">
-                  <point x="0.0" y="-114.5" />
-                  <point x="472.5" y="1853.0" />
-                  <point x="568.25" y="1853.0" />
+                <edge source="Client.Client" target="Utilities.TFTPConnection">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Server.TFTPRequestListener" target="Server.Server">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-92.5" />
+                  <point x="447.5" y="1848.0" />
+                  <point x="537.25" y="1848.0" />
                   <point x="-49.0" y="158.5" />
                 </edge>
-                <edge source="Client.TFTPSim" target="Client.TFTPSim.PacketType">
+                <edge source="Utilities.TFTPErrorPacket" target="Utilities.TFTPErrorPacket.ErrorType">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.TFTPPacket" target="Client.TFTPErrorPacket">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPConnection" target="Client.TFTPAbortException">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPACKPacket" target="Client.TFTPPacket">
-                  <point x="0.0" y="-92.5" />
-                  <point x="762.0" y="1853.0" />
-                  <point x="666.25" y="1853.0" />
-                  <point x="49.0" y="158.5" />
-                </edge>
-                <edge source="Client.TFTPPacket" target="Client.TFTPACKPacket">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPPacket" target="Client.TFTPDATAPacket">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPTransferHandler" target="Client.TFTPConnection">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.Commands" target="Client.Proxy_PacketProcessor">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPRRQWRQPacket.Action">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPErrorPacket" target="Client.TFTPErrorPacket.ErrorType">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPDATAPacket" target="Client.TFTPPacket">
-                  <point x="0.0" y="-125.5" />
-                  <point x="153.0" y="1843.0" />
-                  <point x="470.25" y="1843.0" />
+                <edge source="Utilities.TFTPErrorPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-114.5" />
+                  <point x="146.5" y="1848.0" />
+                  <point x="439.25" y="1848.0" />
                   <point x="-147.0" y="158.5" />
                 </edge>
-                <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPPacket">
-                  <point x="0.0" y="-92.5" />
-                  <point x="1039.5" y="1843.0" />
-                  <point x="764.25" y="1843.0" />
+                <edge source="proxyUtilities.Commands" target="proxyUtilities.Commands.Command">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPTransferHandler" target="Server.Server">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPRRQWRQPacket.Action">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Client.Client" target="Utilities.TFTPAbortException">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPPacket" target="Utilities.TFTPErrorPacket">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPTransferHandler" target="Utilities.TFTPConnection">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPPacket" target="Utilities.TFTPDATAPacket">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPConnection" target="Utilities.TFTPAbortException">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Proxy.TFTPSim" target="Proxy.TFTPSim.PacketType">
+                  <point x="0.0" y="0.0" />
+                  <point x="0.0" y="0.0" />
+                </edge>
+                <edge source="Utilities.TFTPDATAPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-125.5" />
+                  <point x="1021.0" y="1848.0" />
+                  <point x="733.25" y="1848.0" />
                   <point x="147.0" y="158.5" />
                 </edge>
-                <edge source="Client.Client" target="Client.TFTPConnection">
+                <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPRRQWRQPacket.Mode">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.Server" target="Client.TFTPTransferHandler">
+                <edge source="Utilities.TFTPPacket" target="Utilities.TFTPACKPacket">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.TFTPSim" target="Client.TFTPSim.ErrorCommands">
+                <edge source="Utilities.TFTPACKPacket" target="Utilities.TFTPPacket">
+                  <point x="0.0" y="-92.5" />
+                  <point x="725.0" y="1848.0" />
+                  <point x="635.25" y="1848.0" />
+                  <point x="49.0" y="158.5" />
+                </edge>
+                <edge source="Utilities.TFTPPacket" target="Utilities.TFTPRRQWRQPacket">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.TFTPTransferHandler" target="Client.Server">
+                <edge source="Server.Server" target="Server.TFTPRequestListener">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.Server" target="Client.TFTPRequestListener">
+                <edge source="Utilities.TFTPPacket" target="Utilities.TFTPPacket.Type">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
-                <edge source="Client.TFTPPacket" target="Client.TFTPRRQWRQPacket">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPPacket" target="Client.TFTPPacket.Type">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPRequestListener" target="Client.Server">
-                  <point x="0.0" y="0.0" />
-                  <point x="0.0" y="0.0" />
-                </edge>
-                <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPRRQWRQPacket.Mode">
+                <edge source="Server.Server" target="Utilities.TFTPTransferHandler">
                   <point x="0.0" y="0.0" />
                   <point x="0.0" y="0.0" />
                 </edge>
@@ -203,7 +203,7 @@
         </entry>
       </file>
       <file leaf-file-name="TFTPAbortException.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPAbortException.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPAbortException.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
               <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
@@ -213,7 +213,7 @@
         </entry>
       </file>
       <file leaf-file-name="TFTPACKPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPACKPacket.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPACKPacket.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
               <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
@@ -223,10 +223,10 @@
         </entry>
       </file>
       <file leaf-file-name="TFTPConnection.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPConnection.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPConnection.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="120">
-              <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+              <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
               <folding>
                 <element signature="imports" expanded="true" />
               </folding>
@@ -235,17 +235,17 @@
         </entry>
       </file>
       <file leaf-file-name="TFTPDATAPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPDATAPacket.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPDATAPacket.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
-              <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
+              <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="TFTPErrorPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPErrorPacket.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPErrorPacket.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
               <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
@@ -255,17 +255,17 @@
         </entry>
       </file>
       <file leaf-file-name="TFTPPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPPacket.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPPacket.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
-              <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+              <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
       <file leaf-file-name="TFTPRRQWRQPacket.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/Client/TFTPRRQWRQPacket.java">
+        <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPRRQWRQPacket.java">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="-8">
               <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
@@ -408,6 +408,60 @@
             </PATH_ELEMENT>
             <PATH_ELEMENT>
               <option name="myItemId" value="Utilities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Server" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="proxyUtilities" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+          </PATH>
+          <PATH>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.ProjectViewProjectNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="TFTP" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="src" />
+              <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
+            </PATH_ELEMENT>
+            <PATH_ELEMENT>
+              <option name="myItemId" value="Proxy" />
               <option name="myItemType" value="com.intellij.ide.projectView.impl.nodes.PsiDirectoryNode" />
             </PATH_ELEMENT>
           </PATH>
@@ -1112,12 +1166,12 @@
       <workItem from="1480219061186" duration="1796000" />
       <workItem from="1480812206935" duration="34000" />
       <workItem from="1480921966587" duration="1120000" />
-      <workItem from="1481032188689" duration="1601000" />
+      <workItem from="1481032188689" duration="2218000" />
     </task>
     <servers />
   </component>
   <component name="TimeTrackingManager">
-    <option name="totallyTimeSpent" value="80073000" />
+    <option name="totallyTimeSpent" value="80690000" />
   </component>
   <component name="TodoView">
     <todo-panel id="selected-file">
@@ -1130,7 +1184,7 @@
   </component>
   <component name="ToolWindowManager">
     <frame x="14" y="23" width="1425" height="868" extended-state="0" />
-    <editor active="true" />
+    <editor active="false" />
     <layout>
       <window_info id="Palette" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.32867134" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -1146,7 +1200,7 @@
       <window_info id="Designer" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
       <window_info id="Project" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.329718" sideWeight="0.5" order="0" side_tool="false" content_ui="combo" />
       <window_info id="Database" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="3" side_tool="false" content_ui="tabs" />
-      <window_info id="Find" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32933334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
+      <window_info id="Find" active="true" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="true" show_stripe_button="true" weight="0.32933334" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Structure" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.2494331" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="Ant Build" active="false" anchor="right" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.25" sideWeight="0.5" order="1" side_tool="false" content_ui="tabs" />
       <window_info id="UI Designer" active="false" anchor="left" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="2" side_tool="false" content_ui="tabs" />
@@ -1218,12 +1272,12 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Server/Connection.java" />
-    <entry file="file://$PROJECT_DIR$/src/Client/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
           <folding>
-            <marker date="1481033708000" expanded="true" signature="5465:5467" ph="{...}" />
+            <marker date="1481038803000" expanded="true" signature="5358:5360" ph="{...}" />
           </folding>
         </state>
       </provider>
@@ -1245,7 +1299,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPTransferHandler.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPTransferHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="255">
           <caret line="22" column="27" selection-start-line="22" selection-start-column="27" selection-end-line="22" selection-end-column="27" />
@@ -1254,17 +1308,17 @@
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/src/Server/Connection.java" />
-    <entry file="file://$PROJECT_DIR$/src/Client/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="30">
           <caret line="2" column="16" selection-start-line="2" selection-start-column="16" selection-end-line="2" selection-end-column="16" />
           <folding>
-            <marker date="1481033708000" expanded="true" signature="5465:5467" ph="{...}" />
+            <marker date="1481038803000" expanded="true" signature="5358:5360" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="45">
           <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
@@ -1363,7 +1417,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Proxy.java">
+    <entry file="file://$PROJECT_DIR$/src/Proxy/Proxy.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="13" column="13" selection-start-line="13" selection-start-column="13" selection-end-line="13" selection-end-column="13" />
@@ -1371,7 +1425,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Proxy_PacketProcessor.java">
+    <entry file="file://$PROJECT_DIR$/src/proxyUtilities/Proxy_PacketProcessor.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="450">
           <caret line="32" column="48" selection-start-line="32" selection-start-column="48" selection-end-line="32" selection-end-column="48" />
@@ -1379,7 +1433,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/PacketUtilities.java">
+    <entry file="file://$PROJECT_DIR$/src/proxyUtilities/PacketUtilities.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="3345">
           <caret line="240" column="0" selection-start-line="240" selection-start-column="0" selection-end-line="240" selection-end-column="0" />
@@ -1387,17 +1441,17 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Server.java">
+    <entry file="file://$PROJECT_DIR$/src/Server/Server.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="465">
           <caret line="36" column="60" selection-start-line="36" selection-start-column="60" selection-end-line="36" selection-end-column="60" />
           <folding>
-            <marker date="1481033708000" expanded="true" signature="5465:5467" ph="{...}" />
+            <marker date="1481038803000" expanded="true" signature="5358:5360" ph="{...}" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Commands.java">
+    <entry file="file://$PROJECT_DIR$/src/proxyUtilities/Commands.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="451">
           <caret line="373" column="43" selection-start-line="373" selection-start-column="43" selection-end-line="373" selection-end-column="43" />
@@ -1410,7 +1464,7 @@
         <state relative-caret-position="1038">
           <caret line="315" column="41" selection-start-line="315" selection-start-column="41" selection-end-line="315" selection-end-column="41" />
           <folding>
-            <marker date="1481033708000" expanded="false" signature="17:75" ph="..." />
+            <marker date="1481038803000" expanded="false" signature="66:124" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1439,7 +1493,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPSim.java">
+    <entry file="file://$PROJECT_DIR$/src/Proxy/TFTPSim.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="412">
           <caret line="516" column="20" selection-start-line="516" selection-start-column="20" selection-end-line="516" selection-end-column="20" />
@@ -1477,7 +1531,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/IO.java">
+    <entry file="file://$PROJECT_DIR$/src/proxyUtilities/IO.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-450">
           <caret line="9" column="13" selection-start-line="9" selection-start-column="13" selection-end-line="9" selection-end-column="13" />
@@ -1496,7 +1550,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Log.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/Log.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
           <caret line="10" column="13" selection-start-line="10" selection-start-column="13" selection-end-line="10" selection-end-column="13" />
@@ -1504,7 +1558,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPAbortException.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPAbortException.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
           <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
@@ -1512,7 +1566,7 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPACKPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPACKPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
           <caret line="2" column="13" selection-start-line="2" selection-start-column="13" selection-end-line="2" selection-end-column="13" />
@@ -1520,17 +1574,25 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPConnection.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPConnection.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="120">
-          <caret line="8" column="13" selection-start-line="8" selection-start-column="13" selection-end-line="8" selection-end-column="13" />
+          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
           <folding>
             <element signature="imports" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPDATAPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPDATAPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8">
+          <caret line="6" column="13" selection-start-line="6" selection-start-column="13" selection-end-line="6" selection-end-column="13" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPErrorPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
@@ -1538,7 +1600,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPErrorPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPPacket.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-8">
+          <caret line="7" column="22" selection-start-line="7" selection-start-column="22" selection-end-line="7" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPRRQWRQPacket.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
           <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
@@ -1546,31 +1616,15 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPPacket.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/TFTPTransferHandler.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-8">
-          <caret line="4" column="22" selection-start-line="4" selection-start-column="22" selection-end-line="4" selection-end-column="22" />
+          <caret line="14" column="13" selection-start-line="14" selection-start-column="13" selection-end-line="14" selection-end-column="13" />
           <folding />
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPRRQWRQPacket.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="4" column="13" selection-start-line="4" selection-start-column="13" selection-end-line="4" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/TFTPTransferHandler.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="-8">
-          <caret line="11" column="13" selection-start-line="11" selection-start-column="13" selection-end-line="11" selection-end-column="13" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/Client/Config.java">
+    <entry file="file://$PROJECT_DIR$/src/Utilities/Config.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="75">
           <caret line="5" column="13" selection-start-line="5" selection-start-column="13" selection-end-line="5" selection-end-column="13" />
@@ -1584,137 +1638,137 @@
           <ID>JAVA</ID>
           <OriginalElement>Client</OriginalElement>
           <nodes>
-            <node x="658.0" y="2169.0">Client.PacketUtilities</node>
-            <node x="1984.0" y="1506.0">Client.TFTPSim.ErrorCommands</node>
-            <node x="0.0" y="2958.0">Client.TFTPAbortException</node>
-            <node x="0.0" y="1873.0">Client.TFTPDATAPacket</node>
-            <node x="2296.0" y="2685.0">Client.Proxy</node>
-            <node x="639.0" y="1906.0">Client.TFTPACKPacket</node>
+            <node x="1935.0" y="2169.0">Server.Server</node>
+            <node x="2651.0" y="2685.0">Utilities.TFTPRRQWRQPacket.Mode</node>
+            <node x="1547.0" y="0.0">Utilities.TFTPConnection</node>
+            <node x="2000.0" y="2685.0">Utilities.Config</node>
             <node x="0.0" y="2169.0">Client.Client</node>
-            <node x="1294.0" y="2169.0">Client.Commands</node>
-            <node x="905.0" y="1906.0">Client.TFTPRRQWRQPacket</node>
-            <node x="1568.0" y="2685.0">Client.TFTPPacket.Type</node>
-            <node x="1249.0" y="2685.0">Client.Log</node>
-            <node x="2351.0" y="2169.0">Client.TFTPErrorPacket.ErrorType</node>
-            <node x="1757.0" y="2685.0">Client.TFTPRequestListener</node>
-            <node x="0.0" y="0.0">Client.Proxy_PacketProcessor</node>
-            <node x="2514.0" y="2685.0">Client.TFTPRRQWRQPacket.Action</node>
-            <node x="1050.0" y="2685.0">Client.TFTPSim.PacketType</node>
-            <node x="733.0" y="2685.0">Client.Menu</node>
-            <node x="1219.0" y="1506.0">Client.TFTPSim</node>
-            <node x="2000.0" y="2685.0">Client.Config</node>
-            <node x="2651.0" y="2685.0">Client.TFTPRRQWRQPacket.Mode</node>
-            <node x="421.25" y="1506.0">Client.TFTPPacket</node>
-            <node x="326.0" y="1884.0">Client.TFTPErrorPacket</node>
-            <node x="233.0" y="2958.0">Client.Commands.Command</node>
-            <node x="0.0" y="2685.0">Client.TFTPTransferHandler</node>
-            <node x="394.0" y="2685.0">Client.IO</node>
-            <node x="1547.0" y="0.0">Client.TFTPConnection</node>
-            <node x="1935.0" y="2169.0">Client.Server</node>
+            <node x="1757.0" y="2685.0">Server.TFTPRequestListener</node>
+            <node x="394.0" y="2685.0">proxyUtilities.IO</node>
+            <node x="658.0" y="2169.0">proxyUtilities.PacketUtilities</node>
+            <node x="602.0" y="1906.0">Utilities.TFTPACKPacket</node>
+            <node x="313.0" y="1906.0">Utilities.TFTPRRQWRQPacket</node>
+            <node x="1219.0" y="1506.0">Proxy.TFTPSim</node>
+            <node x="733.0" y="2685.0">proxyUtilities.Menu</node>
+            <node x="868.0" y="1873.0">Utilities.TFTPDATAPacket</node>
+            <node x="1568.0" y="2685.0">Utilities.TFTPPacket.Type</node>
+            <node x="233.0" y="2958.0">proxyUtilities.Commands.Command</node>
+            <node x="1984.0" y="1506.0">Proxy.TFTPSim.ErrorCommands</node>
+            <node x="0.0" y="1884.0">Utilities.TFTPErrorPacket</node>
+            <node x="2514.0" y="2685.0">Utilities.TFTPRRQWRQPacket.Action</node>
+            <node x="1050.0" y="2685.0">Proxy.TFTPSim.PacketType</node>
+            <node x="1249.0" y="2685.0">Utilities.Log</node>
+            <node x="0.0" y="2685.0">Utilities.TFTPTransferHandler</node>
+            <node x="1294.0" y="2169.0">proxyUtilities.Commands</node>
+            <node x="390.25" y="1506.0">Utilities.TFTPPacket</node>
+            <node x="0.0" y="2958.0">Utilities.TFTPAbortException</node>
+            <node x="2351.0" y="2169.0">Utilities.TFTPErrorPacket.ErrorType</node>
+            <node x="2296.0" y="2685.0">Proxy.Proxy</node>
+            <node x="0.0" y="0.0">proxyUtilities.Proxy_PacketProcessor</node>
           </nodes>
           <notes />
           <edges>
-            <edge source="Client.Commands" target="Client.Commands.Command">
+            <edge source="proxyUtilities.Commands" target="proxyUtilities.Proxy_PacketProcessor">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.Client" target="Client.TFTPAbortException">
+            <edge source="Proxy.TFTPSim" target="Proxy.TFTPSim.ErrorCommands">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.TFTPErrorPacket" target="Client.TFTPPacket">
-              <point x="0.0" y="-114.5" />
-              <point x="472.5" y="1853.0" />
-              <point x="568.25" y="1853.0" />
+            <edge source="Client.Client" target="Utilities.TFTPConnection">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Server.TFTPRequestListener" target="Server.Server">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-92.5" />
+              <point x="447.5" y="1848.0" />
+              <point x="537.25" y="1848.0" />
               <point x="-49.0" y="158.5" />
             </edge>
-            <edge source="Client.TFTPSim" target="Client.TFTPSim.PacketType">
+            <edge source="Utilities.TFTPErrorPacket" target="Utilities.TFTPErrorPacket.ErrorType">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.TFTPPacket" target="Client.TFTPErrorPacket">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPConnection" target="Client.TFTPAbortException">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPACKPacket" target="Client.TFTPPacket">
-              <point x="0.0" y="-92.5" />
-              <point x="762.0" y="1853.0" />
-              <point x="666.25" y="1853.0" />
-              <point x="49.0" y="158.5" />
-            </edge>
-            <edge source="Client.TFTPPacket" target="Client.TFTPACKPacket">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPPacket" target="Client.TFTPDATAPacket">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPTransferHandler" target="Client.TFTPConnection">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.Commands" target="Client.Proxy_PacketProcessor">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPRRQWRQPacket.Action">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPErrorPacket" target="Client.TFTPErrorPacket.ErrorType">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPDATAPacket" target="Client.TFTPPacket">
-              <point x="0.0" y="-125.5" />
-              <point x="153.0" y="1843.0" />
-              <point x="470.25" y="1843.0" />
+            <edge source="Utilities.TFTPErrorPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-114.5" />
+              <point x="146.5" y="1848.0" />
+              <point x="439.25" y="1848.0" />
               <point x="-147.0" y="158.5" />
             </edge>
-            <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPPacket">
-              <point x="0.0" y="-92.5" />
-              <point x="1039.5" y="1843.0" />
-              <point x="764.25" y="1843.0" />
+            <edge source="proxyUtilities.Commands" target="proxyUtilities.Commands.Command">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPTransferHandler" target="Server.Server">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPRRQWRQPacket.Action">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Client.Client" target="Utilities.TFTPAbortException">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPPacket" target="Utilities.TFTPErrorPacket">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPTransferHandler" target="Utilities.TFTPConnection">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPPacket" target="Utilities.TFTPDATAPacket">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPConnection" target="Utilities.TFTPAbortException">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Proxy.TFTPSim" target="Proxy.TFTPSim.PacketType">
+              <point x="0.0" y="0.0" />
+              <point x="0.0" y="0.0" />
+            </edge>
+            <edge source="Utilities.TFTPDATAPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-125.5" />
+              <point x="1021.0" y="1848.0" />
+              <point x="733.25" y="1848.0" />
               <point x="147.0" y="158.5" />
             </edge>
-            <edge source="Client.Client" target="Client.TFTPConnection">
+            <edge source="Utilities.TFTPRRQWRQPacket" target="Utilities.TFTPRRQWRQPacket.Mode">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.Server" target="Client.TFTPTransferHandler">
+            <edge source="Utilities.TFTPPacket" target="Utilities.TFTPACKPacket">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.TFTPSim" target="Client.TFTPSim.ErrorCommands">
+            <edge source="Utilities.TFTPACKPacket" target="Utilities.TFTPPacket">
+              <point x="0.0" y="-92.5" />
+              <point x="725.0" y="1848.0" />
+              <point x="635.25" y="1848.0" />
+              <point x="49.0" y="158.5" />
+            </edge>
+            <edge source="Utilities.TFTPPacket" target="Utilities.TFTPRRQWRQPacket">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.TFTPTransferHandler" target="Client.Server">
+            <edge source="Server.Server" target="Server.TFTPRequestListener">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.Server" target="Client.TFTPRequestListener">
+            <edge source="Utilities.TFTPPacket" target="Utilities.TFTPPacket.Type">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>
-            <edge source="Client.TFTPPacket" target="Client.TFTPRRQWRQPacket">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPPacket" target="Client.TFTPPacket.Type">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPRequestListener" target="Client.Server">
-              <point x="0.0" y="0.0" />
-              <point x="0.0" y="0.0" />
-            </edge>
-            <edge source="Client.TFTPRRQWRQPacket" target="Client.TFTPRRQWRQPacket.Mode">
+            <edge source="Server.Server" target="Utilities.TFTPTransferHandler">
               <point x="0.0" y="0.0" />
               <point x="0.0" y="0.0" />
             </edge>

@@ -1,4 +1,4 @@
-package Client;
+package Proxy;
 
 //TFTPSim.java
 //This class is the beginnings of an error simulator for a simple TFTP server 
@@ -17,6 +17,12 @@ import java.net.SocketException;
 import java.net.SocketTimeoutException;
 import java.net.UnknownHostException;
 import java.util.Scanner;
+
+import Utilities.Config;
+import Utilities.TFTPACKPacket;
+import Utilities.TFTPDATAPacket;
+import Utilities.TFTPPacket;
+import Utilities.Log;
 
 public class TFTPSim {
 

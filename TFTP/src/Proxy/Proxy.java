@@ -1,12 +1,15 @@
-package Client;
+package Proxy;
 
+import proxyUtilities.Commands;
+import proxyUtilities.IO;
+import proxyUtilities.Proxy_PacketProcessor;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
 /**
  * Created by Yue on 2016-09-19.
- * Core part of Client.Proxy
+ * Core part of Proxy.Proxy
  */
 public class Proxy {
 
@@ -29,7 +32,7 @@ public class Proxy {
      * This method starts the UI for Proxy()
      */
     private void startInput(){
-        IO.print( "TFTP Client.Proxy started."+"\nType 'help' to get the list of commands.\n" );
+        IO.print( "TFTP Proxy.Proxy started."+"\nType 'help' to get the list of commands.\n" );
         while (true) {
             IO.print("Enter a command.");
             String inputtedCommand = IO.input(">").trim().toLowerCase();

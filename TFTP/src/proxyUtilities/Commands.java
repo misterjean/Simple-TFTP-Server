@@ -1,4 +1,6 @@
-package Client;
+package proxyUtilities;
+
+import Proxy.Proxy;
 
 import java.io.IOException;
 import java.net.InetAddress;

@@ -1,4 +1,6 @@
-package Client;
+package Server;
+
+import Utilities.*;
 
 import java.io.IOException;
 import java.net.DatagramPacket;

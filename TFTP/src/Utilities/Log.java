@@ -1,4 +1,4 @@
-package Client;
+package Utilities;
 
 import java.io.UnsupportedEncodingException;
 import java.net.DatagramPacket;

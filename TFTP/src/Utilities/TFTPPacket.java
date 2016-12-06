@@ -1,6 +1,9 @@
-package Client;
+package Utilities;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
+
+import Utilities.TFTPRRQWRQPacket.Action;
+import Utilities.TFTPRRQWRQPacket.Mode;
 
 public abstract class TFTPPacket {
 	static final int MAXLENGTH = 516;
@@ -19,17 +22,17 @@ public abstract class TFTPPacket {
 	
 	
 	//@TODO We need read request
-	public static TFTPRRQWRQPacket createReadRequestPacket(String fileName, Client.TFTPRRQWRQPacket.Mode mode) {
+	public static TFTPRRQWRQPacket createReadRequestPacket(String fileName, Mode mode) {
 		
-		return new TFTPRRQWRQPacket(fileName, Client.TFTPRRQWRQPacket.Action.READ, mode);
+		return new TFTPRRQWRQPacket(fileName, Action.READ, mode);
 		
 	}
 	
 	
 	//@TOD we need a write request
-	public static TFTPRRQWRQPacket createWriteRequestPacket(String fileName, Client.TFTPRRQWRQPacket.Mode mode) {
+	public static TFTPRRQWRQPacket createWriteRequestPacket(String fileName, Mode mode) {
 		
-		return new TFTPRRQWRQPacket(fileName, Client.TFTPRRQWRQPacket.Action.WRITE, mode);
+		return new TFTPRRQWRQPacket(fileName, Action.WRITE, mode);
 		
 	}
 	

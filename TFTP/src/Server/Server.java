@@ -1,10 +1,11 @@
-package Client;
+package Server;
+import Utilities.*;
 
 import java.io.*;
 import java.net.*;
 import java.util.Scanner;
+import Utilities.TFTPErrorPacket.ErrorType;
 
-import Utilities.IO;
 
 
 public class Server {
@@ -31,11 +32,11 @@ public class Server {
         Scanner scanner = new Scanner(System.in);
 
         for(;;) {
-            Utilities.IO.print("Current working directory " + server.publicFolder);
+            IO.print("Current working directory " + server.publicFolder);
             if (server.getVerbose()) {
-                Utilities.IO.print("Verbose is turned on.");
+                IO.print("Verbose is turned on.");
             } else {
-                Utilities.IO.print("Verbose is turned off.");
+                IO.print("Verbose is turned off.");
             }
             System.out.print("Server: ");
             String cmdLine = scanner.nextLine().toLowerCase();
@@ -45,14 +46,14 @@ public class Server {
                 continue;
             }
             if (command[0].equals("help")) {
-                Utilities.IO.print("\nAvailable commands:");
-                Utilities.IO.print("verbose: toggle verbose mode off or on");
-                Utilities.IO.print("stop: stop the server (when current transfers finish");
-                Utilities.IO.print("ls: List out the the public directory for file transfer");
-                Utilities.IO.print("rm <FILENAME>: delete the specified file from the folder");
-                Utilities.IO.print("cd <DIRECTORY>: Change the directory for file transfer. Specify path ");
-                Utilities.IO.print("defaultdir : Change the directory for file transfer to default public directory. (project folder)");
-                Utilities.IO.print("-------------------------------------------------------------------------------------------------\n");
+                IO.print("\nAvailable commands:");
+                IO.print("verbose: toggle verbose mode off or on");
+                IO.print("stop: stop the server (when current transfers finish");
+                IO.print("ls: List out the the public directory for file transfer");
+                IO.print("rm <FILENAME>: delete the specified file from the folder");
+                IO.print("cd <DIRECTORY>: Change the directory for file transfer. Specify path ");
+                IO.print("defaultdir : Change the directory for file transfer to default public directory. (project folder)");
+                IO.print("-------------------------------------------------------------------------------------------------\n");
 
             } else if (command[0].equals("stop")) {
                 System.out.println("Stopping server when the current transfer finish");
@@ -63,9 +64,9 @@ public class Server {
             }else if (command[0].equals("ls")){
                 java.io.File[] files = new java.io.File(server.publicFolder).listFiles();
                 if (files != null) {
-                    for (java.io.File f : files) Utilities.IO.print(f.getName());
-                    Utilities.IO.print(">>>>>>>>>>>>>END<<<<<<<<<<<<<");
-                } else Utilities.IO.print("No files found");
+                    for (java.io.File f : files) IO.print(f.getName());
+                    IO.print(">>>>>>>>>>>>>END<<<<<<<<<<<<<");
+                } else IO.print("No files found");
 
             } else if ((command[0].equals("cd") && command.length > 1 && command[1].length() > 0) || (command[0].equals("defaultdir"))) {
 
@@ -80,7 +81,7 @@ public class Server {
                     if (folder.isDirectory()) {
                         server.publicFolder = command[1];
                     } else {
-                        Utilities.IO.print(command[1] + " is not a directory.");
+                        IO.print(command[1] + " is not a directory.");
                     }
                 }
             }  else if (command[0].equals("rm")

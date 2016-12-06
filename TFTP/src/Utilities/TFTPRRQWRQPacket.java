@@ -1,4 +1,4 @@
-package Client;
+package Utilities;
 
 import java.io.ByteArrayOutputStream;
 
@@ -53,7 +53,7 @@ public class TFTPRRQWRQPacket extends TFTPPacket {
 
 	/*
 	 * (non-Javadoc)
-	 * @see Client.TFTPPacket#generateData()
+	 * @see Utilities.TFTPPacket#generateData()
 	 */
 	static TFTPRRQWRQPacket createFromBytes(byte[] packetData, int packetLength) throws IllegalArgumentException {
 		Action action;

@@ -1,4 +1,4 @@
-package Client;
+package proxyUtilities;
 
 import java.util.Scanner;
 
