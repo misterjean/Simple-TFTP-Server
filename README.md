@@ -20,20 +20,14 @@ Files of varying sizes to test file transfers with have been provided in a direc
 # Developers
 ####Team Eight
 
-###### Responsible for the Client and documentation
+###### Responsible for the Server, Diagrams and some of the Client
+Emmanuel Guelor 	(100884107)
+
+###### Responsible for the Client, Diagrams and documentation
 Jean-Elie Jean-Gilles	(100856860)
 
 ###### Responsible for the Proxy and Utilities
-Yue Zhang 				(100980408)
-
-###### Responsible for the Server, Diagrams and some of the Client
-Emmanuel Guelor 		(100884107)
-
-###### Responsible for the Diagrams 
-Zakaria Hassan			(100860461)
-
-###### Responsible for the Diagrams
-Omar Al-dib				(100906705)
+Yue Zhang 		(100980408)
 
 
 # File Hierarchy
